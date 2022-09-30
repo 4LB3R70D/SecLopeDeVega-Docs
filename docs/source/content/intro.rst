@@ -2,6 +2,8 @@
 
 Intro
 -----
+This is the repository of the documentation of the project. The following information is an intro about the project:
+
 **Sec Lope de Vega** or just **Lope**, is an open source project licensed under the `Mozilla Public License v2 <https://www.mozilla.org/en-US/MPL/2.0/FAQ/>`_ . 
 The origin of this was to be as a learning playground for Python, Golang, ZeroMQ and some crypto capabilities. 
 However, this software is transformed into a project since it can be potentially interesting and useful to the community.
