@@ -1,0 +1,11 @@
+@font-face { font-family: Caslon; src: url('font/CaslonAntique.ttf'); } 
+
+
+div.sphinxsidebarwrapper h1.logo{
+    font-size: x-large;
+    text-align: center;
+}
+
+div.sphinxsidebar {
+    font-size: large;
+}

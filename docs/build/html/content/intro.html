@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>1. Intro &#8212; Sec Lope De Vega Project 0.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Architecture" href="architecture.html" />
+    <link rel="prev" title="‘Sec Lope De Vega’ Project" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="intro">
+<span id="id1"></span><h1><span class="section-number">1. </span>Intro<a class="headerlink" href="#intro" title="Permalink to this heading">¶</a></h1>
+<p><strong>Sec Lope de Vega</strong> or just <strong>Lope</strong>, is an open source project licensed under the <a class="reference external" href="https://www.mozilla.org/en-US/MPL/2.0/FAQ/">Mozilla Public License v2</a> .
+The origin of this was to be as a learning playground for Python, Golang, ZeroMQ and some crypto capabilities.
+However, this software is transformed into a project since it can be potentially interesting and useful to the community.
+As far as what this software does, it tries to be a <em>‘Network Application Interactor’ (NAI?)</em>:
+it interacts with applications, based on a set of rules (‘conversation rules’) using network protocols.
+To do so, this software is able to work with <strong>tcp</strong> or <strong>udp</strong> connections in the two typical modes:</p>
+<ul class="simple">
+<li><p>Client mode (<em>Lope</em> connects to other systems or applications)</p></li>
+<li><p>Server mode (other systems or applications connect to <em>Lope</em>)</p></li>
+</ul>
+<p>The <em>conversation rules</em> are not fixed, and they are fully configurable by the operator of the software (you). In that sense, this is the main capability of this software:
+To provide complete flexibility in defining how the interaction should be via some ‘configuration files’, and optionally, adding some custom code if needed.
+Since this software works at <strong>tcp</strong> or <strong>udp</strong> level, it tries to be as much as agnostic possible for the application protocol.</p>
+<p>This means that this software does not provide directly application level protocols, so it is up to the operator to implement them (or using an existing one).
+<em>Lope</em> is just a kind of ‘framework’ to allow to define interactions in different application protocols, leaving the implementation as part of the definition of the interaction.
+Additionally, <strong>TLS</strong> and <strong>DTLS</strong> are supported to some extent, so you may define the interaction on top of those protocols.
+In the following image you can see the protocol layer capabilities of <em>Lope</em>:</p>
+<a class="reference internal image-reference" href="../_images/slv_protocol_concept.png"><img alt="../_images/slv_protocol_concept.png" class="align-center" src="../_images/slv_protocol_concept.png" style="width: 400px;" /></a>
+<p>This capability of defining your own interaction in the application protocol you wish (if possible), is the main reason for the name of this project.
+<a class="reference external" href="https://en.wikipedia.org/wiki/Lope_de_Vega">Lope de Vega</a> was a famous Spanish writer in the Spanish Golden Age, who was quite prolific in his work.
+Therefore, this software enables you to create many ‘interactions’, potentially making you as ‘prolific’ as possible thanks to the customization capabilities of this software.
+The term ‘Sec’ is a kind of play on words using the idea of ‘<a class="reference external" href="https://en.wikipedia.org/wiki/Sir">Sir</a>’ (he was indeed a knight of the Order of Malta),
+and focusing on the potential use of this software for security reasons:</p>
+<ul class="simple">
+<li><p>In client mode, <em>Lope</em> can do some security tests when <em>he</em> connects to other systems in an interactive approach
+(can we call it <a class="reference external" href="https://owasp.org/www-project-devsecops-guideline/latest/02c-Interactive-Application-Security-Testing">IAST</a>?).
+Since you can define how many client connections to establish, it might be useful to try to do some <a class="reference external" href="https://en.wikipedia.org/wiki/Denial-of-service_attack">DDoS</a> testing too.</p></li>
+<li><p>In server mode, <em>Lope</em> can work as a kind of honeypot (or a set of them, this is explained in other sections). It also can work to do some dynamic testing on client software via
+the answers provided from the server.</p></li>
+</ul>
+<p>However, this software may be useful for other kind of tests that are not only security related, such as mocking-up other systems (as a client or as a server),
+potentially emulating user activity, as well as for doing load and stress testing. <strong>In any case, just remember that this software requires you to define the interaction,
+so it is not ‘plug and play’: there is still work to do to cover your needs</strong> (except you have the right interaction files - <em>conversation rules</em> files).</p>
+<p>Regarding rules, there four three main types of <strong>conversation rules</strong> that <em>Lope</em> can execute:</p>
+<ul class="simple">
+<li><p><strong>Basic Rules:</strong> These rules are executed in specific situations and with a limited set of options (for instance, at the time of the first interaction, or the time-out event).</p></li>
+<li><p><strong>Synchronous Rules (or sync rules):</strong> These rules as executed when a new message is received in the connection with the third party system.
+Using <a class="reference external" href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions (RegEx)</a> ,
+<em>Lope</em> is able to detect what rule or rules are applicable, and then, execute them.</p></li>
+<li><p><strong>Asynchronous Rules (or async rules):</strong> These rules are executed if a previous rule triggers them, so any synchronous or asynchronous rule can trigger one or several asynchronous rules.</p></li>
+<li><p><strong>Hybrid Rules:</strong> These rules are syncrhonous and asynchronous at the same time. They are triggered via a regular expression that is applicable, or asyncrhonously from another rule.</p></li>
+</ul>
+<p>As far as the architecture is respective, this software is made up of two components:</p>
+<ul class="simple">
+<li><p><strong>The External Connectors:</strong> These elements are those that interact directly with the target system, they get the ‘conversation rules’ from the <strong>engine</strong>, and they inform it about any interaction they do.
+There can be several of external connectors working at the same time, working with one <strong>engine</strong>.
+This software is coded in Python and the code can be found <a class="reference external" href="https://github.com/4LB3R70D/SecLopeDeVega-External_Connector">in this repository</a>.</p></li>
+<li><p><strong>The Engine:</strong> This is the element that work as orchestrator and the ‘heart’ of the <em>Lope</em>. This controls the operation, sends the corresponding ‘conversation rules’ to the <strong>external connectors</strong>,
+and receives all activities generated by the <strong>external connectors</strong>.   This software is coded in Go and the code can be found <a class="reference external" href="https://github.com/4LB3R70D/SecLopeDeVega-Engine">here</a>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please, consider this project as <strong>somewhere in between an alpha and beta version</strong> since some capabilities (mainly the integration with other systems for sending alerts, support of TLS, and ipv6 support)
+have not been fully tested and may not work.</p>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/slv_logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Sec Lope De Vega Project</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Intro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">2. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_desc.html">3. Engine Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_conf.html">4. Engine Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_install.html">5. Engine Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_desc.html">6. External Connector Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_conf.html">7. External Connector Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_install.html">8. External Connector Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conversation_rules.html">9. Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">10. Memory Variables &amp; Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">11. Advance Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">12. Activity Alerting &amp; Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">13. Example Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">14. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">15. Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">‘Sec Lope De Vega’ Project</a></li>
+      <li>Next: <a href="architecture.html" title="next chapter"><span class="section-number">2. </span>Architecture</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+        ,<a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+        &amp; <a href="https://www.1001fonts.com/caslon-antique-font.html">Caslon Antique Font</a>
+        
+        |
+        <a href="../_sources/content/intro.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>

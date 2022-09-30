@@ -1,35 +1,43 @@
 # Configuration file for the Sphinx documentation builder.
+#
+# For the full list of built-in configuration values, see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Project information
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'Sec Lope De Vega Project'
+copyright = '2022, Sec Lope De Vega Project'
+author = 'Alberto Dominguez'
+release = '0.5'
 
-release = '0.1'
-version = '0.1.0'
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-# -- General configuration
-
-extensions = [
-    'sphinx.ext.duration',
-    'sphinx.ext.doctest',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.intersphinx',
-]
-
-intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-    'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
-}
-intersphinx_disabled_domains = ['std']
+extensions = []
 
 templates_path = ['_templates']
 
-# -- Options for HTML output
+locale_dirs = ['locale/'] 
+gettext_compact = False   
 
-html_theme = 'sphinx_rtd_theme'
+exclude_patterns = []
 
-# -- Options for EPUB output
-epub_show_urls = 'footnote'
+
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+html_theme = 'alabaster'
+html_theme_options = {
+    'logo': 'slv_logo.png',
+    'logo_name': 'true',
+    'font_family': "'Caslon','Georgia'",
+    'code_font_size':'medium',   
+    'font_size': 'x-large',
+    'head_font_family': "'Caslon','Garamond', 'Georgia'", 
+    'sidebar_link':'#b38600',
+}
+html_static_path = ['_static']
+html_css_files = [
+    'css-style.css',
+]

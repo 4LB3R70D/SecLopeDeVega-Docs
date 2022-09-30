@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>11. Advance Conversation Rules &#8212; Sec Lope De Vega Project 0.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12. Activity Alerting &amp; Storage" href="activities.html" />
+    <link rel="prev" title="10. Memory Variables &amp; Operations" href="memory.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="advance-conversation-rules">
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">11. </span>Advance Conversation Rules<a class="headerlink" href="#advance-conversation-rules" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="index-1"></span><section id="conditional-execution-async-switch">
+<span id="index-2"></span><h2><span class="section-number">11.1. </span>Conditional Execution &amp; Async Switch<a class="headerlink" href="#conditional-execution-async-switch" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="async-loop">
+<span id="index-3"></span><h2><span class="section-number">11.2. </span>Async Loop<a class="headerlink" href="#async-loop" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="conversation-rules-groups">
+<span id="index-4"></span><h2><span class="section-number">11.3. </span>Conversation Rules Groups<a class="headerlink" href="#conversation-rules-groups" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="multiple-conversation-rules-files">
+<span id="index-5"></span><h2><span class="section-number">11.4. </span>Multiple Conversation Rules Files<a class="headerlink" href="#multiple-conversation-rules-files" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/slv_logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Sec Lope De Vega Project</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Intro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">2. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_desc.html">3. Engine Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_conf.html">4. Engine Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_install.html">5. Engine Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_desc.html">6. External Connector Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_conf.html">7. External Connector Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_install.html">8. External Connector Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conversation_rules.html">9. Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">10. Memory Variables &amp; Operations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">11. Advance Conversation Rules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conditional-execution-async-switch">11.1. Conditional Execution &amp; Async Switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#async-loop">11.2. Async Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conversation-rules-groups">11.3. Conversation Rules Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-conversation-rules-files">11.4. Multiple Conversation Rules Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">12. Activity Alerting &amp; Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">13. Example Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">14. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">15. Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="memory.html" title="previous chapter"><span class="section-number">10. </span>Memory Variables &amp; Operations</a></li>
+      <li>Next: <a href="activities.html" title="next chapter"><span class="section-number">12. </span>Activity Alerting &amp; Storage</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+        ,<a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+        &amp; <a href="https://www.1001fonts.com/caslon-antique-font.html">Caslon Antique Font</a>
+        
+        |
+        <a href="../_sources/content/advance_conversation_rules.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>

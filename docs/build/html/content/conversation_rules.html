@@ -1,0 +1,726 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>9. Conversation Rules &#8212; Sec Lope De Vega Project 0.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. Memory Variables &amp; Operations" href="memory.html" />
+    <link rel="prev" title="8. External Connector Installation &amp; Execution" href="ext-conn_install.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="conversation-rules">
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">9. </span>Conversation Rules<a class="headerlink" href="#conversation-rules" title="Permalink to this heading">¶</a></h1>
+<p>The <em>conversation rules</em> are the rules that control how the interaction between the <strong>external connectors</strong> and the external parties. This allows
+to use the same software to interact differently according to some configuration files. These rules have been slight introduced in the <a class="reference internal" href="intro.html#intro"><span class="std std-ref">Intro</span></a> and
+how the <strong>external connectors</strong> are assigned to different <em>conversation rules</em> is already explained in <a class="reference internal" href="engine_conf.html#engine-configuration"><span class="std std-ref">Engine Configuration</span></a>. In this section,
+we are going to explain more the basics of the <em>conversation rules</em>.</p>
+<section id="conversation-rules-file">
+<span id="index-1"></span><h2><span class="section-number">9.1. </span>Conversation Rules File<a class="headerlink" href="#conversation-rules-file" title="Permalink to this heading">¶</a></h2>
+<p>As described in <a class="reference internal" href="engine_conf.html#engine-configuration"><span class="std std-ref">Engine Configuration</span></a>, the folder that contains the <em>conversation rules</em> files have to be defined in the <strong>engine</strong> configuration file.
+The <em>conversation rules</em> files are <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">yml</a> files as it is the <strong>engine</strong> configuration file. The basic structure of these files
+is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ====================================================</span>
+<span class="c1"># EXAMPLE PROTOCOL</span>
+<span class="c1"># Author: Alberto Dominguez</span>
+<span class="c1"># ====================================================</span>
+<span class="c1"># this is just a field just for &#39;operators&#39;, it is not relevant for operation</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">example</span>
+
+<span class="c1"># Which external connector group is assigned for this rules.</span>
+<span class="c1">#  If empty, or &#39;default&#39; ==&gt; no group (only one file valid without group)</span>
+<span class="n">ext_conn_group</span><span class="p">:</span> <span class="n">B</span>
+
+<span class="c1"># This enables the use of this conversation rules.</span>
+<span class="c1"># This means that you can have some conversation rules files</span>
+<span class="c1"># that are in the folder, but they are deactivated and then,</span>
+<span class="c1"># they will no be sent to any external connector.</span>
+<span class="n">enable_use</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default).</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># to be explained later</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Execution memory</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">memory_variables</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># to be explained in</span>
+                      <span class="c1"># &#39;Memory Variables &amp; Operations&#39;</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Conversation Rules</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">conversation</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># to be explained later</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-2">Operation Section of Conversation Rules Files</p>
+<p>The operation field presented previously has many subfields. The first of them are general one, the following two
+is for enabling the use of TLS or DTLS (provided that the configuration is already addressed in the configuration
+of the corresponmding <strong>external connector</strong>); and finally some fields for the capability of closing/reconnecting
+the socket connection but not the logical connection.</p>
+<p>This allows to interact in some cases where the interaction happens not only one single <strong>tcp</strong> connection, and the
+socket connection is closed and renewed several times. For instance, the interaction with an HTTP API. <em>Lope</em> is able
+to work in two ways:</p>
+<ul class="simple">
+<li><p>Closing the socket connection every time it answers to an input, considering the answering not only the execution of a
+syncrhonous rule, it is also all the asyncrhonous tasks that are triggered as result.</p></li>
+<li><p>Closing the socket connection only in those cases where it is declared in a specific rule.</p></li>
+</ul>
+<p>As previously said, the <strong>external connector</strong> keep the ‘logical’ connection open, until it reachs the end or it is timed out.
+You can consider the socket connection as part of the ‘logical’ connection entity in that regard.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL ASPECTS</span>
+    <span class="c1"># ===============</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">server</span> <span class="c1"># server(default)/client</span>
+
+    <span class="c1"># In server mode: Origin IP from external connections,</span>
+    <span class="c1"># empty means any.</span>
+    <span class="c1"># In client mode: what ip to connect (o domain)</span>
+    <span class="n">ip</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1"># TCP(default)/UDP</span>
+    <span class="n">transport_protocol</span><span class="p">:</span> <span class="n">TCP</span>
+
+    <span class="c1"># IPv6 support</span>
+    <span class="n">use_ip6</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># Network port to use</span>
+    <span class="n">port</span><span class="p">:</span> <span class="mi">1883</span>
+
+    <span class="c1"># A value of the following list:</span>
+    <span class="c1"># &#39;utf-8&#39; (default), &#39;utf-16&#39;, &#39;utf-32&#39;, &#39;ascii&#39;</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">utf</span><span class="o">-</span><span class="mi">8</span>
+
+    <span class="c1"># Recommendation: Disable this if the tcp</span>
+    <span class="c1"># connection will be closed after answering</span>
+    <span class="n">use_port_for_connection_identification</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default).</span>
+
+    <span class="c1"># Max time to consider that a connection with a</span>
+    <span class="c1"># third party should be timed out.</span>
+    <span class="c1"># 0 (or negatives values) means no timeout for connections</span>
+    <span class="n">interaction_timeout</span><span class="p">:</span> <span class="mi">300</span> <span class="c1"># seconds,</span>
+
+    <span class="c1"># number of unaccepted connections that the</span>
+    <span class="c1"># system will allow before refusing new connections</span>
+    <span class="c1"># Recommendation: use same value than number of</span>
+    <span class="c1"># concurrent connections or larger</span>
+    <span class="n">connection_queue</span><span class="p">:</span> <span class="mi">5</span> <span class="c1"># (default = 5)</span>
+
+    <span class="c1"># Max number of bytes accepted as input</span>
+    <span class="n">max_input_size</span><span class="p">:</span> <span class="mi">1024</span> <span class="c1"># default = 1024</span>
+
+    <span class="c1"># Max number of concurrent connections allowed,</span>
+    <span class="c1"># in client mode it will be the number of connections</span>
+    <span class="c1"># established with the target</span>
+    <span class="n">max_concurrent_connection</span><span class="p">:</span> <span class="mi">5</span> <span class="c1"># (default = 5)</span>
+
+    <span class="c1"># Time before starting the execution once the external</span>
+    <span class="c1"># connector has everything ready to run</span>
+    <span class="n">execution_delay</span><span class="p">:</span> <span class="mi">3</span> <span class="c1"># seconds</span>
+
+    <span class="c1"># This means that only the first rule detected if</span>
+    <span class="c1"># several conversation rules are applicable.</span>
+    <span class="c1"># The rule with the smallest ID is the one executed</span>
+    <span class="n">conversation_use_only_first_hit</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+
+    <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+    <span class="c1"># ======================</span>
+    <span class="c1"># The external connector TLS configuration should be</span>
+    <span class="c1"># already in place before enabling the use of encryption</span>
+    <span class="c1"># for the interaction.</span>
+
+    <span class="c1"># This enables TLS or DTLS</span>
+    <span class="n">encrypted</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default).</span>
+
+    <span class="c1"># This enable TLS authentication</span>
+    <span class="n">tls_client_authentication</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default).</span>
+
+
+    <span class="c1"># SOCKET CONNECTION CLOSE</span>
+    <span class="c1"># =======================</span>
+    <span class="c1"># It is only aplicable for tcp, tls or dtls.</span>
+
+    <span class="c1"># It closes the socket connection every time after answering / replying</span>
+    <span class="c1"># It disables the functionality &#39;enable_rule_triggered_closing_socket_connection&#39;.</span>
+    <span class="n">close_socket_connection_after_replying</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># it closes the socket but it not ends the logical</span>
+    <span class="c1"># conection when the mode of close after answering</span>
+    <span class="c1"># is not enable and a rule with the &#39;closing&#39; field is enable</span>
+    <span class="n">enable_rule_triggered_closing_socket_connection</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+
+    <span class="c1"># OTHER TOPICS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Additional aspects should be defined here, but</span>
+    <span class="c1"># they will be described in the respective sections</span>
+    <span class="c1"># of this documentation, for the sake of clarity</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-3">Conversation Section of Conversation Rules Files</p>
+<p>This section contains the rules that steer the interaction. As described in the <a class="reference internal" href="intro.html#intro"><span class="std std-ref">Intro</span></a>, there are three different of <em>conversation rules</em>:
+the basic one and the custom ones. The last category means that they are defined by the operator (the user) of <em>Lope</em>. As described in the <a class="reference internal" href="intro.html#intro"><span class="std std-ref">Intro</span></a>,
+they can be syncrhonous, asyncrhonous or hybrid rules.</p>
+<p>In this section of the file, the basic rules listed ready to be configured as well the corresponding subsection for defining the custom rules.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Conversation Rules</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">conversation</span><span class="p">:</span>
+
+    <span class="n">greetings</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">default</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">empty</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">timeout</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">ending</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">custom_rules</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Set of Custom Rules</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-rules">
+<span id="index-4"></span><h2><span class="section-number">9.2. </span>Basic Rules<a class="headerlink" href="#basic-rules" title="Permalink to this heading">¶</a></h2>
+<p>The basic rules are rules that are executed in specific events in the lifecyecle of the interaction.
+All the basic rules are the same in terms of configuration, they have the same fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_basic_rule</span><span class="p">:</span>
+    <span class="c1"># What to send to the third parties</span>
+    <span class="c1"># when the rule is executed</span>
+    <span class="c1"># If empty or not present,</span>
+    <span class="c1"># the rule is considered</span>
+    <span class="c1"># &#39;executed&#39; without sending</span>
+    <span class="c1"># anything to the third party</span>
+    <span class="n">value</span><span class="p">:</span> <span class="p">[</span><span class="n">message</span> <span class="n">to</span> <span class="n">be</span> <span class="n">sent</span><span class="p">]</span>
+
+    <span class="c1"># If the content of the field &#39;value&#39;</span>
+    <span class="c1"># is encoded in base64</span>
+    <span class="n">b64_flag</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># If the rule is enabled and</span>
+    <span class="c1"># can be used for the interaction</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># Other fields related to alerting</span>
+    <span class="c1"># that will be expalined in</span>
+    <span class="c1"># &#39;Activity Alerting &amp; Storage&#39;</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>The basic rules are executeded in specifc times, understanding ‘executed’ as sending the content of the field ‘value’ to the third party.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">greetings</span></code>: The first message sent to the external party in the moment the interaction (session) is established for the first time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default</span></code>: This rule is executed if a message is received from an external party, and there is not any custom rule that is applicable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">empty</span></code>: This rule is executed if a message is received from an external party, but it is an empty message.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: This rule is executed if the interaction (session) is timed out.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ending</span></code>: This rule is executed if the interaction (session) is ended.</p></li>
+</ul>
+<p>The following diagram represents how the different rules are executed:</p>
+<a class="reference internal image-reference" href="../_images/basic_rules.png"><img alt="../_images/basic_rules.png" class="align-center" src="../_images/basic_rules.png" style="width: 800px;" /></a>
+</section>
+<section id="custom-rules">
+<span id="index-5"></span><h2><span class="section-number">9.3. </span>Custom Rules<a class="headerlink" href="#custom-rules" title="Permalink to this heading">¶</a></h2>
+<p>The custom rules are those that are defined by the operator (user) of <em>Lope</em>. They are defined in the <code class="docutils literal notranslate"><span class="pre">custom_rules</span></code> field of the <code class="docutils literal notranslate"><span class="pre">conversation</span></code> field.
+They can be grouped and this is explained in <a class="reference internal" href="advance_conversation_rules.html#advance-conversation-rules"><span class="std std-ref">Advance Conversation Rules</span></a>, so here we only will explain the basics about the custom rules.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Conversation Rules</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">conversation</span><span class="p">:</span>
+
+    <span class="n">greetings</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">default</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">empty</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">timeout</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">ending</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">custom_rules</span><span class="p">:</span> <span class="c1"># Set of custom rules</span>
+
+        <span class="n">groups</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># To be explained in the</span>
+                    <span class="c1"># &#39;Advance Conversation Rules&#39; Section</span>
+
+        <span class="n">rules</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># list of custom rules that do not</span>
+                   <span class="c1"># belong to any group</span>
+</pre></div>
+</div>
+<p>The custom rules have the following common structure, regardless the kind of rules they are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL FIELDS</span>
+    <span class="c1"># ==============</span>
+    <span class="c1"># An id number. It is not autogenerated,</span>
+    <span class="c1"># it should be added manually,</span>
+    <span class="c1"># and it should be unique</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="mi">101</span>
+
+    <span class="c1"># The kind of rule, one of the following:</span>
+    <span class="c1"># sync, async or hybrid</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">sync</span>
+
+    <span class="c1"># What to send to the third parties</span>
+    <span class="c1"># when the rule is executed.</span>
+    <span class="c1"># If empty or not present,</span>
+    <span class="c1"># the rule is considered</span>
+    <span class="c1"># &#39;executed&#39; without sending</span>
+    <span class="c1"># anything to the third party</span>
+    <span class="n">response</span><span class="p">:</span> <span class="p">[</span><span class="n">message</span> <span class="n">to</span> <span class="n">be</span> <span class="n">sent</span><span class="p">]</span>
+
+    <span class="c1"># If the content of the field &#39;response&#39;</span>
+    <span class="c1"># is encoded in base64</span>
+    <span class="n">response_b64</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># If the rule is enabled and</span>
+    <span class="c1"># can be used for the interaction</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+    <span class="c1"># ======================</span>
+    <span class="c1"># For TCP &amp; DTLS connections (and server mode),</span>
+    <span class="c1"># it closes the socket but it not ends the logical</span>
+    <span class="c1"># connection (interaction) when the mode of close</span>
+    <span class="c1"># after answering is not enable.</span>
+    <span class="c1"># The field&#39; enable_rule_triggered_closing_socket_connection&#39;</span>
+    <span class="c1"># should be enable to use this field</span>
+    <span class="c1"># (in the &#39;operation&#39; section)</span>
+    <span class="n">closing_connection</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
+
+    <span class="c1"># Only aplicable for tcp transport protocol</span>
+    <span class="c1"># or DTLS &amp; client mode. It reconnects the</span>
+    <span class="c1"># socket before execute the rule.The field</span>
+    <span class="c1"># &#39;enable_rule_triggered_closing_socket_connection&#39;</span>
+    <span class="c1"># should be enable to use this field</span>
+    <span class="c1"># (in the &#39;operation&#39; section)</span>
+    <span class="n">reconnect_before_rule_execution</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># OTHER FIELDS</span>
+    <span class="c1"># ============</span>
+
+    <span class="c1"># this field triggers the interaction ending</span>
+    <span class="n">ending_rule</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
+
+    <span class="c1"># Other fields expalined in this documentation</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Note that not all fields should be present in all the rules, only when you need you should add it.
+The mandatory fields are: <code class="docutils literal notranslate"><span class="pre">id</span></code>, and <code class="docutils literal notranslate"><span class="pre">mode</span></code>.</p>
+<p>In order to understand how the different custom <em>conversation rules</em> can work together, the following diagram represents
+how the complete process work of replying to any message received from third parties.</p>
+<a class="reference internal image-reference" href="../_images/reply_process.png"><img alt="../_images/reply_process.png" class="align-center" src="../_images/reply_process.png" style="width: 800px;" /></a>
+<p class="rubric" id="index-6">The Interaction Flow and Conversation Rules</p>
+<p>Once that we have seen the basic <em>conversation rules</em>, and the custom <em>conversation rules</em>; we can combine both diagrams in one to see
+the interaction as a process flow of <em>conversation rules</em>. In this diagram, the concepts of if there is something to reply or not, the
+socket closing (and reconnection), and the option to enable or disable basic rules are also included as well.</p>
+<a class="reference internal image-reference" href="../_images/conversation_rules_interaction_flow.png"><img alt="../_images/conversation_rules_interaction_flow.png" class="align-center" src="../_images/conversation_rules_interaction_flow.png" style="width: 1000px;" /></a>
+</section>
+<section id="synchronous-rules">
+<span id="index-7"></span><h2><span class="section-number">9.4. </span>Synchronous Rules<a class="headerlink" href="#synchronous-rules" title="Permalink to this heading">¶</a></h2>
+<p>The custom syncrhonous rules are those that are applicable when their RegEx is applicable for a given input. It could happen that
+several of them are applicable, and they rest of them or only the first one will executed depeneding on the field <code class="docutils literal notranslate"><span class="pre">conversation_use_only_first_hit</span></code>
+of the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_sync_rule</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL FIELDS</span>
+    <span class="c1"># ==============</span>
+    <span class="o">...</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">sync</span>
+
+    <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SYNC FIELDS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># RegEx that make the rule applicable</span>
+    <span class="n">regex</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">regex</span><span class="p">]</span>
+
+    <span class="c1"># Just in case the &#39;regex&#39; field is</span>
+    <span class="c1"># encoded in base 64</span>
+    <span class="n">regex_b64</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
+
+    <span class="c1"># OTHER FIELDS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Other fields expalined in this documentation</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="asynchronous-and-hybrid-rules">
+<span id="index-8"></span><h2><span class="section-number">9.5. </span>Asynchronous and Hybrid Rules<a class="headerlink" href="#asynchronous-and-hybrid-rules" title="Permalink to this heading">¶</a></h2>
+<p>These rules are those that can be executed without any input, they are triggered by other rules.
+This happens because the triggering (custom) rule has the field <code class="docutils literal notranslate"><span class="pre">trigger</span></code> where you list all of the
+async or hybrid rules that should be triggered, as well as if it should wait a certain period of time
+before being executed.</p>
+<p>However, some async rules can be triggered from the beginning, and they have specific fields to be marked
+as an async rule to be called from the start of the interaction: <code class="docutils literal notranslate"><span class="pre">beginning_async_rule</span></code> and <code class="docutils literal notranslate"><span class="pre">beginning_async_delay</span></code>.</p>
+<p>The following example is the fields for a triggering rule, and async rule only needs to have the <code class="docutils literal notranslate"><span class="pre">mode</span></code> field as <code class="docutils literal notranslate"><span class="pre">async</span></code>.</p>
+<p class="rubric">Async Rules</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_triggering_rule</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL FIELDS</span>
+    <span class="c1"># ==============</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># ASYNC TRIGGERING FIELDS</span>
+    <span class="c1"># =======================</span>
+    <span class="n">trigger</span><span class="p">:</span>
+
+          <span class="c1"># One Async rule to execute</span>
+        <span class="o">-</span> <span class="n">rule_id</span><span class="p">:</span> <span class="mi">3</span> <span class="c1"># Async ID rule to execute</span>
+          <span class="c1"># Time to wait until executing the rule</span>
+          <span class="c1"># descibed in the &#39;rule trigger&#39; field</span>
+          <span class="n">delay</span><span class="p">:</span> <span class="mi">30</span> <span class="c1"># seconds</span>
+
+          <span class="c1"># Another async rule to execute,</span>
+          <span class="c1"># In this case, without delay</span>
+        <span class="o">-</span> <span class="n">rule_id</span><span class="p">:</span> <span class="mi">5</span>
+
+    <span class="c1"># OTHER FIELDS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Other fields expalined in this documentation</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>And this is an example of an async rule to be executed from the beginning of the interaction:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_async_rule</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL FIELDS</span>
+    <span class="c1"># ==============</span>
+    <span class="o">...</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="k">async</span>
+
+    <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># ASYNC FIELDS FOR BEGINNING ASYNC RULES</span>
+    <span class="c1"># =====================================</span>
+    <span class="c1"># mark this rules as an async rule to execute</span>
+    <span class="c1"># from the beginning of the interaction</span>
+    <span class="n">beginning_async_rule</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no (default)</span>
+
+    <span class="c1"># time to wait from the beginning of the interaction</span>
+    <span class="c1"># until the rule is executed</span>
+    <span class="n">beginning_async_delay</span><span class="p">:</span> <span class="mi">30</span> <span class="c1"># seconds</span>
+
+    <span class="c1"># OTHER FIELDS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Other fields expalined in this documentation</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric">Hybrid Rules</p>
+<p>This rules are Synchronous and asyncrhonous at the same time, they can be triggered by a regular expression,
+or being triggered by another rule.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_hybrid_rule</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL FIELDS</span>
+    <span class="c1"># ==============</span>
+    <span class="o">...</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">hybrid</span>
+
+    <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SYNC FIELDS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># RegEx that make the rule applicable</span>
+    <span class="n">regex</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">regex</span><span class="p">]</span>
+
+    <span class="c1"># Just in case the &#39;regex&#39; field is</span>
+    <span class="c1"># encoded in base 64</span>
+    <span class="n">regex_b64</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
+
+    <span class="c1"># OTHER FIELDS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Other fields expalined in this documentation</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric">Async or Hybrid Rules as Set of Steps</p>
+<p>You can see, sometimes  you ‘execute’ a rule, but it does not reply anything to the third party. You may think this is usless,
+but you will see that this case makes sense once you have other capabilities that will be explained in other chapters of this
+documentation (e.g.: calling or executing memory operations). Then, they work as a kind of ‘steps’ for these actions,
+especially when several of them are triggered one after the another in a kind of ‘steps’ list or chain.</p>
+<a class="reference internal image-reference" href="../_images/async_rules.png"><img alt="../_images/async_rules.png" class="align-center" src="../_images/async_rules.png" style="width: 800px;" /></a>
+</section>
+<section id="session-support">
+<span id="index-9"></span><h2><span class="section-number">9.6. </span>Session Support<a class="headerlink" href="#session-support" title="Permalink to this heading">¶</a></h2>
+<p>We have already seen that the connection socket can be closed during the interaction. Either to be renew for the <strong>external connector</strong>, or
+the third party, depending on the scenario (client or server mode). This introduces a challenge that is the capability of recognising the
+interaction session once the socket is renewed, and not considering it a new interaction.</p>
+<p>So as to do that, <em>Lope</em> has some mechanisms to have session support. In the <code class="docutils literal notranslate"><span class="pre">operation</span> <span class="pre">section</span></code>, there si a subsection not explained so far that is
+<code class="docutils literal notranslate"><span class="pre">session</span></code>. In server mode,  this adds a session ID for each connection once it is created, and used later on to recognise the connection / interaction session.
+This is done via checking this ID for each request before executing any rule. The session information is expected to have a key-value structure, where the symbol
+to separate the key and the value can be configured, as well as what is the ending character of the session information (it can be empty).</p>
+<p>Therefore, if the structure is something like this <code class="docutils literal notranslate"><span class="pre">KEY+KEY_VALUE_SEPARATOR+{session_value}+END_VALUE</span></code></p>
+<dl class="simple">
+<dt>In this example <code class="docutils literal notranslate"><span class="pre">jsession:srfksdhbq234r;</span></code> we can identify the different parts of the structure:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">KEY</span></code> = <code class="docutils literal notranslate"><span class="pre">jsession</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KEY_VALUE_SEPARATOR</span></code> = <code class="docutils literal notranslate"><span class="pre">:</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">session_value</span></code> = <code class="docutils literal notranslate"><span class="pre">srfksdhbq234r</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">END_VALUE</span></code> = <code class="docutils literal notranslate"><span class="pre">;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>In server mode, the <code class="docutils literal notranslate"><span class="pre">session_value</span></code> can be In client mode, identifying the session can autogenerated using different options. You can add the session key (<code class="docutils literal notranslate"><span class="pre">KEY</span></code>) and
+the session value (<code class="docutils literal notranslate"><span class="pre">session_value</span></code>) by using the reserved words <code class="docutils literal notranslate"><span class="pre">{{SESSION_KEY}}</span></code> and <code class="docutils literal notranslate"><span class="pre">{{SESSION_VALUE}}</span></code> in the <code class="docutils literal notranslate"><span class="pre">response</span></code> or <code class="docutils literal notranslate"><span class="pre">value</span></code> field in any rule (curvy brackets included).
+The following is how the session support configuration can be configured:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL ASPECTS</span>
+    <span class="c1"># ===============</span>
+    <span class="o">...</span>
+
+
+    <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+
+    <span class="c1"># SOCKET CONNECTION CLOSE</span>
+    <span class="c1"># =======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SESSION SUPPORT</span>
+    <span class="c1"># ===============</span>
+    <span class="n">session</span><span class="p">:</span>
+        <span class="c1"># To use or not the session support</span>
+        <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+        <span class="c1"># session key</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">id</span>
+
+        <span class="n">key_value_separator</span><span class="p">:</span> <span class="s2">&quot;:&quot;</span>
+
+        <span class="n">end_value</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span> <span class="c1"># character after the session value (if not present, it will try to limit the session value via a &#39;space&#39; character, &#39;brake line&#39; character, or &#39;end&#39; character)</span>
+
+        <span class="c1">#  for server mode</span>
+        <span class="n">autogenerated</span><span class="p">:</span>
+
+            <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes(default)/no</span>
+
+            <span class="n">number_characters</span><span class="p">:</span> <span class="mi">20</span> <span class="c1"># default 12</span>
+
+            <span class="c1"># One of the following: &quot;numbers&quot;, &quot;hex_lower&quot;, &quot;hex_upper&quot;,</span>
+            <span class="c1"># &quot;hex_mix&quot;, &quot;alphanumeric_upper&quot;, &quot;alphanumeric_lower&quot;(default),</span>
+            <span class="c1"># &quot;alphanumeric_mix&quot;, &quot;alphanumeric_and_symbols_upper&quot;,</span>
+            <span class="c1"># &quot;alphanumeric_and_symbols_lower&quot;, &quot;alphanumeric_and_symbols_mix&quot;</span>
+            <span class="n">characters_type</span><span class="p">:</span> <span class="n">alphanumeric_lower</span>
+
+        <span class="c1"># Session ID can be update via conversation rules</span>
+        <span class="n">update</span><span class="p">:</span>
+
+            <span class="c1"># is it possible to change the session ID during the interaction?</span>
+            <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+            <span class="c1"># One of the following:</span>
+            <span class="c1"># &quot;rule_detected&quot;, &quot;rule_executed(default)&quot;</span>
+            <span class="n">when</span><span class="p">:</span> <span class="n">rule_executed</span>
+
+    <span class="c1"># OTHER TOPICS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Additional aspects should be defined here, but</span>
+    <span class="c1"># they will be described in the respective sections</span>
+    <span class="c1"># of this documentation, for the sake of clarity</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>As you can see, the session values can be changed via custom rules. This can be at the time of rule detection
+(when the rule is analysed as applicable), or after its execution. This can be done by adding the following fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom__rule</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL FIELDS</span>
+    <span class="c1"># ==============</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SESSION UPDATE FIELDS</span>
+    <span class="c1"># =====================</span>
+    <span class="c1"># If several rules are applicable, they are overwritten.</span>
+    <span class="c1"># The last one is the one that remains</span>
+    <span class="c1"># (usually, the one with the larger ID)</span>
+    <span class="n">session_update</span><span class="p">:</span>
+        <span class="c1"># allow that this rule can do the session update</span>
+        <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no (default)</span>
+
+        <span class="c1"># Several options available. In case several of them,</span>
+        <span class="c1"># the preference orderis the following:</span>
+        <span class="c1">#1-memory variable, 2-autogenerated value, 3-fixed value</span>
+
+        <span class="c1"># OPTIONS:</span>
+
+        <span class="c1"># 1 - Using memory variable, the content of the</span>
+        <span class="c1">#memory variable (they are explaines in )</span>
+        <span class="n">memory_variable</span><span class="p">:</span> <span class="n">var1</span>
+
+        <span class="c1"># OR</span>
+
+        <span class="c1"># 2 - Create a new session ID using the configuration</span>
+        <span class="c1"># of the &#39;operation&#39; section</span>
+        <span class="c1"># only used when &#39;memory_variable&#39; is empty or not used</span>
+        <span class="n">autogenerated_value</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no (default)</span>
+
+        <span class="c1"># OR</span>
+
+        <span class="c1"># 3 - Fixed value (hardcoded value)</span>
+        <span class="c1"># only used when &#39;memory_variable&#39; is empty or not used,</span>
+        <span class="c1"># and &#39;autogenerated_value&#39; is &#39;no&#39; or not used</span>
+        <span class="n">fixed_value</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">value</span> <span class="n">you</span> <span class="n">wish</span><span class="p">]</span>
+
+
+    <span class="c1"># OTHER FIELDS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Other fields expalined in this documentation</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/slv_logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Sec Lope De Vega Project</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Intro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">2. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_desc.html">3. Engine Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_conf.html">4. Engine Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_install.html">5. Engine Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_desc.html">6. External Connector Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_conf.html">7. External Connector Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_install.html">8. External Connector Installation &amp; Execution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">9. Conversation Rules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conversation-rules-file">9.1. Conversation Rules File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-rules">9.2. Basic Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-rules">9.3. Custom Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#synchronous-rules">9.4. Synchronous Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asynchronous-and-hybrid-rules">9.5. Asynchronous and Hybrid Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#session-support">9.6. Session Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">10. Memory Variables &amp; Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">11. Advance Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">12. Activity Alerting &amp; Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">13. Example Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">14. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">15. Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ext-conn_install.html" title="previous chapter"><span class="section-number">8. </span>External Connector Installation &amp; Execution</a></li>
+      <li>Next: <a href="memory.html" title="next chapter"><span class="section-number">10. </span>Memory Variables &amp; Operations</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+        ,<a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+        &amp; <a href="https://www.1001fonts.com/caslon-antique-font.html">Caslon Antique Font</a>
+        
+        |
+        <a href="../_sources/content/conversation_rules.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>
