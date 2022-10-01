@@ -41,8 +41,8 @@
 <span id="index-1"></span><h2><span class="section-number">10.1. </span>Session Support<a class="headerlink" href="#session-support" title="Permalink to this heading">¶</a></h2>
 <p>We have already seen that the connection socket can be closed during the interaction. Either to be renew for the <strong>external connector</strong>, or
 the third party, depending on the scenario (client or server mode). This introduces a challenge that is the capability of recognising the
-interaction session once the socket is renewed, and not considering it a new interaction.</p>
-<p>So as to do that, <em>Lope</em> has some mechanisms to have session support. In the <code class="docutils literal notranslate"><span class="pre">operation</span> <span class="pre">section</span></code>, there si a subsection not explained so far that is
+interaction session once the socket is renewed, and not considering it as a new interaction.</p>
+<p>So as to do that, <em>Lope</em> has some mechanisms to have session support. In the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section, there si a subsection not explained so far that is
 <code class="docutils literal notranslate"><span class="pre">session</span></code>. In server mode,  this adds a session ID for each connection once it is created, and used later on to recognise the connection / interaction session.
 This is done via checking this ID for each request before executing any rule. The session information is expected to have a key-value structure, where the symbol
 to separate the key and the value can be configured, as well as what is the ending character of the session information (it can be empty).</p>
@@ -90,8 +90,9 @@ The following is how the session support configuration can be configured:</p>
 
         <span class="n">key_value_separator</span><span class="p">:</span> <span class="s2">&quot;:&quot;</span>
 
-        <span class="c1"># character after the session value (if not present, it will try to limit the session</span>
-        <span class="c1"># value via a &#39;space&#39; character, &#39;brake line&#39; character, or &#39;end&#39; character)</span>
+        <span class="c1"># character after the session value (if not present,</span>
+        <span class="c1"># it will try to limit the session value via a &#39;space&#39;</span>
+        <span class="c1"># character, &#39;brake line&#39; character, or &#39;end&#39; character)</span>
         <span class="n">end_value</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span>
 
         <span class="c1">#  for server mode</span>
@@ -125,9 +126,9 @@ The following is how the session support configuration can be configured:</p>
     <span class="o">...</span>
 </pre></div>
 </div>
-<p>As you can see, the session values can be changed via custom rules. This can be at the time of rule detection
-(when the rule is analysed as applicable), or after its execution. This can be done by adding the following fields:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom__rule</span><span class="p">:</span>
+<p>As you can see, the session values can be changed via custom rules. This can be at the time of ‘rule detection’
+(when the rule is analysed as applicable), or after its execution (‘rule execution’). This can be done by adding the following fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
 
     <span class="c1"># GENERAL FIELDS</span>
     <span class="c1"># ==============</span>
@@ -480,7 +481,7 @@ but it works in the same way for any other memory level:</p>
         &amp; <a href="https://www.1001fonts.com/caslon-antique-font.html">Caslon Antique Font</a>
         
         |
-        <a href="../_sources/content/memory.rst.txt"
+        <a href="../_sources/content/session_and_memory.rst.txt"
             rel="nofollow">Page source</a>
     </div>
   </body>

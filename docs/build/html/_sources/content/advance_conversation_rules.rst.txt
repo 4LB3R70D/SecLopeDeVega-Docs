@@ -7,10 +7,15 @@ Advance Conversation Rules
 
 
 
-.. index:: Conditional Execution
+.. index:: Conditional External Connector Execution
+
+Conditional External Connector Execution
+----------------------------------------
+
+
 .. index:: Async Switch
 
-Conditional Execution & Async Switch
+Async Switch
 ------------------------------------
 
 

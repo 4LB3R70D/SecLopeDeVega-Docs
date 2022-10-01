@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>11. Memory Operations &#8212; Sec Lope De Vega Project 0.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12. Advance Conversation Rules" href="advance_conversation_rules.html" />
+    <link rel="prev" title="10. Session Support &amp; Memory Variables" href="session_and_memory.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="memory-operations">
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">11. </span>Memory Operations<a class="headerlink" href="#memory-operations" title="Permalink to this heading">¶</a></h1>
+<p>Having memory variables is great, but using them is even better. In this section of the documentation we are going
+to see how you can work with them.</p>
+<section id="memory-modifications-using-rules">
+<span id="index-1"></span><h2><span class="section-number">11.1. </span>Memory Modifications Using Rules<a class="headerlink" href="#memory-modifications-using-rules" title="Permalink to this heading">¶</a></h2>
+<p>The first use of the memory variables is that any custom rule can change the value of those variables. You can configure when this
+should take place: either in the ‘rule detection’ step (when the rule is considered as applicable to be executed), or in the ‘rule execution’
+step (when the rule is executed and the response is sent, if it is any).  This is configured in in the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL ASPECTS</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+  <span class="c1"># ======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SOCKET CONNECTION CLOSE</span>
+  <span class="c1"># =======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SESSION SUPPORT</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># MEMORY VARIABLES</span>
+  <span class="c1"># ================</span>
+  <span class="c1"># # One of the following: &quot;rule_detected&quot;, &quot;rule_executed&quot;(default).</span>
+  <span class="c1"># (Before session update and custom functions)</span>
+  <span class="n">memory_update_when</span><span class="p">:</span> <span class="n">rule_executed</span>
+
+  <span class="c1"># To enable the use of Redis server to share memory</span>
+  <span class="c1"># variables between external connectors</span>
+  <span class="n">memory_variables_multi_ext_connector_enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+  <span class="c1"># To overwrite exisisting memory variables in Redis</span>
+  <span class="c1"># during the initialization phase</span>
+  <span class="n">multi_ext_connector_memory_overwrite_during_init</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+  <span class="c1"># OTHER TOPICS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Additional aspects should be defined here, but</span>
+  <span class="c1"># they will be described in the respective sections</span>
+  <span class="c1"># of this documentation, for the sake of clarity</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>And the memory variable update should be defined under the <code class="docutils literal notranslate"><span class="pre">memory</span></code> field, and <code class="docutils literal notranslate"><span class="pre">update</span></code> subfield of the custom rule.
+Several memory variables can be updated at onces since you define a list of them to be updated.
+The updating process can use a fixed (hardcoded) value, or another memory variable. In this second case,
+the content of the reference memroy variable is copied into the memory variable to update. In case both options are present
+(fixed value and reference memory variable), the fixed value case is omitted.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+  <span class="c1"># ======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SESSION UPDATE FIELDS</span>
+  <span class="c1"># =====================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># MEMORY OPERATIONS</span>
+  <span class="c1"># =====================</span>
+  <span class="n">memory</span><span class="p">:</span>
+      <span class="c1"># new values for some memory variables.</span>
+      <span class="c1"># In case or a reference variable is present then</span>
+      <span class="c1"># the updating process uses the value of the</span>
+      <span class="c1"># reference memory variable, the value is omitted</span>
+      <span class="n">updates</span><span class="p">:</span>
+        <span class="c1"># One memory variable is updated</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var2</span>
+          <span class="n">value</span><span class="p">:</span> <span class="n">test2</span>
+
+        <span class="c1"># Anether memory variable is updated</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+          <span class="n">value</span><span class="p">:</span> <span class="mi">2</span> <span class="c1"># This value is not used!</span>
+          <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span> <span class="c1"># This is used to update</span>
+                                   <span class="c1"># the memory variable</span>
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="memory-modifications-using-captured-data">
+<span id="index-2"></span><h2><span class="section-number">11.2. </span>Memory Modifications Using Captured Data<a class="headerlink" href="#memory-modifications-using-captured-data" title="Permalink to this heading">¶</a></h2>
+<p>The memory variables can be updated via capturing specific information from the messages
+that are received from the third parties</p>
+</section>
+<section id="custom-rule-conditional-execution">
+<span id="index-3"></span><h2><span class="section-number">11.3. </span>Custom Rule Conditional Execution<a class="headerlink" href="#custom-rule-conditional-execution" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="built-in-functions">
+<span id="index-4"></span><h2><span class="section-number">11.4. </span>Built-in Functions<a class="headerlink" href="#built-in-functions" title="Permalink to this heading">¶</a></h2>
+<p class="rubric">String Operations</p>
+<p class="rubric">Number Operations</p>
+<p class="rubric">Boolean Operations</p>
+</section>
+<section id="custom-functions">
+<span id="index-5"></span><h2><span class="section-number">11.5. </span>Custom Functions<a class="headerlink" href="#custom-functions" title="Permalink to this heading">¶</a></h2>
+<p class="rubric">Importing Your Own Code</p>
+<p class="rubric">Custom Pre-processor Function</p>
+<p class="rubric">Custom Post-processor Function</p>
+<p class="rubric">Custom Functions in Custom Rules</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/slv_logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Sec Lope De Vega Project</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Intro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">2. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_desc.html">3. Engine Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_conf.html">4. Engine Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_install.html">5. Engine Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_desc.html">6. External Connector Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_conf.html">7. External Connector Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_install.html">8. External Connector Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conversation_rules.html">9. Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_and_memory.html">10. Session Support &amp; Memory Variables</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">11. Memory Operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#memory-modifications-using-rules">11.1. Memory Modifications Using Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memory-modifications-using-captured-data">11.2. Memory Modifications Using Captured Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-rule-conditional-execution">11.3. Custom Rule Conditional Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-functions">11.4. Built-in Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-functions">11.5. Custom Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">12. Advance Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">13. Activity Alerting &amp; Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">14. Example Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">15. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">16. Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="session_and_memory.html" title="previous chapter"><span class="section-number">10. </span>Session Support &amp; Memory Variables</a></li>
+      <li>Next: <a href="advance_conversation_rules.html" title="next chapter"><span class="section-number">12. </span>Advance Conversation Rules</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+        ,<a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+        &amp; <a href="https://www.1001fonts.com/caslon-antique-font.html">Caslon Antique Font</a>
+        
+        |
+        <a href="../_sources/content/memory_ops.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>

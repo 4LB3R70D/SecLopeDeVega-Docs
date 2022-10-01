@@ -6,6 +6,10 @@
 'Sec Lope De Vega' Project
 ==========================
 
+.. warning::
+   This documentation is under construction, so some sections may be empty or incomplete!
+
+
 .. _contents:
 
 Contents
@@ -23,7 +27,8 @@ Contents
    content/ext-conn_conf
    content/ext-conn_install
    content/conversation_rules
-   content/memory
+   content/session_and_memory
+   content/memory_ops
    content/advance_conversation_rules
    content/activities
    content/example_protocol
