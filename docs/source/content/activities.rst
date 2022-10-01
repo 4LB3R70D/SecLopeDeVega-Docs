@@ -12,6 +12,11 @@ Activities
 ----------
 
 
+.. index:: Memory Reporting
+
+Memory Reporting
+----------------
+
 
 
 .. index:: Storage
