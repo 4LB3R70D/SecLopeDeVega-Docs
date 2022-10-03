@@ -69,8 +69,8 @@ is sent, if there is any).  This is configured in in the <code class="docutils l
   <span class="c1"># ===============</span>
   <span class="o">...</span>
 
-  <span class="c1"># MEMORY VARIABLES</span>
-  <span class="c1"># ================</span>
+  <span class="c1"># MEMORY UPDATE &amp; CONDITIONS</span>
+  <span class="c1"># ==========================</span>
   <span class="c1"># # One of the following: &quot;rule_detected&quot;, &quot;rule_executed&quot;(default).</span>
   <span class="c1"># (Before session update and custom functions)</span>
   <span class="n">memory_update_when</span><span class="p">:</span> <span class="n">rule_executed</span>
@@ -102,16 +102,8 @@ the content of the reference memory variable is copied into the memory variable 
   <span class="c1"># ==============</span>
   <span class="o">...</span>
 
-  <span class="c1"># SOCKET CLOSE SCENARIOS</span>
-  <span class="c1"># ======================</span>
-  <span class="o">...</span>
-
-  <span class="c1"># SESSION UPDATE FIELDS</span>
-  <span class="c1"># =====================</span>
-  <span class="o">...</span>
-
-  <span class="c1"># MEMORY OPERATIONS</span>
-  <span class="c1"># =====================</span>
+  <span class="c1"># MEMORY UPDATE &amp; CONDITIONS</span>
+  <span class="c1"># ==========================</span>
   <span class="n">memory</span><span class="p">:</span>
       <span class="c1"># new values for some memory variables.</span>
       <span class="c1"># In case or a reference variable is present then</span>
@@ -122,7 +114,7 @@ the content of the reference memory variable is copied into the memory variable 
         <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var2</span>
           <span class="n">value</span><span class="p">:</span> <span class="n">test2</span>
 
-        <span class="c1"># Anether memory variable is updated</span>
+        <span class="c1"># Another memory variable is updated</span>
         <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
           <span class="n">value</span><span class="p">:</span> <span class="mi">2</span> <span class="c1"># This value is not used!</span>
           <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span> <span class="c1"># This is used to update</span>
@@ -145,14 +137,6 @@ and it uses RegEx as well:</p>
   <span class="c1"># ==============</span>
   <span class="o">...</span>
 
-  <span class="c1"># SOCKET CLOSE SCENARIOS</span>
-  <span class="c1"># ======================</span>
-  <span class="o">...</span>
-
-  <span class="c1"># SESSION UPDATE FIELDS</span>
-  <span class="c1"># =====================</span>
-  <span class="o">...</span>
-
   <span class="c1"># CAPTURING INFORMATION</span>
   <span class="c1"># =====================</span>
   <span class="n">capturing_data</span><span class="p">:</span>
@@ -169,7 +153,7 @@ and it uses RegEx as well:</p>
             <span class="n">regex_b64</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
 
             <span class="c1"># RegEx to capture the information</span>
-          <span class="o">-</span> <span class="n">regex</span><span class="p">:</span> <span class="n">capturing_</span><span class="p">[</span><span class="nb">any</span> <span class="n">regex</span><span class="p">]</span>
+          <span class="o">-</span> <span class="n">regex</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">regex</span><span class="p">]</span>
             <span class="c1"># Memory variable to save the captured information</span>
             <span class="n">mem_var_name</span><span class="p">:</span> <span class="n">var2</span>
             <span class="c1"># Is the regex in base64 format?</span>
@@ -182,12 +166,109 @@ and it uses RegEx as well:</p>
   <span class="o">...</span>
 </pre></div>
 </div>
+<p>You can use memory variables of different scopes for doing the update. For instance, you can update a
+connection level memory variable using a global level memory variable. In case the reference memory variable
+is in ‘collision’ with others that have the same name, the one with the more limited scope will be used
+(in the same way that we have seen about how to add a memory variable in a response).</p>
 </section>
 <section id="custom-rule-conditional-execution">
 <span id="index-3"></span><h2><span class="section-number">11.2. </span>Custom Rule Conditional Execution<a class="headerlink" href="#custom-rule-conditional-execution" title="Permalink to this heading">¶</a></h2>
+<p>One of the potential uses of the memory variables is to modify the behavior of the execution, according to
+different values they may have. This is done similarly than the update process of memory variables.
+This means that the custom rule is only executed if the memory conditions are satisfied, after being considered
+as applicable. Therefore, in this case, there are two steps of allowing the execution of the rule:</p>
+<ul class="simple">
+<li><p>Being applicable synchronous or asynchronously</p></li>
+<li><p>Having the memory conditions satisfied</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># MEMORY UPDATE &amp; CONDITIONS</span>
+  <span class="c1"># ==========================</span>
+  <span class="n">memory</span><span class="p">:</span>
+      <span class="c1"># conditions to satisfy for executing the rule.</span>
+      <span class="c1"># In case or a reference variable is present,</span>
+      <span class="c1"># then the comparison is if the value of the memory variable</span>
+      <span class="c1">#  is the same of the reference memory variable.</span>
+      <span class="c1"># In case the &#39;value&#39; field and the &#39;reference_variable&#39; are present,</span>
+      <span class="c1"># only the &#39;reference_variable&#39; field</span>
+      <span class="c1"># is used</span>
+      <span class="n">conditions</span><span class="p">:</span>
+        <span class="c1"># var2 == &#39;test&#39;?</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var2</span>
+          <span class="n">value</span><span class="p">:</span> <span class="n">test2</span>
+
+        <span class="c1"># var1 == var2?</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+          <span class="n">value</span><span class="p">:</span> <span class="mi">2</span> <span class="c1"># This value is not used!</span>
+          <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span> <span class="c1"># This is used for comparison</span>
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>You can add as many conditions as you wish, all of them will be evaluated to allow the rule execution.
+Similarly to the update process, you can compare memory variables of different scopes. For instance,
+you can compare a connection level memory variable using a multi external connector level memory variable.
+In case of the reference memory variable is in ‘collision’ with others that have the same name, the one with
+the more limited scope will be used (in the same way that we have seen about how to add a memory variable in
+a response).</p>
 </section>
 <section id="built-in-functions">
 <span id="index-4"></span><h2><span class="section-number">11.3. </span>Built-in Functions<a class="headerlink" href="#built-in-functions" title="Permalink to this heading">¶</a></h2>
+<p>You can do some operations using the memory variables to allow you to control more how the interaction takes place.
+Every custom rule can call a built-in memory operation, where you define what are the input values to use and what
+memory variables will save the output.</p>
+<p>The reserved word <code class="docutils literal notranslate"><span class="pre">EXT_IN</span></code> allow you to use the external input (message received
+from the third party) as input of the operation. You can use memory variables and fixed values as inputs as well.
+For the output, you need to specify what memory variables will save the results of the operations. The order of the list
+of inputs or otuputs is important for the correct use of the operation.</p>
+<p>In case you need to do more than one of memory operations, we recommend using a set of async rules as a set of steps,
+where each of them is calling a memory operation. The reason to enforce one memory operation per conversation rule is
+for the sake of performance: Using async rules that are called in a sequential order, avoid blocking
+the interaction with one rule.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># BUILT-IN MEMORY OPERATIONS</span>
+  <span class="c1"># ==========================</span>
+  <span class="n">builtin_memory_operation</span><span class="p">:</span>
+
+    <span class="c1"># built-in memory operation enable for this rule?</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># Operation to execute</span>
+    <span class="n">operation</span><span class="p">:</span> <span class="n">STR_CONCAT</span>
+
+    <span class="c1"># List of inputs</span>
+    <span class="c1"># EXT_IN = &#39;EXTERNAL INPUT&#39;</span>
+    <span class="nb">input</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">EXT_IN</span>
+      <span class="o">-</span> <span class="n">var1</span>
+      <span class="o">-</span> <span class="mi">3</span>
+
+    <span class="c1"># List of memory variables</span>
+    <span class="c1"># to save the results</span>
+    <span class="n">output</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">var3</span>
+      <span class="o">-</span> <span class="n">var4</span>
+
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
 <p class="rubric">String Operations</p>
 <p class="rubric">Number Operations</p>
 <p class="rubric">Boolean Operations</p>

@@ -109,10 +109,6 @@ As you can see, the session values can be changed via custom rules. This can be 
       # ==============
       ...
 
-      # SOCKET CLOSE SCENARIOS
-      # ======================
-      ...
-
       # SESSION UPDATE FIELDS
       # =====================
       # If several rules are applicable, they are overwritten. 

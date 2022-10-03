@@ -385,10 +385,6 @@ of the ``operation`` section.
         ...
         mode: sync
 
-        # SOCKET CLOSE SCENARIOS
-        # ======================
-        ...
-
         # SYNC FIELDS
         # ============
         # RegEx that make the rule applicable 
@@ -429,10 +425,6 @@ The following example is the fields for a triggering rule, and async rule only n
         # ==============
         ...
 
-        # SOCKET CLOSE SCENARIOS
-        # ======================
-        ...
-
         # ASYNC TRIGGERING FIELDS
         # =======================
         trigger:
@@ -463,10 +455,6 @@ And this is an example of an async rule to be executed from the beginning of the
         ...
         mode: async
 
-        # SOCKET CLOSE SCENARIOS
-        # ======================
-        ...
-
         # ASYNC FIELDS FOR BEGINNING ASYNC RULES
         # =====================================
         # mark this rules as an async rule to execute 
@@ -496,10 +484,6 @@ or being triggered by another rule.
         # ==============
         ...
         mode: hybrid
-
-        # SOCKET CLOSE SCENARIOS
-        # ======================
-        ...
 
         # SYNC FIELDS
         # ============
