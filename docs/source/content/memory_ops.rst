@@ -218,13 +218,13 @@ The reserved word ``EXT_IN`` allow you to use the external input (message receiv
 from the third party) as input of the operation. You can use memory variables and fixed values as inputs as well.
 For the output, you need to specify what memory variables will save the results of the operations (if they are not provided, 
 the results are lost). Please, be also aware that the order of the list of inputs or outputs is important for the correct 
-use of the operation.
+use of the operation, as well as the data 'type' (int, float, bool...) of the result should be the same with the one declared 
+in the section 'memory_variables'.
 
 In case you need to do more than one of memory operations, we recommend using a set of async rules as a set of steps,
 where each of them is calling a memory operation. The reason to enforce one memory operation per conversation rule is 
-for the sake of performance: Using async rules that are called in a sequential order, avoid blocking 
-the interaction with one rule.
-
+for the sake of performance: Using async rules that are called in a sequential order, avoid blocking the interaction with 
+one rule.
 
 .. code-block:: 
 
@@ -257,7 +257,6 @@ the interaction with one rule.
         - var3
         - var4
 
-
     # OTHER FIELDS
     # ============
     # Other fields expalined in this documentation
@@ -275,14 +274,110 @@ There are other reserved words that you can use as input for the memory operatio
 
 .. rubric:: String Operations
 
+The list of the string memory operations available, indicating the expected input and type before the arrow, and the output after the arrow. 
+In case of several inputs/outputs are expected, they are grouped inside a parenthesis.
+
+* ``STR_CONCAT`` = String concatenation, merge several strings into one: (string, string, string,...) => string
+
+* ``STR_REPLACE`` = String replace, replace a string or regex by the value provided: (original_string, string_regex_to_replace, string_to_add) => modified_string
+
+* ``STR_SUBTRACT`` = String substract, remove a string within another: (original_string, string_to_replace) => modified_string
+
+* ``STR_UPPER`` = String upper, put in uppercase the content of a string: (string) => string
+
+* ``STR_LOWER`` = String lower, put in lowercase the content of a string: (string) => string
+
+* ``STR_SPLIT`` = String split, it separte a string in several pieces. If there are more pieces that elements in the output field, they will be lost (string_to_split, string_separator) => (string, string, string, ...)
+
+* ``STR_TRIM`` = String trim, it trims a string: (string) => string
+
+* ``STR_MATCH`` = String match, it checks if a regular expresion is present in a string: (string, string_regex) => bool
+
+* ``STR_CAPTURE`` = String capture, it captures a string using a reguex: (original_string, string_regex) => captured_string
+
+* ``STR_COUNT`` = String count, it counts the number of characters in a string: (string) => number
+
+* ``STR_MODE`` = String mode, it calculates the mode (central tendency) of the given nominal data set: (string, string, ...) => string
+
+* ``STR_ENCODE_B64`` = String encode base 64, it encodes any string into base64: (string) => string
+
+* ``STR_DECODE_B64`` = String decode base 64, it decodes any string already encoded in base64: (string) => string
+
+* ``STR_ENCODE_HEX`` = String encode hexadecimal, it encodes any string into hexadecimal: (string) => string
+
+* ``STR_DECODE_HEX`` = String decode hexadecimal, it decodes any string already encoded in hexadecimal: (string) => string
 
 
 .. rubric:: Number Operations
 
+The list of the number memory operations available, indicating the expected input and type before the arrow, and the output after the arrow. 
+In case of several inputs/outputs are expected, they are grouped inside a parenthesis.
+
+* ``NBR_SUM`` = Number sum, it sums a set of values added in the input field: (number, number, ...) => number
+
+* ``NBR_SUBTRACT`` = Number substract, it substracts to the first element of the input field, the rest of values added there: (number, number_to_substract, number_to_substract ...) => number
+
+* ``NBR_MULTIPLY`` = Number multipy, it multiplies a set of values added in the input field: (number, number, ...) => number
+
+* ``NBR_DIVIDE`` = Number divide, it divides the first element by the rest of elements in the input field in a sequential approach: (number, number_to_divide, number_to_divide ...) => number
+
+* ``NBR_FLOOR`` = Number divide, it does a floor division of the first element by the rest of elements in the input field in a sequential approach: (number, number_to_floor_divide, number_to_floor_divide ...) => number
+
+* ``NBR_MODULO`` = Number modulo, it gets the reminder of a set of modulo operator calls: (number, number_for_modulo_operator, number_for_modulo_operator, ...) => number // https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved/
+
+* ``NBR_POWER`` = Number power, it applies a set of sequential power operations to the first element in the list: (number, power_number, power_number, ...) => number
+
+* ``NBR_INVERSE_SIGN`` = Number inverse sing, change the sign of the number
+
+* ``NBR_GREATER`` = Number greater than, compare tu numbers (a>b):(number,number) => bool
+
+* ``NBR_LOWER`` = Number lower than, compare tu numbers (a<b):(number,number) => bool
+
+* ``NBR_GREATEREQ`` = Number greater than or equal, compare tu numbers (a>=b):(number,number) => bool
+
+* ``NBR_LOWEREQ`` = Number lower than or equal, compare tu numbers (a<=b):(number,number) => bool
+
+* ``NBR_MEAN`` = Number mean, Arithmetic mean value (average) of data: (number, number, ...) => number
+
+* ``NBR_GEOMETRIC_MEAN`` = Number geometric mean, geometric mean value  of data: (number, number, ...) => number
+
+* ``NBR_HARMONIC_MEAN`` = Number harmonic mean, harmonic mean value of data : (number, number, ...) => number
+
+* ``NBR_MEDIAN`` = Number median, median value (middle value) of data: (number, number, ...) => number
+
+* ``NBR_MEDIAN_LOW`` = Number median low, low median value of data: (number, number, ...) => number
+
+* ``NBR_MEDIAN_HIGH`` = Number median high, high median value of data: (number, number, ...) => number
+
+* ``NBR_MEDIAN_GROUPED`` = Number median grouped, it calculates the median of grouped continuous data, calculated as the 50th percentile: (number, number, ...) => number
+
+* ``NBR_MODE`` = Number mode, it calculates the mode (central tendency) of the given numeric or nominal data set: (number, number, ...) => number
+
+* ``NBR_POP_STD_DEV`` = Number standard deviation, it calculates the standard deviation from an entire population: (number, number, ...) => number
+
+* ``NBR_STD_DEV`` = Number standard deviation, it calculates the standard deviation from a sample data set: (number, number, ...) => number
+
+* ``NBR_POP_VAR`` = Number standard deviation, it calculatesthe variance of an entire population: (number, number, ...) => number
+
+* ``NBR_VAR`` = Number standard deviation, it calculates the variance from a sample of data: (number, number, ...) => number
 
 
 .. rubric:: Boolean Operations
 
+The list of the boolean memory operations available, indicating the expected input and type before the arrow, and the output after the arrow. 
+In case of several inputs/outputs are expected, they are grouped inside a parenthesis.
+
+* ``LGC_NOT`` = Logical 'NOT' operation: bool => bool
+
+* ``LGC_AND`` = Logical 'AND' operation: (bool, bool, bool, ...) => bool
+
+* ``LGC_OR`` = Logical 'OR' operation: (bool, bool, bool, ...) => bool
+
+* ``LGC_XOR`` = Logical 'XOR' operation: (bool, bool, bool, ...) => bool
+
+* ``LGC_NAND`` = Logical 'NAND' operation: (bool, bool, bool, ...) => bool
+
+* ``LGC_NOR`` = Logical 'NOR' operation: (bool, bool, bool, ...) => bool
 
 
 .. index:: Custom Functions
