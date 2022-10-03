@@ -29,6 +29,7 @@ Contents
    content/conversation_rules
    content/session_and_memory
    content/memory_ops
+   content/custom_functions
    content/advance_conversation_rules
    content/activities
    content/example_protocol

@@ -380,20 +380,3 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 * ``LGC_NAND`` = Logical 'NAND' operation: (bool, bool, bool, ...) => bool
 
 * ``LGC_NOR`` = Logical 'NOR' operation: (bool, bool, bool, ...) => bool
-
-
-.. index:: Custom Functions
-
-Custom Functions
-----------------
-
-.. rubric:: Importing Your Own Code
-
-
-.. rubric:: Custom Pre-processor Function
-
-
-.. rubric:: Custom Post-processor Function
-
-
-.. rubric:: Custom Functions in Custom Rules

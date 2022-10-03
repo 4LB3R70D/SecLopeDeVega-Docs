@@ -17,7 +17,7 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="12. Advance Conversation Rules" href="advance_conversation_rules.html" />
+    <link rel="next" title="12. Custom Functions" href="custom_functions.html" />
     <link rel="prev" title="10. Session Support &amp; Memory Variables" href="session_and_memory.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -310,10 +310,10 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 For more information, please check <a class="reference external" href="https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved">Python Modulo Operator</a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NBR_POWER</span></code> = Number power, it applies a set of sequential power operations to the first element in the list: (number, power_number, power_number, …) =&gt; number</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NBR_INVERSE_SIGN</span></code> = Number inverse sing, change the sign of the number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATER</span></code> = Number greater than, compare tu numbers (a&gt;b):(number,number) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWER</span></code> = Number lower than, compare tu numbers (a&lt;b):(number,number) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATEREQ</span></code> = Number greater than or equal, compare tu numbers (a&gt;=b):(number,number) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWEREQ</span></code> = Number lower than or equal, compare tu numbers (a&lt;=b):(number,number) =&gt; bool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATER</span></code> = Number greater than, compare tu numbers (a&gt;b): (number,number) =&gt; bool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWER</span></code> = Number lower than, compare tu numbers (a&lt;b): (number,number) =&gt; bool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATEREQ</span></code> = Number greater than or equal, compare tu numbers (a&gt;=b): (number,number) =&gt; bool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWEREQ</span></code> = Number lower than or equal, compare tu numbers (a&lt;=b): (number,number) =&gt; bool</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEAN</span></code> = Number mean, Arithmetic mean value (average) of data: (number, number, …) =&gt; number</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NBR_GEOMETRIC_MEAN</span></code> = Number geometric mean, geometric mean value  of data: (number, number, …) =&gt; number</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NBR_HARMONIC_MEAN</span></code> = Number harmonic mean, harmonic mean value of data : (number, number, …) =&gt; number</p></li>
@@ -338,13 +338,6 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 <li><p><code class="docutils literal notranslate"><span class="pre">LGC_NAND</span></code> = Logical ‘NAND’ operation: (bool, bool, bool, …) =&gt; bool</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LGC_NOR</span></code> = Logical ‘NOR’ operation: (bool, bool, bool, …) =&gt; bool</p></li>
 </ul>
-</section>
-<section id="custom-functions">
-<span id="index-5"></span><h2><span class="section-number">11.4. </span>Custom Functions<a class="headerlink" href="#custom-functions" title="Permalink to this heading">¶</a></h2>
-<p class="rubric">Importing Your Own Code</p>
-<p class="rubric">Custom Pre-processor Function</p>
-<p class="rubric">Custom Post-processor Function</p>
-<p class="rubric">Custom Functions in Custom Rules</p>
 </section>
 </section>
 
@@ -387,14 +380,14 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 <li class="toctree-l2"><a class="reference internal" href="#memory-modifications-using-rules">11.1. Memory Modifications Using Rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#custom-rule-conditional-execution">11.2. Custom Rule Conditional Execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#built-in-functions">11.3. Built-in Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-functions">11.4. Custom Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">12. Advance Conversation Rules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="activities.html">13. Activity Alerting &amp; Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">14. Example Protocol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">15. Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">16. Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_functions.html">12. Custom Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">13. Advance Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">14. Activity Alerting &amp; Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">15. Example Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">16. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">17. Contact</a></li>
 </ul>
 
 <div class="relations">
@@ -402,7 +395,7 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="session_and_memory.html" title="previous chapter"><span class="section-number">10. </span>Session Support &amp; Memory Variables</a></li>
-      <li>Next: <a href="advance_conversation_rules.html" title="next chapter"><span class="section-number">12. </span>Advance Conversation Rules</a></li>
+      <li>Next: <a href="custom_functions.html" title="next chapter"><span class="section-number">12. </span>Custom Functions</a></li>
   </ul></li>
 </ul>
 </div>

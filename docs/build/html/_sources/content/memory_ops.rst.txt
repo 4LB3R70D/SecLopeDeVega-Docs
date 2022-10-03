@@ -331,13 +331,13 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 
 * ``NBR_INVERSE_SIGN`` = Number inverse sing, change the sign of the number
 
-* ``NBR_GREATER`` = Number greater than, compare tu numbers (a>b):(number,number) => bool
+* ``NBR_GREATER`` = Number greater than, compare tu numbers (a>b): (number,number) => bool
 
-* ``NBR_LOWER`` = Number lower than, compare tu numbers (a<b):(number,number) => bool
+* ``NBR_LOWER`` = Number lower than, compare tu numbers (a<b): (number,number) => bool
 
-* ``NBR_GREATEREQ`` = Number greater than or equal, compare tu numbers (a>=b):(number,number) => bool
+* ``NBR_GREATEREQ`` = Number greater than or equal, compare tu numbers (a>=b): (number,number) => bool
 
-* ``NBR_LOWEREQ`` = Number lower than or equal, compare tu numbers (a<=b):(number,number) => bool
+* ``NBR_LOWEREQ`` = Number lower than or equal, compare tu numbers (a<=b): (number,number) => bool
 
 * ``NBR_MEAN`` = Number mean, Arithmetic mean value (average) of data: (number, number, ...) => number
 
@@ -380,20 +380,3 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 * ``LGC_NAND`` = Logical 'NAND' operation: (bool, bool, bool, ...) => bool
 
 * ``LGC_NOR`` = Logical 'NOR' operation: (bool, bool, bool, ...) => bool
-
-
-.. index:: Custom Functions
-
-Custom Functions
-----------------
-
-.. rubric:: Importing Your Own Code
-
-
-.. rubric:: Custom Pre-processor Function
-
-
-.. rubric:: Custom Post-processor Function
-
-
-.. rubric:: Custom Functions in Custom Rules
