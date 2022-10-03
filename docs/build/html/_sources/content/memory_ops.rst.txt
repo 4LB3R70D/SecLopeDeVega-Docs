@@ -272,6 +272,7 @@ There are other reserved words that you can use as input for the memory operatio
 
 * ``SESSION_VALUE``: the session value of the connection
 
+
 .. rubric:: String Operations
 
 The list of the string memory operations available, indicating the expected input and type before the arrow, and the output after the arrow. 
@@ -323,7 +324,8 @@ In case of several inputs/outputs are expected, they are grouped inside a parent
 
 * ``NBR_FLOOR`` = Number divide, it does a floor division of the first element by the rest of elements in the input field in a sequential approach: (number, number_to_floor_divide, number_to_floor_divide ...) => number
 
-* ``NBR_MODULO`` = Number modulo, it gets the reminder of a set of modulo operator calls: (number, number_for_modulo_operator, number_for_modulo_operator, ...) => number // https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved/
+* ``NBR_MODULO`` = Number modulo, it gets the reminder of a set of modulo operator calls: (number, number_for_modulo_operator, number_for_modulo_operator, ...) => number. 
+  For more information, please check `Python Modulo Operator <https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved>`_. 
 
 * ``NBR_POWER`` = Number power, it applies a set of sequential power operations to the first element in the list: (number, power_number, power_number, ...) => number
 
