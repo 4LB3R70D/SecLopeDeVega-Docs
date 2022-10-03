@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>12. Custom Functions &#8212; Sec Lope De Vega Project 0.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="13. Advance Conversation Rules" href="advance_conversation_rules.html" />
+    <link rel="prev" title="11. Memory Operations" href="memory_ops.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="custom-functions">
+<span id="memory-operations"></span><span id="index-0"></span><h1><span class="section-number">12. </span>Custom Functions<a class="headerlink" href="#custom-functions" title="Permalink to this heading">¶</a></h1>
+<section id="importing-your-own-code">
+<span id="index-1"></span><h2><span class="section-number">12.1. </span>Importing Your Own Code<a class="headerlink" href="#importing-your-own-code" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="custom-pre-processor-function">
+<span id="index-2"></span><h2><span class="section-number">12.2. </span>Custom Pre-processor Function<a class="headerlink" href="#custom-pre-processor-function" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="custom-post-processor-function">
+<span id="index-3"></span><h2><span class="section-number">12.3. </span>Custom Post-processor Function<a class="headerlink" href="#custom-post-processor-function" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="custom-functions-in-custom-rules">
+<span id="index-4"></span><h2><span class="section-number">12.4. </span>Custom Functions in Custom Rules<a class="headerlink" href="#custom-functions-in-custom-rules" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/slv_logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Sec Lope De Vega Project</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Intro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">2. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_desc.html">3. Engine Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_conf.html">4. Engine Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_install.html">5. Engine Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_desc.html">6. External Connector Software Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_conf.html">7. External Connector Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_install.html">8. External Connector Installation &amp; Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conversation_rules.html">9. Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_and_memory.html">10. Session Support &amp; Memory Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory_ops.html">11. Memory Operations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">12. Custom Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#importing-your-own-code">12.1. Importing Your Own Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-pre-processor-function">12.2. Custom Pre-processor Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-post-processor-function">12.3. Custom Post-processor Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-functions-in-custom-rules">12.4. Custom Functions in Custom Rules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">13. Advance Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">14. Activity Alerting &amp; Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">15. Example Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">16. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">17. Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="memory_ops.html" title="previous chapter"><span class="section-number">11. </span>Memory Operations</a></li>
+      <li>Next: <a href="advance_conversation_rules.html" title="next chapter"><span class="section-number">13. </span>Advance Conversation Rules</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+        ,<a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+        &amp; <a href="https://www.1001fonts.com/caslon-antique-font.html">Caslon Antique Font</a>
+        
+        |
+        <a href="../_sources/content/custom_functions.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>
