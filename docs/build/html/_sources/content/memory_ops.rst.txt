@@ -278,105 +278,287 @@ There are other reserved words that you can use as input for the memory operatio
 The list of the string memory operations available, indicating the expected input and type before the arrow, and the output after the arrow. 
 In case of several inputs/outputs are expected, they are grouped inside a parenthesis.
 
-* ``STR_CONCAT`` = String concatenation, merge several strings into one: (string, string, string,...) => string
+* ``STR_CONCAT`` = String concatenation, merge several strings into one: 
 
-* ``STR_REPLACE`` = String replace, replace a string or regex by the value provided: (original_string, string_regex_to_replace, string_to_add) => modified_string
+  .. code-block::
 
-* ``STR_SUBTRACT`` = String substract, remove a string within another: (original_string, string_to_replace) => modified_string
+    (string, string, string,...) => string
 
-* ``STR_UPPER`` = String upper, put in uppercase the content of a string: (string) => string
+* ``STR_REPLACE`` = String replace, replace a string or regex by the value provided: 
 
-* ``STR_LOWER`` = String lower, put in lowercase the content of a string: (string) => string
+  .. code-block::
 
-* ``STR_SPLIT`` = String split, it separte a string in several pieces. If there are more pieces that elements in the output field, they will be lost (string_to_split, string_separator) => (string, string, string, ...)
+    (original_string, string_regex_to_replace, string_to_add) => modified_string
 
-* ``STR_TRIM`` = String trim, it trims a string: (string) => string
+* ``STR_SUBTRACT`` = String substract, remove a string within another: 
 
-* ``STR_MATCH`` = String match, it checks if a regular expresion is present in a string: (string, string_regex) => bool
+  .. code-block::
 
-* ``STR_CAPTURE`` = String capture, it captures a string using a reguex: (original_string, string_regex) => captured_string
+    (original_string, string_to_replace) => modified_string
 
-* ``STR_COUNT`` = String count, it counts the number of characters in a string: (string) => number
+* ``STR_UPPER`` = String upper, put in uppercase the content of a string: 
 
-* ``STR_MODE`` = String mode, it calculates the mode (central tendency) of the given nominal data set: (string, string, ...) => string
+  .. code-block::
 
-* ``STR_ENCODE_B64`` = String encode base 64, it encodes any string into base64: (string) => string
+    (string) => string
+   
+* ``STR_LOWER`` = String lower, put in lowercase the content of a string: 
 
-* ``STR_DECODE_B64`` = String decode base 64, it decodes any string already encoded in base64: (string) => string
+  .. code-block::
 
-* ``STR_ENCODE_HEX`` = String encode hexadecimal, it encodes any string into hexadecimal: (string) => string
+    (string) => string
+   
+* ``STR_SPLIT`` = String split, it separte a string in several pieces. If there are more pieces that elements in the output field, they will be lost. 
 
-* ``STR_DECODE_HEX`` = String decode hexadecimal, it decodes any string already encoded in hexadecimal: (string) => string
+  .. code-block::
 
+    (string_to_split, string_separator) => (string, string, string, ...)
+   
+* ``STR_TRIM`` = String trim, it trims a string: 
+
+  .. code-block::
+
+    (string) => string
+   
+* ``STR_MATCH`` = String match, it checks if a regular expresion is present in a string: 
+
+  .. code-block::
+    
+    (string, string_regex) => bool
+   
+* ``STR_CAPTURE`` = String capture, it captures a string using a reguex: 
+
+  .. code-block::
+
+    (original_string, string_regex) => captured_string
+   
+* ``STR_COUNT`` = String count, it counts the number of characters in a string: 
+
+  .. code-block::
+
+    (string) => number
+   
+* ``STR_MODE`` = String mode, it calculates the mode (central tendency) of the given nominal data set: 
+
+  .. code-block::
+
+    (string, string, ...) => string
+   
+* ``STR_ENCODE_B64`` = String encode base 64, it encodes any string into base64: 
+
+  .. code-block::
+
+    (string) => string
+   
+* ``STR_DECODE_B64`` = String decode base 64, it decodes any string already encoded in base64: 
+
+  .. code-block::
+
+    (string) => string
+   
+* ``STR_ENCODE_HEX`` = String encode hexadecimal, it encodes any string into hexadecimal: 
+
+  .. code-block::
+
+    (string) => string
+   
+* ``STR_DECODE_HEX`` = String decode hexadecimal, it decodes any string already encoded in hexadecimal: 
+
+  .. code-block::
+
+    (string) => string
+   
 
 .. rubric:: Number Operations
 
 The list of the number memory operations available, indicating the expected input and type before the arrow, and the output after the arrow. 
 In case of several inputs/outputs are expected, they are grouped inside a parenthesis.
 
-* ``NBR_SUM`` = Number sum, it sums a set of values added in the input field: (number, number, ...) => number
+* ``NBR_SUM`` = Number sum, it sums a set of values added in the input field: 
 
-* ``NBR_SUBTRACT`` = Number substract, it substracts to the first element of the input field, the rest of values added there: (number, number_to_substract, number_to_substract ...) => number
+  .. code-block::
 
-* ``NBR_MULTIPLY`` = Number multipy, it multiplies a set of values added in the input field: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_SUBTRACT`` = Number substract, it substracts to the first element of the input field, the rest of values added there: 
+  
+  .. code-block::
 
-* ``NBR_DIVIDE`` = Number divide, it divides the first element by the rest of elements in the input field in a sequential approach: (number, number_to_divide, number_to_divide ...) => number
+    (number, number_to_substract, number_to_substract ...) => number
+   
+* ``NBR_MULTIPLY`` = Number multipy, it multiplies a set of values added in the input field: 
+  
+  .. code-block::
 
-* ``NBR_FLOOR`` = Number divide, it does a floor division of the first element by the rest of elements in the input field in a sequential approach: (number, number_to_floor_divide, number_to_floor_divide ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_DIVIDE`` = Number divide, it divides the first element by the rest of elements in the input field in a sequential approach: 
+  
+  .. code-block::
 
-* ``NBR_MODULO`` = Number modulo, it gets the reminder of a set of modulo operator calls: (number, number_for_modulo_operator, number_for_modulo_operator, ...) => number. 
-  For more information, please check `Python Modulo Operator <https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved>`_. 
+    (number, number_to_divide, number_to_divide ...) => number
+   
+* ``NBR_FLOOR`` = Number divide, it does a floor division of the first element by the rest of elements in the input field in a sequential approach: 
+  
+  .. code-block::
 
-* ``NBR_POWER`` = Number power, it applies a set of sequential power operations to the first element in the list: (number, power_number, power_number, ...) => number
+    (number, number_to_floor_divide, number_to_floor_divide ...) => number
+   
+* ``NBR_MODULO`` = Number modulo, it gets the reminder of a set of modulo operator calls. For more information, please check `Python Modulo Operator 
+  <https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved>`_. 
+  
+  .. code-block::
 
+    (number, number_for_modulo_operator, number_for_modulo_operator, ...) => number.
+   
+* ``NBR_POWER`` = Number power, it applies a set of sequential power operations to the first element in the list: 
+  
+  .. code-block::
+
+    (number, power_number, power_number, ...) => number
+   
 * ``NBR_INVERSE_SIGN`` = Number inverse sing, change the sign of the number
+  
+  .. code-block::
 
-* ``NBR_GREATER`` = Number greater than, compare tu numbers (a>b): (number,number) => bool
+    number => number
+   
+* ``NBR_GREATER`` = Number greater than, compare tu numbers (a>b): 
+  
+  .. code-block::
 
-* ``NBR_LOWER`` = Number lower than, compare tu numbers (a<b): (number,number) => bool
+    (number,number) => bool
 
-* ``NBR_GREATEREQ`` = Number greater than or equal, compare tu numbers (a>=b): (number,number) => bool
 
-* ``NBR_LOWEREQ`` = Number lower than or equal, compare tu numbers (a<=b): (number,number) => bool
+* ``NBR_LOWER`` = Number lower than, compare tu numbers (a<b): 
+  
+  .. code-block::
 
-* ``NBR_MEAN`` = Number mean, Arithmetic mean value (average) of data: (number, number, ...) => number
+    (number,number) => bool
+   
+* ``NBR_GREATEREQ`` = Number greater than or equal, compare tu numbers (a>=b): 
+  
+  .. code-block::
 
-* ``NBR_GEOMETRIC_MEAN`` = Number geometric mean, geometric mean value  of data: (number, number, ...) => number
+    (number,number) => bool
+   
+* ``NBR_LOWEREQ`` = Number lower than or equal, compare tu numbers (a<=b): 
+  
+  .. code-block::
 
-* ``NBR_HARMONIC_MEAN`` = Number harmonic mean, harmonic mean value of data : (number, number, ...) => number
+    (number,number) => bool
+   
+* ``NBR_MEAN`` = Number mean, Arithmetic mean value (average) of data: 
+  
+  .. code-block::
 
-* ``NBR_MEDIAN`` = Number median, median value (middle value) of data: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_GEOMETRIC_MEAN`` = Number geometric mean, geometric mean value  of data: 
+  
+  .. code-block::
 
-* ``NBR_MEDIAN_LOW`` = Number median low, low median value of data: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_HARMONIC_MEAN`` = Number harmonic mean, harmonic mean value of data : 
+  
+  .. code-block::
 
-* ``NBR_MEDIAN_HIGH`` = Number median high, high median value of data: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_MEDIAN`` = Number median, median value (middle value) of data: 
+  
+  .. code-block::
 
-* ``NBR_MEDIAN_GROUPED`` = Number median grouped, it calculates the median of grouped continuous data, calculated as the 50th percentile: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_MEDIAN_LOW`` = Number median low, low median value of data: 
+  
+  .. code-block::
 
-* ``NBR_MODE`` = Number mode, it calculates the mode (central tendency) of the given numeric or nominal data set: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_MEDIAN_HIGH`` = Number median high, high median value of data: 
+  
+  .. code-block::
 
-* ``NBR_POP_STD_DEV`` = Number standard deviation, it calculates the standard deviation from an entire population: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_MEDIAN_GROUPED`` = Number median grouped, it calculates the median of grouped continuous data, calculated as the 50th percentile: 
+  
+  .. code-block::
 
-* ``NBR_STD_DEV`` = Number standard deviation, it calculates the standard deviation from a sample data set: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_MODE`` = Number mode, it calculates the mode (central tendency) of the given numeric or nominal data set: 
+  
+  .. code-block::
 
-* ``NBR_POP_VAR`` = Number standard deviation, it calculatesthe variance of an entire population: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_POP_STD_DEV`` = Number standard deviation, it calculates the standard deviation from an entire population: 
+  
+  .. code-block::
 
-* ``NBR_VAR`` = Number standard deviation, it calculates the variance from a sample of data: (number, number, ...) => number
+    (number, number, ...) => number
+   
+* ``NBR_STD_DEV`` = Number standard deviation, it calculates the standard deviation from a sample data set: 
+  
+  .. code-block::
 
+    (number, number, ...) => number
+   
+* ``NBR_POP_VAR`` = Number standard deviation, it calculatesthe variance of an entire population: 
+  
+  .. code-block::
+
+    (number, number, ...) => number
+   
+* ``NBR_VAR`` = Number standard deviation, it calculates the variance from a sample of data: 
+  
+  .. code-block::
+
+    (number, number, ...) => number
+   
 
 .. rubric:: Boolean Operations
 
 The list of the boolean memory operations available, indicating the expected input and type before the arrow, and the output after the arrow. 
 In case of several inputs/outputs are expected, they are grouped inside a parenthesis.
 
-* ``LGC_NOT`` = Logical 'NOT' operation: bool => bool
+* ``LGC_NOT`` = Logical 'NOT' operation: 
+  
+  .. code-block::
 
-* ``LGC_AND`` = Logical 'AND' operation: (bool, bool, bool, ...) => bool
+    bool => bool
+   
+* ``LGC_AND`` = Logical 'AND' operation: 
+  
+  .. code-block::
 
-* ``LGC_OR`` = Logical 'OR' operation: (bool, bool, bool, ...) => bool
+    (bool, bool, bool, ...) => bool
+   
+* ``LGC_OR`` = Logical 'OR' operation: 
+  
+  .. code-block::
 
-* ``LGC_XOR`` = Logical 'XOR' operation: (bool, bool, bool, ...) => bool
+    (bool, bool, bool, ...) => bool
+   
+* ``LGC_XOR`` = Logical 'XOR' operation: 
+  
+  .. code-block::
 
-* ``LGC_NAND`` = Logical 'NAND' operation: (bool, bool, bool, ...) => bool
+    (bool, bool, bool, ...) => bool
+   
+* ``LGC_NAND`` = Logical 'NAND' operation: 
+  
+  .. code-block::
 
-* ``LGC_NOR`` = Logical 'NOR' operation: (bool, bool, bool, ...) => bool
+    (bool, bool, bool, ...) => bool
+   
+* ``LGC_NOR`` = Logical 'NOR' operation:  
+  
+  .. code-block::
+
+    (bool, bool, bool, ...) => bool
+      

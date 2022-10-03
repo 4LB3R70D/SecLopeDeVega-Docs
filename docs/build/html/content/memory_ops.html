@@ -280,63 +280,242 @@ one rule.</p>
 <p class="rubric">String Operations</p>
 <p>The list of the string memory operations available, indicating the expected input and type before the arrow, and the output after the arrow.
 In case of several inputs/outputs are expected, they are grouped inside a parenthesis.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_CONCAT</span></code> = String concatenation, merge several strings into one: (string, string, string,…) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_REPLACE</span></code> = String replace, replace a string or regex by the value provided: (original_string, string_regex_to_replace, string_to_add) =&gt; modified_string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_SUBTRACT</span></code> = String substract, remove a string within another: (original_string, string_to_replace) =&gt; modified_string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_UPPER</span></code> = String upper, put in uppercase the content of a string: (string) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_LOWER</span></code> = String lower, put in lowercase the content of a string: (string) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_SPLIT</span></code> = String split, it separte a string in several pieces. If there are more pieces that elements in the output field, they will be lost (string_to_split, string_separator) =&gt; (string, string, string, …)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_TRIM</span></code> = String trim, it trims a string: (string) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_MATCH</span></code> = String match, it checks if a regular expresion is present in a string: (string, string_regex) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_CAPTURE</span></code> = String capture, it captures a string using a reguex: (original_string, string_regex) =&gt; captured_string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_COUNT</span></code> = String count, it counts the number of characters in a string: (string) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_MODE</span></code> = String mode, it calculates the mode (central tendency) of the given nominal data set: (string, string, …) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_ENCODE_B64</span></code> = String encode base 64, it encodes any string into base64: (string) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_DECODE_B64</span></code> = String decode base 64, it decodes any string already encoded in base64: (string) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_ENCODE_HEX</span></code> = String encode hexadecimal, it encodes any string into hexadecimal: (string) =&gt; string</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">STR_DECODE_HEX</span></code> = String decode hexadecimal, it decodes any string already encoded in hexadecimal: (string) =&gt; string</p></li>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_CONCAT</span></code> = String concatenation, merge several strings into one:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span><span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_REPLACE</span></code> = String replace, replace a string or regex by the value provided:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">original_string</span><span class="p">,</span> <span class="n">string_regex_to_replace</span><span class="p">,</span> <span class="n">string_to_add</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">modified_string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_SUBTRACT</span></code> = String substract, remove a string within another:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">original_string</span><span class="p">,</span> <span class="n">string_to_replace</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">modified_string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_UPPER</span></code> = String upper, put in uppercase the content of a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_LOWER</span></code> = String lower, put in lowercase the content of a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_SPLIT</span></code> = String split, it separte a string in several pieces. If there are more pieces that elements in the output field, they will be lost.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string_to_split</span><span class="p">,</span> <span class="n">string_separator</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_TRIM</span></code> = String trim, it trims a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_MATCH</span></code> = String match, it checks if a regular expresion is present in a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string_regex</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_CAPTURE</span></code> = String capture, it captures a string using a reguex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">original_string</span><span class="p">,</span> <span class="n">string_regex</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">captured_string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_COUNT</span></code> = String count, it counts the number of characters in a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_MODE</span></code> = String mode, it calculates the mode (central tendency) of the given nominal data set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_ENCODE_B64</span></code> = String encode base 64, it encodes any string into base64:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_DECODE_B64</span></code> = String decode base 64, it decodes any string already encoded in base64:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_ENCODE_HEX</span></code> = String encode hexadecimal, it encodes any string into hexadecimal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_DECODE_HEX</span></code> = String decode hexadecimal, it decodes any string already encoded in hexadecimal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
 </ul>
 <p class="rubric">Number Operations</p>
 <p>The list of the number memory operations available, indicating the expected input and type before the arrow, and the output after the arrow.
 In case of several inputs/outputs are expected, they are grouped inside a parenthesis.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_SUM</span></code> = Number sum, it sums a set of values added in the input field: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_SUBTRACT</span></code> = Number substract, it substracts to the first element of the input field, the rest of values added there: (number, number_to_substract, number_to_substract …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MULTIPLY</span></code> = Number multipy, it multiplies a set of values added in the input field: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_DIVIDE</span></code> = Number divide, it divides the first element by the rest of elements in the input field in a sequential approach: (number, number_to_divide, number_to_divide …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_FLOOR</span></code> = Number divide, it does a floor division of the first element by the rest of elements in the input field in a sequential approach: (number, number_to_floor_divide, number_to_floor_divide …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MODULO</span></code> = Number modulo, it gets the reminder of a set of modulo operator calls: (number, number_for_modulo_operator, number_for_modulo_operator, …) =&gt; number.
-For more information, please check <a class="reference external" href="https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved">Python Modulo Operator</a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POWER</span></code> = Number power, it applies a set of sequential power operations to the first element in the list: (number, power_number, power_number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_INVERSE_SIGN</span></code> = Number inverse sing, change the sign of the number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATER</span></code> = Number greater than, compare tu numbers (a&gt;b): (number,number) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWER</span></code> = Number lower than, compare tu numbers (a&lt;b): (number,number) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATEREQ</span></code> = Number greater than or equal, compare tu numbers (a&gt;=b): (number,number) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWEREQ</span></code> = Number lower than or equal, compare tu numbers (a&lt;=b): (number,number) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEAN</span></code> = Number mean, Arithmetic mean value (average) of data: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GEOMETRIC_MEAN</span></code> = Number geometric mean, geometric mean value  of data: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_HARMONIC_MEAN</span></code> = Number harmonic mean, harmonic mean value of data : (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN</span></code> = Number median, median value (middle value) of data: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_LOW</span></code> = Number median low, low median value of data: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_HIGH</span></code> = Number median high, high median value of data: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_GROUPED</span></code> = Number median grouped, it calculates the median of grouped continuous data, calculated as the 50th percentile: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MODE</span></code> = Number mode, it calculates the mode (central tendency) of the given numeric or nominal data set: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POP_STD_DEV</span></code> = Number standard deviation, it calculates the standard deviation from an entire population: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_STD_DEV</span></code> = Number standard deviation, it calculates the standard deviation from a sample data set: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POP_VAR</span></code> = Number standard deviation, it calculatesthe variance of an entire population: (number, number, …) =&gt; number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NBR_VAR</span></code> = Number standard deviation, it calculates the variance from a sample of data: (number, number, …) =&gt; number</p></li>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_SUM</span></code> = Number sum, it sums a set of values added in the input field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_SUBTRACT</span></code> = Number substract, it substracts to the first element of the input field, the rest of values added there:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_to_substract</span><span class="p">,</span> <span class="n">number_to_substract</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MULTIPLY</span></code> = Number multipy, it multiplies a set of values added in the input field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_DIVIDE</span></code> = Number divide, it divides the first element by the rest of elements in the input field in a sequential approach:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_to_divide</span><span class="p">,</span> <span class="n">number_to_divide</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_FLOOR</span></code> = Number divide, it does a floor division of the first element by the rest of elements in the input field in a sequential approach:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_to_floor_divide</span><span class="p">,</span> <span class="n">number_to_floor_divide</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MODULO</span></code> = Number modulo, it gets the reminder of a set of modulo operator calls. For more information, please check <a class="reference external" href="https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved">Python Modulo Operator</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_for_modulo_operator</span><span class="p">,</span> <span class="n">number_for_modulo_operator</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POWER</span></code> = Number power, it applies a set of sequential power operations to the first element in the list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">power_number</span><span class="p">,</span> <span class="n">power_number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_INVERSE_SIGN</span></code> = Number inverse sing, change the sign of the number</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATER</span></code> = Number greater than, compare tu numbers (a&gt;b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWER</span></code> = Number lower than, compare tu numbers (a&lt;b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATEREQ</span></code> = Number greater than or equal, compare tu numbers (a&gt;=b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWEREQ</span></code> = Number lower than or equal, compare tu numbers (a&lt;=b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEAN</span></code> = Number mean, Arithmetic mean value (average) of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GEOMETRIC_MEAN</span></code> = Number geometric mean, geometric mean value  of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_HARMONIC_MEAN</span></code> = Number harmonic mean, harmonic mean value of data :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN</span></code> = Number median, median value (middle value) of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_LOW</span></code> = Number median low, low median value of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_HIGH</span></code> = Number median high, high median value of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_GROUPED</span></code> = Number median grouped, it calculates the median of grouped continuous data, calculated as the 50th percentile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MODE</span></code> = Number mode, it calculates the mode (central tendency) of the given numeric or nominal data set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POP_STD_DEV</span></code> = Number standard deviation, it calculates the standard deviation from an entire population:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_STD_DEV</span></code> = Number standard deviation, it calculates the standard deviation from a sample data set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POP_VAR</span></code> = Number standard deviation, it calculatesthe variance of an entire population:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_VAR</span></code> = Number standard deviation, it calculates the variance from a sample of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
 </ul>
 <p class="rubric">Boolean Operations</p>
 <p>The list of the boolean memory operations available, indicating the expected input and type before the arrow, and the output after the arrow.
 In case of several inputs/outputs are expected, they are grouped inside a parenthesis.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NOT</span></code> = Logical ‘NOT’ operation: bool =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LGC_AND</span></code> = Logical ‘AND’ operation: (bool, bool, bool, …) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LGC_OR</span></code> = Logical ‘OR’ operation: (bool, bool, bool, …) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LGC_XOR</span></code> = Logical ‘XOR’ operation: (bool, bool, bool, …) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NAND</span></code> = Logical ‘NAND’ operation: (bool, bool, bool, …) =&gt; bool</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NOR</span></code> = Logical ‘NOR’ operation: (bool, bool, bool, …) =&gt; bool</p></li>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NOT</span></code> = Logical ‘NOT’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_AND</span></code> = Logical ‘AND’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_OR</span></code> = Logical ‘OR’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_XOR</span></code> = Logical ‘XOR’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NAND</span></code> = Logical ‘NAND’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NOR</span></code> = Logical ‘NOR’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </section>
 </section>
