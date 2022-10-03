@@ -35,11 +35,12 @@ The term 'Sec' is a kind of play on words using the idea of '`Sir <https://en.wi
 and focusing on the potential use of this software for security reasons:
 
 - In client mode, *Lope* can do some security tests when *he* connects to other systems in an interactive approach 
-  (can we call it `IAST <https://owasp.org/www-project-devsecops-guideline/latest/02c-Interactive-Application-Security-Testing>`_?), and potentially some web crawling/scraping activities. 
-  Since you can define how many client connections to establish, it might be useful to try to do some `DDoS <https://en.wikipedia.org/wiki/Denial-of-service_attack>`_ testing too.
+  (can we call it `IAST <https://owasp.org/www-project-devsecops-guideline/latest/02c-Interactive-Application-Security-Testing>`_?), and potentially some `web crawling/scraping 
+  <https://www.datacentric.es/en/web-crawling-and-web-scraping/>`_ activities. Since you can define how many client connections to establish, it might be useful to try to do some
+  `DDoS <https://en.wikipedia.org/wiki/Denial-of-service_attack>`_ testing too.
 
 - In server mode, *Lope* can work as a kind of `honeypot <https://en.wikipedia.org/wiki/Honeypot_(computing)>`_ (or a set of them, this is explained in other sections). It also can work 
-to do some dynamic testing on client software via the answers provided from the server.
+  to do some dynamic testing on client software via the answers provided from the server.
 
 However, this software may be useful for other kind of tests that are not only security related, such as mocking-up other systems (as a client or as a server), 
 potentially emulating user activity, as well as for doing load and stress testing. **In any case, just remember that this software requires you to define the interaction, 
