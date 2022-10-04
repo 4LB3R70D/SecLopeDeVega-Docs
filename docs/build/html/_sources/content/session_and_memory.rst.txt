@@ -125,7 +125,7 @@ As you can see, the session values can be changed via custom rules. This can be 
           # OPTIONS:
 
           # 1 - Using memory variable, the content of the 
-          #memory variable (they are explaines in )
+          #  memory variable (they are explained below in this chapter)
           memory_variable: var1 
 
           # OR

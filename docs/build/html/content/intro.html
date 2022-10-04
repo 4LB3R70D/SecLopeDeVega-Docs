@@ -56,18 +56,23 @@ Since this software works at <strong>tcp</strong> or <strong>udp</strong> level,
 Additionally, <strong>TLS</strong> and <strong>DTLS</strong> are supported to some extent, so you may define the interaction on top of those protocols.
 In the following image you can see the protocol layer capabilities of <em>Lope</em>:</p>
 <a class="reference internal image-reference" href="../_images/slv_protocol_concept.png"><img alt="../_images/slv_protocol_concept.png" class="align-center" src="../_images/slv_protocol_concept.png" style="width: 400px;" /></a>
-<p>This capability of defining your own interaction in the application protocol you wish (if possible), is the main reason for the name of this project.
-<a class="reference external" href="https://en.wikipedia.org/wiki/Lope_de_Vega">Lope de Vega</a> was a famous Spanish writer in the Spanish Golden Age, who was quite prolific in his work.
+<p>This capability of defining your own interaction in the application protocol you wish (if possible) is the main reason for the name of this project.
+[Lope de Vega](<a class="reference external" href="https://en.wikipedia.org/wiki/Lope_de_Vega">https://en.wikipedia.org/wiki/Lope_de_Vega</a>) was a famous Spanish writer in the Spanish Golden Age, who was quite prolific in his work.
 Therefore, this software enables you to create many ‘interactions’, potentially making you as ‘prolific’ as possible thanks to the customization capabilities of this software.
-The term ‘Sec’ is a kind of play on words using the idea of ‘<a class="reference external" href="https://en.wikipedia.org/wiki/Sir">Sir</a>’ (he was indeed a knight of the Order of Malta),
+The term ‘Sec’ is a kind of play on words using the idea of ‘[Sir](<a class="reference external" href="https://en.wikipedia.org/wiki/Sir">https://en.wikipedia.org/wiki/Sir</a>)’ (he was indeed a knight of the Order of Malta),
 and focusing on the potential use of this software for security reasons:</p>
 <ul class="simple">
 <li><p>In client mode, <em>Lope</em> can do some security tests when <em>he</em> connects to other systems in an interactive approach
-(can we call it <a class="reference external" href="https://owasp.org/www-project-devsecops-guideline/latest/02c-Interactive-Application-Security-Testing">IAST</a>?), and potentially some <a class="reference external" href="https://www.datacentric.es/en/web-crawling-and-web-scraping/">web crawling/scraping</a> activities. Since you can define how many client connections to establish, it might be useful to try to do some
-<a class="reference external" href="https://en.wikipedia.org/wiki/Denial-of-service_attack">DDoS</a> testing too.</p></li>
-<li><p>In server mode, <em>Lope</em> can work as a kind of <a class="reference external" href="https://en.wikipedia.org/wiki/Honeypot_(computing)">honeypot</a> (or a set of them, this is explained in other sections). It also can work
-to do some dynamic testing on client software via the answers provided from the server.</p></li>
+(not sure if we can call this [IAST](<a class="reference external" href="https://owasp.org/www-project-devsecops-guideline/latest/02c-Interactive-Application-Security-Testing">https://owasp.org/www-project-devsecops-guideline/latest/02c-Interactive-Application-Security-Testing</a>)), and potentially some web
+[crawling/scraping](<a class="reference external" href="https://www.datacentric.es/en/web-crawling-and-web-scraping/">https://www.datacentric.es/en/web-crawling-and-web-scraping/</a>) activities. Since you can define how many client connections to establish, it might be
+useful to try to do some [DDoS](<a class="reference external" href="https://en.wikipedia.org/wiki/Denial-of-service_attack">https://en.wikipedia.org/wiki/Denial-of-service_attack</a>) testing.</p></li>
+<li><p>In server mode, <em>Lope</em> can work as a kind of [honeypot](<a class="reference external" href="https://en.wikipedia.org/wiki/Honeypot_(computing">https://en.wikipedia.org/wiki/Honeypot_(computing</a>)) (or a set of them, this is explained in other sections).
+It also can work to do some dynamic testing on client software via the answers provided from the server.</p></li>
 </ul>
+<p>However, this software may be useful for other kind of tests that are not only security related, such as mocking-up other systems (as a client or as a server),
+potentially emulating user activity, as well as for doing load and stress testing too. <strong>In any case, just remember that this software requires you to define the interaction,
+so it is not ‘plug and play’: there is still work to do to cover your needs</strong> (except you have the right interaction files - <em>conversation rules</em> files).You can think of this like
+a gun and its bullets: <em>Lope</em> is the ‘gun’, but the <em>conversation rules</em> are the ‘bullets’.</p>
 <p>However, this software may be useful for other kind of tests that are not only security related, such as mocking-up other systems (as a client or as a server),
 potentially emulating user activity, as well as for doing load and stress testing. <strong>In any case, just remember that this software requires you to define the interaction,
 so it is not ‘plug and play’: there is still work to do to cover your needs</strong> (except you have the right interaction files - <em>conversation rules</em> files). You can think of this like

@@ -36,18 +36,264 @@
           <div class="body" role="main">
             
   <section id="custom-functions">
-<span id="memory-operations"></span><span id="index-0"></span><h1><span class="section-number">12. </span>Custom Functions<a class="headerlink" href="#custom-functions" title="Permalink to this heading">¶</a></h1>
-<section id="importing-your-own-code">
-<span id="index-1"></span><h2><span class="section-number">12.1. </span>Importing Your Own Code<a class="headerlink" href="#importing-your-own-code" title="Permalink to this heading">¶</a></h2>
-</section>
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">12. </span>Custom Functions<a class="headerlink" href="#custom-functions" title="Permalink to this heading">¶</a></h1>
+<p>One of the best features that <em>Lope</em> provides is to allow that you can add your own Python code to expand the current capabilities already provided.
+This has already mentioned in the <a class="reference internal" href="ext-conn_conf.html#external-connector-configuration"><span class="std std-ref">External Connector Configuration</span></a>, in the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section of the <strong>external connector</strong> configuration
+file. You need to provide the location and name of the Python module where <em>Lope</em> can find your own code, as explained in the preiously cited chapter.
+If the custom function module can not be imported, the execution of the <strong>external connector</strong> can take place but the interactions will not use those</p>
+<p>You can add your own code in three different ways in the interaction:</p>
+<ul class="simple">
+<li><p><strong>Pre-processor function</strong>: If it is used, this function is called every time a new message is received from a third party before any action of <em>Lope</em>.
+This can be interesting in interactions that you need something before executing the <em>Lope</em> actions. For instance, if your interaction is using a binary
+protocol, you should convert the binary into text based information before using <em>Lope</em>.</p></li>
+<li><p><strong>Post-processor function</strong>: If it is used, this function is called every time after <em>Lope</em> has something to send to third party as part of the process of
+replying them. This covers the need of doing something at the end of the response process. In the precious example, this can allow you to convert into binary
+the text <em>Lope</em> have already prepared.</p></li>
+<li><p><strong>Function in Custom Rule</strong>: Any custom rule can execute a function in the same way that it can execute a built-in memory operation, as explained in
+<a class="reference internal" href="memory_ops.html#memory-operations"><span class="std std-ref">Memory Operations</span></a>.</p></li>
+</ul>
+<p>In any case, the functions called has to be called using the exact name, and you should provide the same number and in the same order of parameters as they are defined.
+In case of not, those not provided parameters will be autoprovided using an empty string, a ‘0’ or ‘false’, depending on the case. For the number of memory variablesfor
+saving the output of a function is not the same of the results the function provides, then some values will be lost. In case of providing more memory variables than
+results, they will remain unchanged.</p>
+<p>Please, keep in mind that the <em>pre-processor</em> and <em>post-processor</em> will always use the ‘external input’ or ‘external output’ (depending on the preprocessor function used)
+as the first input and output of those functions. Therefore, you only can add additional inputs and outputs to the pre/post-processor functions. This is one of the the main
+differences with the normal custom functions (those called in any custom rule execution), the pre/post-processor functions have the mandatory input and output that is the
+‘external input’ for the <em>pre-processoror</em> function, and the ‘external output’ for the <em>post-processor</em> function. The rest of potential inputs and outputs are optional,
+and can be any memory variable or fixed (hardcoded) values, or even some connection data (<strong>ip</strong>, <strong>port</strong>, the <strong>session key</strong> or <strong>session value</strong>). For the functions
+called from any custom rule, all the values are optional and even they can have none.</p>
+<p>The following image represents how the  <em>pre-processor</em> and <em>post-processor</em> functions work in the response process. Please keep in mind that you can use only one of those functions
+if needed, you do not need to use both always.</p>
+<a class="reference internal image-reference" href="../_images/custom_pre_post_processor_functions.png"><img alt="../_images/custom_pre_post_processor_functions.png" class="align-center" src="../_images/custom_pre_post_processor_functions.png" style="width: 600px;" /></a>
+<p>The next one represents the potential inputs of custom functions called in custom rules, or any built-in memory operations, since both work in the same way. They can use the same
+potential inputs and outputs, you only have to choose what you need.</p>
+<a class="reference internal image-reference" href="../_images/custom_rule_memory_operation.png"><img alt="../_images/custom_rule_memory_operation.png" class="align-center" src="../_images/custom_rule_memory_operation.png" style="width: 600px;" /></a>
+<p>As you can see in the image, there is another big difference between pre/post-processor functions and these other operations: the use of the ‘external output’. <em>Post-processor</em> function
+can use it, but these functions or memory operations they cannot: they only modify the memory variables. Depending on the configuration of when the custom functions in rules should be executed
+(‘rule detection’ vs ‘rule execution’), you can use the modified memory variable in the response. In case you execute the custom functions after the rule execution, the potential reply is already sent.
+Nevertheless, this is not an issue because if you need to do an operation and then replying to the third party, you can call the function or memory operation in the sync custom rule,
+and trigger an async rule to send the reply right after the sync rule. Following that idea, you can concatenate several memory operations (built-in or custom functions) as a set of async or
+hybrid rules (as we have already seen at the end of the <a class="reference internal" href="conversation_rules.html#conversation-rules"><span class="std std-ref">Conversation Rules</span></a>).</p>
 <section id="custom-pre-processor-function">
-<span id="index-2"></span><h2><span class="section-number">12.2. </span>Custom Pre-processor Function<a class="headerlink" href="#custom-pre-processor-function" title="Permalink to this heading">¶</a></h2>
+<span id="index-1"></span><h2><span class="section-number">12.1. </span>Custom Pre-processor Function<a class="headerlink" href="#custom-pre-processor-function" title="Permalink to this heading">¶</a></h2>
+<p>Once we have seen the concepts behind the use of custom functions, it is time to see how to use them. To use the <em>pre-processor</em> function, you have to add the following information in the
+<code class="docutils literal notranslate"><span class="pre">operation</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL ASPECTS</span>
+    <span class="c1"># ===============</span>
+    <span class="o">...</span>
+
+
+    <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SOCKET CONNECTION CLOSE</span>
+    <span class="c1"># =======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SESSION SUPPORT</span>
+    <span class="c1"># ===============</span>
+    <span class="o">...</span>
+
+    <span class="c1"># CUSTOM FUNCTIONS</span>
+    <span class="c1"># ================</span>
+    <span class="n">custom_function_preprocessor</span><span class="p">:</span>
+
+      <span class="c1"># name of the function to call</span>
+      <span class="n">name</span><span class="p">:</span> <span class="n">testing_preprocessor</span>
+
+      <span class="c1"># the external input will always be the first</span>
+      <span class="c1"># input, others are defined here:</span>
+
+      <span class="c1"># additional</span>
+      <span class="nb">input</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">var1</span>
+        <span class="o">-</span> <span class="n">var2</span>
+        <span class="o">-</span> <span class="mi">2</span>
+        <span class="o">-</span> <span class="s1">&#39;IP&#39;</span>
+      <span class="c1"># In this case the input of the function is:</span>
+      <span class="c1"># (&#39;external input&#39;, var1, var2, 2, ip value) =&gt; testing_preprocessor</span>
+
+      <span class="c1"># the external input will always be the first</span>
+      <span class="c1"># output, others are defined here:</span>
+
+      <span class="c1"># additional</span>
+      <span class="n">output</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">var1</span>
+        <span class="o">-</span> <span class="n">var2</span>
+      <span class="c1"># In this case the output of the function is:</span>
+      <span class="c1"># testing_preprocessor =&gt; (&#39;external input&#39;, var1, var2)</span>
+
+    <span class="c1"># OTHER TOPICS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Additional aspects should be defined here, but</span>
+    <span class="c1"># they will be described in the respective sections</span>
+    <span class="c1"># of this documentation, for the sake of clarity</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="custom-post-processor-function">
-<span id="index-3"></span><h2><span class="section-number">12.3. </span>Custom Post-processor Function<a class="headerlink" href="#custom-post-processor-function" title="Permalink to this heading">¶</a></h2>
+<span id="index-2"></span><h2><span class="section-number">12.2. </span>Custom Post-processor Function<a class="headerlink" href="#custom-post-processor-function" title="Permalink to this heading">¶</a></h2>
+<p>The use of the custom <em>post-processor</em> is almost identical to the <em>pre-processor</em> function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+    <span class="c1"># GENERAL ASPECTS</span>
+    <span class="c1"># ===============</span>
+    <span class="o">...</span>
+
+
+    <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+    <span class="c1"># ======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SOCKET CONNECTION CLOSE</span>
+    <span class="c1"># =======================</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SESSION SUPPORT</span>
+    <span class="c1"># ===============</span>
+    <span class="o">...</span>
+
+    <span class="c1"># CUSTOM FUNCTIONS</span>
+    <span class="c1"># ================</span>
+    <span class="n">custom_function_postprocessor</span><span class="p">:</span>
+
+      <span class="c1"># name of the function to call</span>
+      <span class="n">name</span><span class="p">:</span> <span class="n">testing_postprocessor</span>
+
+      <span class="c1"># the external output will always be the first</span>
+      <span class="c1"># input, others are defined here:</span>
+
+      <span class="c1"># additional</span>
+      <span class="nb">input</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">var1</span>
+        <span class="o">-</span> <span class="n">var2</span>
+        <span class="o">-</span> <span class="s1">&#39;hello!&#39;</span>
+      <span class="c1"># In this case the input of the function is:</span>
+      <span class="c1"># (&#39;external output&#39;, var1, var2, &#39;hello!&#39;) =&gt; testing_postprocessor</span>
+
+      <span class="c1"># the external input will always be the first</span>
+      <span class="c1"># output, others are defined here:</span>
+
+      <span class="c1"># additional</span>
+      <span class="n">output</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">var1</span>
+        <span class="o">-</span> <span class="n">var2</span>
+      <span class="c1"># In this case the output of the function is:</span>
+      <span class="c1"># testing_postprocessor =&gt; (&#39;external output&#39;, var1, var2)</span>
+
+    <span class="c1"># OTHER TOPICS</span>
+    <span class="c1"># ============</span>
+    <span class="c1"># Additional aspects should be defined here, but</span>
+    <span class="c1"># they will be described in the respective sections</span>
+    <span class="c1"># of this documentation, for the sake of clarity</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="custom-functions-in-custom-rules">
-<span id="index-4"></span><h2><span class="section-number">12.4. </span>Custom Functions in Custom Rules<a class="headerlink" href="#custom-functions-in-custom-rules" title="Permalink to this heading">¶</a></h2>
+<span id="index-3"></span><h2><span class="section-number">12.3. </span>Custom Functions in Custom Rules<a class="headerlink" href="#custom-functions-in-custom-rules" title="Permalink to this heading">¶</a></h2>
+<p>In contrast of the pre/post-processor functions, the functions in custom rules are defined in the rules that execute them, in the same way of the built-in memory operations.
+In case of a custom rule contains a built-in memory operation and a custom function, then the built-in memory operation will be executed first and later, the custom function call.</p>
+<p>The use of the same reserver words that we have seen in <a class="reference internal" href="memory_ops.html#memory-operations"><span class="std std-ref">Memory Operations</span></a> is also applicable here:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EXT_IN</span></code>: the external input from the third party</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IP</span></code>: the ip of the connection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PORT</span></code>: the port of the connection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SESSION_KEY</span></code>: the session key of the connection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SESSION_VALUE</span></code>: the session value of the connection</p></li>
+</ul>
+<p>The execution of custom function can be adjusted to decide ‘when’ takes place, as we have already seen for <a class="reference internal" href="memory_ops.html#memory-operations"><span class="std std-ref">Memory Operations</span></a>: in the ‘rule detection’ step (when the rule is
+considered as applicable), or in the ‘rule execution’ step (when the rule is executed and the response is sent). This is configured in in the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL ASPECTS</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+  <span class="c1"># ======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SOCKET CONNECTION CLOSE</span>
+  <span class="c1"># =======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SESSION SUPPORT</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># CUSTOM FUNCTIONS</span>
+  <span class="c1"># ================</span>
+  <span class="c1"># One of the following: &quot;rule_detected&quot;, &quot;rule_executed&quot;(default)</span>
+  <span class="n">custom_functions_when</span><span class="p">:</span> <span class="n">rule_detected</span>
+
+  <span class="c1"># OTHER TOPICS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Additional aspects should be defined here, but</span>
+  <span class="c1"># they will be described in the respective sections</span>
+  <span class="c1"># of this documentation, for the sake of clarity</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>and the way to declare the use of the custom function within a rule can be found here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># CUSTOM FUNCTION</span>
+  <span class="c1"># ===============</span>
+  <span class="n">custom_function</span><span class="p">:</span>
+
+    <span class="c1"># custom function enable for this rule?</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">function_name</span>
+
+    <span class="c1"># List of inputs</span>
+    <span class="nb">input</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">EXT_IN</span> <span class="c1"># &#39;external input&#39;</span>
+      <span class="o">-</span> <span class="n">var1</span>
+      <span class="o">-</span> <span class="mf">3.14</span>
+
+    <span class="c1"># List of memory variables</span>
+    <span class="c1"># to save the results</span>
+    <span class="n">output</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">var3</span>
+      <span class="o">-</span> <span class="n">var4</span>
+
+  <span class="c1"># In this example:</span>
+  <span class="c1"># ----------------</span>
+  <span class="c1"># Inputs to the custom function</span>
+  <span class="c1"># (&#39;external input&#39;, var1, 3.14) =&gt; function_name</span>
+
+  <span class="c1"># Output of the custom function</span>
+  <span class="c1"># function_name =&gt; (var3, var4)</span>
+
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -88,10 +334,9 @@
 <li class="toctree-l1"><a class="reference internal" href="session_and_memory.html">10. Session Support &amp; Memory Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="memory_ops.html">11. Memory Operations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">12. Custom Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#importing-your-own-code">12.1. Importing Your Own Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-pre-processor-function">12.2. Custom Pre-processor Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-post-processor-function">12.3. Custom Post-processor Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-functions-in-custom-rules">12.4. Custom Functions in Custom Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-pre-processor-function">12.1. Custom Pre-processor Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-post-processor-function">12.2. Custom Post-processor Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-functions-in-custom-rules">12.3. Custom Functions in Custom Rules</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">13. Advance Conversation Rules</a></li>

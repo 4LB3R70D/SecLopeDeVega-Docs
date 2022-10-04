@@ -131,7 +131,7 @@ in :ref:`ext-conn_installation`. The third one is for being used to authenticate
 in :ref:`engine_installation`.
 
 The last two parameters allow to find the custom code that you can add to customize even further the interaction. This is described in detail in
-:ref:`memory_variables_&_operations`.
+:ref:`custom_functions`.
     
 .. code-block::
     
@@ -235,7 +235,7 @@ The following links can help you to configure the TLS or DTLS correctly for the 
 Redis Integration
 -----------------
 As described in :ref:`architecture`, the `Redis <https://redis.io/>`_ server is an important element for allowing to share information among different **external connectors**, 
-using memory variables. This variables are explained in detail in :ref:`memory_variables_&_operations`, here we only address what is the configuration
+using memory variables. These variables are explained in detail in :ref:`session_support_and_memory_variables`, here we only address what is the configuration
 capabilities to use Redis.
 
 he following links can help you to install and use Redis, as well as understaning the integration between the external connector and Redis:

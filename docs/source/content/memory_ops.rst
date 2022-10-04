@@ -206,20 +206,19 @@ In case of the reference memory variable is in 'collision' with others that have
 the more limited scope will be used (in the same way that we have seen about how to add a memory variable in 
 a response).
 
-.. index:: Built-in Functions
+.. index:: Built-in Memory Operations
 
-Built-in Functions
-------------------
+Built-in Memory Operations
+--------------------------
 You can do some operations using the memory variables to allow you to control more how the interaction takes place.
 Every custom rule can call a built-in memory operation, where you define what are the input values to use and what
 memory variables will save the output. 
 
-The reserved word ``EXT_IN`` allow you to use the external input (message received 
-from the third party) as input of the operation. You can use memory variables and fixed values as inputs as well.
-For the output, you need to specify what memory variables will save the results of the operations (if they are not provided, 
-the results are lost). Please, be also aware that the order of the list of inputs or outputs is important for the correct 
-use of the operation, as well as the data 'type' (int, float, bool...) of the result should be the same with the one declared 
-in the section 'memory_variables'.
+The reserved word ``EXT_IN`` allow you to use the external input (message received from the third party) as input of 
+the operation. You can use memory variables and fixed values as inputs as well. For the output, you need to specify what 
+memory variables will save the results of the operations (if they are not provided, the results are lost). Please, be also 
+aware that the order of the list of inputs or outputs is important for the correct use of the operation, as well as the 
+data 'type' (int, float, bool...) of the result should be the same with the one declared in the section 'memory_variables'.
 
 In case you need to do more than one of memory operations, we recommend using a set of async rules as a set of steps,
 where each of them is calling a memory operation. The reason to enforce one memory operation per conversation rule is 
@@ -234,7 +233,7 @@ one rule.
     # ==============
     ...
 
-    # BUILT-IN MEMORY OPERATIONS
+    # BUILT-IN MEMORY OPERATIONS 
     # ==========================
     builtin_memory_operation:
 

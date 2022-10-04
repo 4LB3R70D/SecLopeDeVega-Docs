@@ -17,7 +17,7 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="8. External Connector Installation" href="ext-conn_install.html" />
+    <link rel="next" title="8. External Connector Installation &amp; Execution" href="ext-conn_install.html" />
     <link rel="prev" title="6. External Connector Software Description" href="ext-conn_desc.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -38,7 +38,7 @@
   <section id="external-connector-configuration">
 <span id="index-0"></span><span id="id1"></span><h1><span class="section-number">7. </span>External Connector Configuration<a class="headerlink" href="#external-connector-configuration" title="Permalink to this heading">¶</a></h1>
 <p>The main configuration file of the <strong>external connector</strong> is the <em>ext_conn_config.ini</em> file, but the name can be changed if the configuration file is passed
-as command line option (as explained in <a class="reference internal" href="ext-conn_install.html#ext-conn-installation"><span class="std std-ref">External Connector Installation</span></a>). Just keep in mind that the file should be always a <a class="reference external" href="https://en.wikipedia.org/wiki/INI_file">ini</a> file.
+as command line option (as explained in <a class="reference internal" href="ext-conn_install.html#ext-conn-installation"><span class="std std-ref">External Connector Installation &amp; Execution</span></a>). Just keep in mind that the file should be always a <a class="reference external" href="https://en.wikipedia.org/wiki/INI_file">ini</a> file.
 In this file you can configure those aspects that are relevant for only the <strong>external connector</strong> such as how to connect with the <strong>engine</strong>, the use of certificates for TLS support,
 the logs, different times, the connection with the Redis server (its role is explained in <a class="reference internal" href="architecture.html#architecture"><span class="std std-ref">Architecture</span></a>), and other operation configuration.</p>
 <section id="engine-connection">
@@ -146,10 +146,10 @@ changed in the configuration file. If the specified log folder does not exist, i
 <span id="index-3"></span><h2><span class="section-number">7.4. </span>External Connector Operation<a class="headerlink" href="#external-connector-operation" title="Permalink to this heading">¶</a></h2>
 <p>The following parameters cover other operational aspects of the <strong>external connector</strong>. The first two are the credentials to authenticate the
 <strong>external connector</strong> against the <strong>engine</strong>, but if other values will replace them if they are provided via command line options, as described
-in <a class="reference internal" href="ext-conn_install.html#ext-conn-installation"><span class="std std-ref">External Connector Installation</span></a>. The third one is for being used to authenticate the <strong>engine</strong> against the <strong>external connector</strong>, as mentioned
+in <a class="reference internal" href="ext-conn_install.html#ext-conn-installation"><span class="std std-ref">External Connector Installation &amp; Execution</span></a>. The third one is for being used to authenticate the <strong>engine</strong> against the <strong>external connector</strong>, as mentioned
 in <a class="reference internal" href="engine_install.html#engine-installation"><span class="std std-ref">Engine Installation &amp; Execution</span></a>.</p>
 <p>The last two parameters allow to find the custom code that you can add to customize even further the interaction. This is described in detail in
-<a class="reference internal" href="memory.html#memory-variables-operations"><span class="std std-ref">Memory Variables &amp; Operations</span></a>.</p>
+<a class="reference internal" href="custom_functions.html#custom-functions"><span class="std std-ref">Custom Functions</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================================================</span>
 <span class="p">[</span><span class="n">OPERATION</span><span class="p">]</span>
 <span class="c1"># ==========================================================================</span>
@@ -238,7 +238,7 @@ unencrypted key for the exection and deleted once the execution ends.</p>
 <section id="redis-integration">
 <span id="index-5"></span><h2><span class="section-number">7.6. </span>Redis Integration<a class="headerlink" href="#redis-integration" title="Permalink to this heading">¶</a></h2>
 <p>As described in <a class="reference internal" href="architecture.html#architecture"><span class="std std-ref">Architecture</span></a>, the <a class="reference external" href="https://redis.io/">Redis</a> server is an important element for allowing to share information among different <strong>external connectors</strong>,
-using memory variables. This variables are explained in detail in <a class="reference internal" href="memory.html#memory-variables-operations"><span class="std std-ref">Memory Variables &amp; Operations</span></a>, here we only address what is the configuration
+using memory variables. These variables are explained in detail in <a class="reference internal" href="session_and_memory.html#session-support-and-memory-variables"><span class="std std-ref">Session Support &amp; Memory Variables</span></a>, here we only address what is the configuration
 capabilities to use Redis.</p>
 <p>he following links can help you to install and use Redis, as well as understaning the integration between the external connector and Redis:</p>
 <ul class="simple">
@@ -315,14 +315,16 @@ capabilities to use Redis.</p>
 <li class="toctree-l2"><a class="reference internal" href="#redis-integration">7.6. Redis Integration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ext-conn_install.html">8. External Connector Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ext-conn_install.html">8. External Connector Installation &amp; Execution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="conversation_rules.html">9. Conversation Rules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="memory.html">10. Memory Variables &amp; Operations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">11. Advance Conversation Rules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="activities.html">12. Activity Alerting &amp; Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">13. Example Protocol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">14. Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">15. Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_and_memory.html">10. Session Support &amp; Memory Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory_ops.html">11. Memory Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_functions.html">12. Custom Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">13. Advance Conversation Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">14. Activity Alerting &amp; Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">15. Example Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">16. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">17. Contact</a></li>
 </ul>
 
 <div class="relations">
@@ -330,7 +332,7 @@ capabilities to use Redis.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="ext-conn_desc.html" title="previous chapter"><span class="section-number">6. </span>External Connector Software Description</a></li>
-      <li>Next: <a href="ext-conn_install.html" title="next chapter"><span class="section-number">8. </span>External Connector Installation</a></li>
+      <li>Next: <a href="ext-conn_install.html" title="next chapter"><span class="section-number">8. </span>External Connector Installation &amp; Execution</a></li>
   </ul></li>
 </ul>
 </div>

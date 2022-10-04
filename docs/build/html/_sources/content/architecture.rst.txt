@@ -9,7 +9,7 @@ As mentiond previously, *Lope* is composed of two main components: The **externa
 
 * **The external parties:** They are the elements that connect to *Lope*, or *Lope* connects to them (depending on if the software is working as a client or as a server)
 
-* **Redis server:** In :ref:`memory_variables_&_operations` section, the concept of *memory variables* is explained in detail but here we can say that the interaction can use some variables
+* **Redis server:** In :ref:`session_support_and_memory_variables` section, the concept of *memory variables* is explained in detail but here we can say that the interaction can use some variables
   in the interactions. These variables are saved in different 'memories', that is why they have that name. One of the memories is shared among different **external connectors**, 
   and this can take place because the redis server. This component is an optional component only needed if you wish to share variables among different **external connectors**, 
   and only for those that are using those variables. This means that not all **external connectors** must be connected to redis, only those that use that capability. Here you can find more 
