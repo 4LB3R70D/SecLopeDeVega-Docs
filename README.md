@@ -39,7 +39,7 @@ and focusing on the potential use of this software for security reasons:
 However, this software may be useful for other kind of tests that are not only security related, such as mocking-up other systems (as a client or as a server), 
 potentially emulating user activity, as well as for doing load and stress testing too. **In any case, just remember that this software requires you to define the interaction, 
 so it is not 'plug and play': there is still work to do to cover your needs** (except you have the right interaction files - *conversation rules* files).You can think of this like
-a gun and its bullets: *Lope* is the 'gun', but the *conversation rules* are the 'bullets'.
+a gun and its bullets: *Lope* is the 'gun', but the *conversation rules* are the 'bullets'. 
 
 Regarding rules, there are three main types of **conversation rules** that *Lope* can execute:
 
