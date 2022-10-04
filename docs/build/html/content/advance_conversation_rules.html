@@ -37,8 +37,71 @@
             
   <section id="advance-conversation-rules">
 <span id="index-0"></span><span id="id1"></span><h1><span class="section-number">13. </span>Advance Conversation Rules<a class="headerlink" href="#advance-conversation-rules" title="Permalink to this heading">¶</a></h1>
+<p>In this chapter, we are going to see more advance options that are available for the use of the conversation rules to provide more tools
+for defining more complete scenarios, or just easy the use of <em>Lope</em> to operators.</p>
 <section id="conditional-external-connector-execution">
 <span id="index-1"></span><h2><span class="section-number">13.1. </span>Conditional External Connector Execution<a class="headerlink" href="#conditional-external-connector-execution" title="Permalink to this heading">¶</a></h2>
+<p>This feature allows the <strong>external connector</strong> to wait for certain conditions before starting to interact with third parties. This feature needs the use of multi external
+connector memory varibales, because the <strong>external connector</strong> starts its execution but it does not interact directly with third parties. It will wait until some conditions
+are satisfied (memory variables in Redis have the right values), before starting any interaction. We can say that the <strong>external connector</strong> is ‘sleeping’ until the right
+time to ‘wake up’.</p>
+<p>In order to use this functionality, you have to configure it in the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section of the conversation rules. It can get the IP and port for the execution from some
+memory variables as well, so as to start the execution using dynamic data. The memory variables used for the conditions can be different for those declared to be used in the
+interaction, therefore you do not need to declare them as you do for those you are going to use. In the following example you can see how this can be configured</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL ASPECTS</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+  <span class="c1"># ======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SOCKET CONNECTION CLOSE</span>
+  <span class="c1"># =======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SESSION SUPPORT</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># CONDITIONAL EXT CONN EXECUTION</span>
+  <span class="c1"># ==============================</span>
+  <span class="n">conditional_execution</span><span class="p">:</span>
+      <span class="c1"># use conditional execution in this execution?</span>
+      <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="c1"># list of conditions: memory values and the value</span>
+      <span class="n">conditions</span><span class="p">:</span>
+          <span class="c1"># One condition</span>
+          <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">order_66</span>
+              <span class="n">value</span><span class="p">:</span> <span class="kc">True</span>
+
+          <span class="c1"># Another condition</span>
+          <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">order_67</span>
+              <span class="n">value</span><span class="p">:</span> <span class="kc">False</span>
+
+      <span class="c1"># If present, the ip value will be</span>
+      <span class="c1"># gathered from this memory variable</span>
+      <span class="n">mem_var_ip</span><span class="p">:</span> <span class="n">var1</span>
+
+      <span class="c1"># If present, the port value will be</span>
+      <span class="c1"># gathered from this memory variable</span>
+      <span class="n">mem_var_port</span><span class="p">:</span> <span class="n">var2</span>
+
+  <span class="c1"># OTHER TOPICS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Additional aspects should be defined here, but</span>
+  <span class="c1"># they will be described in the respective sections</span>
+  <span class="c1"># of this documentation, for the sake of clarity</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="async-switch">
 <span id="index-2"></span><h2><span class="section-number">13.2. </span>Async Switch<a class="headerlink" href="#async-switch" title="Permalink to this heading">¶</a></h2>
@@ -46,11 +109,14 @@
 <section id="async-loop">
 <span id="index-3"></span><h2><span class="section-number">13.3. </span>Async Loop<a class="headerlink" href="#async-loop" title="Permalink to this heading">¶</a></h2>
 </section>
+<section id="external-connector-fork">
+<span id="index-4"></span><h2><span class="section-number">13.4. </span>External Connector Fork<a class="headerlink" href="#external-connector-fork" title="Permalink to this heading">¶</a></h2>
+</section>
 <section id="conversation-rules-groups">
-<span id="index-4"></span><h2><span class="section-number">13.4. </span>Conversation Rules Groups<a class="headerlink" href="#conversation-rules-groups" title="Permalink to this heading">¶</a></h2>
+<span id="index-5"></span><h2><span class="section-number">13.5. </span>Conversation Rules Groups<a class="headerlink" href="#conversation-rules-groups" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="multiple-conversation-rules-files">
-<span id="index-5"></span><h2><span class="section-number">13.5. </span>Multiple Conversation Rules Files<a class="headerlink" href="#multiple-conversation-rules-files" title="Permalink to this heading">¶</a></h2>
+<span id="index-6"></span><h2><span class="section-number">13.6. </span>Multiple Conversation Rules Files<a class="headerlink" href="#multiple-conversation-rules-files" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -95,8 +161,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#conditional-external-connector-execution">13.1. Conditional External Connector Execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#async-switch">13.2. Async Switch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#async-loop">13.3. Async Loop</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#conversation-rules-groups">13.4. Conversation Rules Groups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiple-conversation-rules-files">13.5. Multiple Conversation Rules Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-connector-fork">13.4. External Connector Fork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conversation-rules-groups">13.5. Conversation Rules Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-conversation-rules-files">13.6. Multiple Conversation Rules Files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="activities.html">14. Activity Alerting &amp; Storage</a></li>
