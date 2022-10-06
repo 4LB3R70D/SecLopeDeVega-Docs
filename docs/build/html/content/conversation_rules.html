@@ -153,7 +153,11 @@ You can consider the socket connection as part of the ‘logical’ connection e
 
     <span class="c1"># This means that only the first rule detected if</span>
     <span class="c1"># several conversation rules are applicable.</span>
-    <span class="c1"># The rule with the smallest ID is the one executed</span>
+    <span class="c1"># The rule with the smallest ID is the one executed.</span>
+    <span class="c1"># This changes the way of how the external connector</span>
+    <span class="c1"># checks the regex of custom rules. Instead of being parallel,</span>
+    <span class="c1"># now it is sequential to ensure that only the first hit</span>
+    <span class="c1"># is used.</span>
     <span class="n">conversation_use_only_first_hit</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
 
 

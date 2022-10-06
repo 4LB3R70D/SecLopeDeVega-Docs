@@ -47,7 +47,7 @@ are satisfied (memory variables in Redis have the right values), before starting
 time to ‘wake up’.</p>
 <p>In order to use this functionality, you have to configure it in the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section of the conversation rules. It can get the IP and port for the execution from some
 memory variables as well, so as to start the execution using dynamic data. The memory variables used for the conditions can be different for those declared to be used in the
-interaction, therefore you do not need to declare them as you do for those you are going to use. In the following example you can see how this can be configured</p>
+interaction, therefore you do not need to declare them as you do for those you are going to use. In the following example you can see how this can be configured.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
 <span class="c1"># Operational parameters of the interation</span>
 <span class="c1"># and connection with third parties</span>
@@ -105,6 +105,73 @@ interaction, therefore you do not need to declare them as you do for those you a
 </section>
 <section id="async-switch">
 <span id="index-2"></span><h2><span class="section-number">13.2. </span>Async Switch<a class="headerlink" href="#async-switch" title="Permalink to this heading">¶</a></h2>
+<p>We have already seen that one custom rule can trigger several async or hybrid custom rules as well. However, the ‘OR’ is missing, this means that
+you may trigger this set of custom rules asynchronously, or this another set of them; depending on some conditions (memory variables and their values).
+This provides flexibility to interact differently depending on the execution context, so alternative interactions now can take place.</p>
+<p>In order to configure that, you can follow the below example. Any ‘case’ of the ‘switch’ has to define the list of <code class="docutils literal notranslate"><span class="pre">conditions</span></code> that make it applicable,
+and the list of <code class="docutils literal notranslate"><span class="pre">rules</span></code> to trigger asynchronously when that happens. The ‘switch’ structure is made up of <code class="docutils literal notranslate"><span class="pre">options</span></code> (cases) and the <code class="docutils literal notranslate"><span class="pre">dafault</span></code> (when
+no option is applicable). However, the <code class="docutils literal notranslate"><span class="pre">default</span></code> one is optional.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># ASYNC SWITCH</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Switch for executing some async (or hybrid) rules depending</span>
+  <span class="c1"># on conditions. E.g., ff memory variable &#39;AAAA&#39; has the value</span>
+  <span class="c1"># &#39;X&#39; (value field), or it has the same content of the memory</span>
+  <span class="c1"># variable &#39;BBB&#39;, then execute the async Rule &#39;N&#39;. In case no</span>
+  <span class="c1"># option fits, use the async rule of the default field (if present,</span>
+  <span class="c1"># and the list length is greater than 0)</span>
+  <span class="n">async_switch</span><span class="p">:</span>
+
+      <span class="n">options</span><span class="p">:</span>
+          <span class="c1"># first option or &#39;case&#39; wit a list of conditions to satisfy</span>
+          <span class="o">-</span> <span class="n">conditions</span><span class="p">:</span>
+              <span class="c1"># list of conditions</span>
+              <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+                  <span class="n">value</span><span class="p">:</span> <span class="mi">2</span>
+                  <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span>
+
+              <span class="c1"># if conditions are satisfied, then a set of async</span>
+              <span class="c1"># (or hybrid) rules to execute</span>
+            <span class="n">rules</span><span class="p">:</span>
+              <span class="o">-</span> <span class="n">rule_id</span><span class="p">:</span> <span class="mi">3</span>
+                <span class="n">delay</span><span class="p">:</span> <span class="mi">3</span>
+
+          <span class="c1"># second option or &#39;case&#39;</span>
+          <span class="o">-</span> <span class="n">conditions</span><span class="p">:</span>
+              <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+                  <span class="n">value</span><span class="p">:</span> <span class="mi">2</span>
+                  <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span>
+            <span class="n">rules</span><span class="p">:</span>
+              <span class="o">-</span> <span class="n">rule_id</span><span class="p">:</span> <span class="mi">3</span>
+                <span class="n">delay</span><span class="p">:</span> <span class="mi">3</span>
+
+      <span class="c1"># other cases:</span>
+      <span class="c1">#   Another case</span>
+      <span class="c1">#   - conditions:...</span>
+      <span class="c1">#     rules:...</span>
+      <span class="c1">#</span>
+      <span class="c1">#   and another one</span>
+      <span class="c1">#   - conditions:...</span>
+      <span class="c1">#     rules:...</span>
+
+      <span class="n">default</span><span class="p">:</span>
+      <span class="c1"># set of async ruls to execute if no &#39;case&#39; statement</span>
+      <span class="c1"># is applicable</span>
+      <span class="o">-</span> <span class="n">rule_id</span><span class="p">:</span> <span class="mi">3</span>
+          <span class="n">delay</span><span class="p">:</span> <span class="mi">3</span>
+
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="async-loop">
 <span id="index-3"></span><h2><span class="section-number">13.3. </span>Async Loop<a class="headerlink" href="#async-loop" title="Permalink to this heading">¶</a></h2>

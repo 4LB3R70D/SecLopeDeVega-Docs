@@ -287,7 +287,6 @@ and the way to declare the use of the custom function within a rule can be found
     # Output of the custom function
     # function_name => (var3, var4)
 
-
     # OTHER FIELDS
     # ============
     # Other fields expalined in this documentation

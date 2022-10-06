@@ -19,7 +19,7 @@ time to 'wake up'.
 
 In order to use this functionality, you have to configure it in the ``operation`` section of the conversation rules. It can get the IP and port for the execution from some 
 memory variables as well, so as to start the execution using dynamic data. The memory variables used for the conditions can be different for those declared to be used in the 
-interaction, therefore you do not need to declare them as you do for those you are going to use. In the following example you can see how this can be configured
+interaction, therefore you do not need to declare them as you do for those you are going to use. In the following example you can see how this can be configured.
 
 .. code-block:: 
 
@@ -79,8 +79,76 @@ interaction, therefore you do not need to declare them as you do for those you a
 .. index:: Async Switch
 
 Async Switch
-------------------------------------
+------------
+We have already seen that one custom rule can trigger several async or hybrid custom rules as well. However, the 'OR' is missing, this means that
+you may trigger this set of custom rules asynchronously, or this another set of them; depending on some conditions (memory variables and their values).
+This provides flexibility to interact differently depending on the execution context, so alternative interactions now can take place. 
 
+In order to configure that, you can follow the below example. Any 'case' of the 'switch' has to define the list of ``conditions`` that make it applicable, 
+and the list of ``rules`` to trigger asynchronously when that happens. The 'switch' structure is made up of ``options`` (cases) and the ``dafault`` (when 
+no option is applicable). However, the ``default`` one is optional.
+
+.. code-block:: 
+
+  any_custom_rule:
+
+    # GENERAL FIELDS
+    # ==============
+    ...
+
+    # ASYNC SWITCH 
+    # ============
+    # Switch for executing some async (or hybrid) rules depending 
+    # on conditions. E.g., ff memory variable 'AAAA' has the value 
+    # 'X' (value field), or it has the same content of the memory 
+    # variable 'BBB', then execute the async Rule 'N'. In case no 
+    # option fits, use the async rule of the default field (if present, 
+    # and the list length is greater than 0)
+    async_switch:
+
+        options:
+            # first option or 'case' wit a list of conditions to satisfy
+            - conditions:
+                # list of conditions
+                - var_name: var1
+                    value: 2
+                    reference_variable: var2
+
+                # if conditions are satisfied, then a set of async 
+                # (or hybrid) rules to execute
+              rules:
+                - rule_id: 3
+                  delay: 3
+
+            # second option or 'case'
+            - conditions:
+                - var_name: var1
+                    value: 2
+                    reference_variable: var2
+              rules:
+                - rule_id: 3
+                  delay: 3
+
+        # other cases:
+        #   Another case
+        #   - conditions:...
+        #     rules:...
+        #
+        #   and another one
+        #   - conditions:...
+        #     rules:...
+
+        default:
+        # set of async ruls to execute if no 'case' statement
+        # is applicable
+        - rule_id: 3
+            delay: 3
+
+
+    # OTHER FIELDS
+    # ============
+    # Other fields expalined in this documentation
+    ...
 
 
 .. index:: Async Loop

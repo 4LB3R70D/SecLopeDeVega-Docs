@@ -81,7 +81,7 @@ The following is how the session support configuration can be configured:
               # "alphanumeric_and_symbols_lower", "alphanumeric_and_symbols_mix"
               characters_type: alphanumeric_lower
           
-          # Session ID can be update via conversation rules
+          # Session ID can be updated via conversation rules
           update:
 
               # is it possible to change the session ID during the interaction?

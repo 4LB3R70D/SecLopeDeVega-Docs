@@ -157,6 +157,11 @@ The last two parameters allow to find the custom code that you can add to custom
     CUSTOM_FUNCTIONS_DIRECTORY = ../custom_functions/
     CUSTOM_FUNCTIONS_MODULE_NAME = slv_custom_functions
 
+    # Number of subworkers to divide the task of checking all the regex of custom 
+    # rules for one input. This only is used when the external connector does not
+    # work in 'only first hit' scenario
+    NUMBER_RULE_CHECKER_SUBWORKERS = 10
+
 .. index:: TLS/DTLS Support
 
 TLS/DTLS Support
@@ -263,7 +268,7 @@ he following links can help you to install and use Redis, as well as understanin
 
     REDIS_TLS = NO
 
-    # use certificate for autenticate against the redis server?
+    # use certificate for authenticate against the redis server?
     REDIS_USE_CLIENT_CERTIFICATE = YES
     REDIS_CLIENT_CERTIFICATE = ../tls/ca/intermediate/certs/ca-chain_client.crt.pem
 

@@ -134,7 +134,11 @@ You can consider the socket connection as part of the 'logical' connection entit
 
         # This means that only the first rule detected if 
         # several conversation rules are applicable.
-        # The rule with the smallest ID is the one executed
+        # The rule with the smallest ID is the one executed.
+        # This changes the way of how the external connector
+        # checks the regex of custom rules. Instead of being parallel,
+        # now it is sequential to ensure that only the first hit 
+        # is used.
         conversation_use_only_first_hit: no # yes/no(default) 
 
 

@@ -171,6 +171,11 @@ in <a class="reference internal" href="engine_install.html#engine-installation">
 <span class="c1"># add the extension .py in the name</span>
 <span class="n">CUSTOM_FUNCTIONS_DIRECTORY</span> <span class="o">=</span> <span class="o">../</span><span class="n">custom_functions</span><span class="o">/</span>
 <span class="n">CUSTOM_FUNCTIONS_MODULE_NAME</span> <span class="o">=</span> <span class="n">slv_custom_functions</span>
+
+<span class="c1"># Number of subworkers to divide the task of checking all the regex of custom</span>
+<span class="c1"># rules for one input. This only is used when the external connector does not</span>
+<span class="c1"># work in &#39;only first hit&#39; scenario</span>
+<span class="n">NUMBER_RULE_CHECKER_SUBWORKERS</span> <span class="o">=</span> <span class="mi">10</span>
 </pre></div>
 </div>
 </section>
@@ -259,7 +264,7 @@ capabilities to use Redis.</p>
 
 <span class="n">REDIS_TLS</span> <span class="o">=</span> <span class="n">NO</span>
 
-<span class="c1"># use certificate for autenticate against the redis server?</span>
+<span class="c1"># use certificate for authenticate against the redis server?</span>
 <span class="n">REDIS_USE_CLIENT_CERTIFICATE</span> <span class="o">=</span> <span class="n">YES</span>
 <span class="n">REDIS_CLIENT_CERTIFICATE</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">intermediate</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">-</span><span class="n">chain_client</span><span class="o">.</span><span class="n">crt</span><span class="o">.</span><span class="n">pem</span>
 
