@@ -178,9 +178,13 @@ different values they may have. This is done similarly than the update process o
 This means that the custom rule is only executed if the memory conditions are satisfied, after being considered
 as applicable. Therefore, in this case, there are two steps of allowing the execution of the rule:</p>
 <ul class="simple">
-<li><p>Being applicable synchronous or asynchronously</p></li>
+<li><p>Being applicable synchronous or asynchronously.</p></li>
 <li><p>Having the memory conditions satisfied</p></li>
 </ul>
+<p>In the syncrhonous case, the memory conditions are checked at the time the RegEx is evaluated.
+In the asyncrhonous case, the conditions are checked just before the rule execution.
+This means the conditions are not checked at the time to trigger the rule, you trigger it but later on,
+the memory conditions are reviewed.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
 
   <span class="c1"># GENERAL FIELDS</span>

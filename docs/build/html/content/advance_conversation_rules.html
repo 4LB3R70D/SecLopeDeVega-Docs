@@ -175,15 +175,294 @@ no option is applicable). However, the <code class="docutils literal notranslate
 </section>
 <section id="async-loop">
 <span id="index-3"></span><h2><span class="section-number">13.3. </span>Async Loop<a class="headerlink" href="#async-loop" title="Permalink to this heading">¶</a></h2>
+<p>The async loop is another interesting feature to model interactions and provide more flexibility. This feature allows you execute a set of rules asynchronously
+while some conditions are satisfied. Every time the rules are going to be executed, the loop conditions are reviewed for checking if a new iteration should take places.
+This means that iterations will may take place in different times, according to the different delays of the rules. Howevever, every rule will have its loop. Not all the
+rules of the loop are executed in every iteration, only the rule that is going to be executed. Therefore, we can say that we have several parallel virtual loops in place
+with the memory same conditions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># ASYNC LOOP</span>
+  <span class="c1"># ==========</span>
+  <span class="c1"># Switch for executing some async (or hybrid) rules depending</span>
+  <span class="c1"># on conditions. E.g., ff memory variable &#39;AAAA&#39; has the value</span>
+  <span class="c1"># &#39;X&#39; (value field), or it has the same content of the memory</span>
+  <span class="c1"># variable &#39;BBB&#39;, then execute the async Rule &#39;N&#39;. In case no</span>
+  <span class="c1"># option fits, use the async rule of the default field (if present,</span>
+  <span class="c1"># and the list length is greater than 0)</span>
+  <span class="n">async_loop</span><span class="p">:</span>
+
+    <span class="c1"># list of the conditions of the loop</span>
+    <span class="c1"># they can use another memory variable</span>
+    <span class="c1"># or a fixed value. In case of both are</span>
+    <span class="c1"># present, the memory variable will be used</span>
+    <span class="n">conditions</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+        <span class="n">value</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="c1"># OR</span>
+        <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span>
+
+    <span class="c1"># list of rules to execute</span>
+    <span class="n">rules</span><span class="p">:</span>
+      <span class="c1"># this rule will be executed every 3 seconds, 5 times</span>
+      <span class="c1"># as maximum</span>
+      <span class="o">-</span> <span class="n">rule_id</span><span class="p">:</span> <span class="mi">3</span>
+        <span class="n">delay</span><span class="p">:</span> <span class="mi">3</span>
+        <span class="c1"># if present and grater than 0, this means the number</span>
+        <span class="c1"># of times the iteration can take place per each rule</span>
+        <span class="n">max_number_iterations</span><span class="p">:</span> <span class="mi">5</span>
+
+      <span class="c1"># this rule will be executed every 5 seconds</span>
+      <span class="o">-</span> <span class="n">rule_id</span><span class="p">:</span> <span class="mi">17</span>
+        <span class="n">delay</span><span class="p">:</span> <span class="mi">5</span>
+
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="external-connector-fork">
 <span id="index-4"></span><h2><span class="section-number">13.4. </span>External Connector Fork<a class="headerlink" href="#external-connector-fork" title="Permalink to this heading">¶</a></h2>
+<p>If having an <strong>external connector</strong> (or some of them) is great, why not inviting more to the party?!. This is exactly what this feature does:
+It allows you to create new <strong>external connectors</strong> during the interaction.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># EXT CONN FORK</span>
+  <span class="c1"># =============</span>
+  <span class="c1"># You can create new instances of external connectors</span>
+  <span class="c1"># if a rule is executed and optionally, passing a</span>
+  <span class="c1"># new configuration file, external connector id and</span>
+  <span class="c1"># password (secret). If these parameters are not provided,</span>
+  <span class="c1"># the new instance of external connector will start as</span>
+  <span class="c1"># as the original did (this is powered by python subprocess module)</span>
+  <span class="n">fork</span><span class="p">:</span>
+    <span class="c1"># is this feature enable?</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span>
+
+    <span class="c1"># Optional parameters.</span>
+    <span class="c1"># -------------------</span>
+    <span class="c1"># If they are not provided, the paremeters of the current</span>
+    <span class="c1"># external connector will be used</span>
+
+    <span class="c1"># config file to use for the new external connector</span>
+    <span class="n">config_file</span><span class="p">:</span> <span class="s2">&quot;/path/to/a/different/config/file&quot;</span>
+
+    <span class="c1"># ID to use for the new external connector</span>
+    <span class="n">new_id</span><span class="p">:</span> <span class="s2">&quot;Terminator&quot;</span>
+
+    <span class="c1"># password to use for the new external connector</span>
+    <span class="n">new_secret</span><span class="p">:</span> <span class="s2">&quot;sshhhhhh...it&#39;s_a_secret&quot;</span>
+
+    <span class="c1"># number of instances to create</span>
+    <span class="n">number</span><span class="p">:</span> <span class="mi">3</span> <span class="c1"># Number of instances to create</span>
+
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="conversation-rules-groups">
 <span id="index-5"></span><h2><span class="section-number">13.5. </span>Conversation Rules Groups<a class="headerlink" href="#conversation-rules-groups" title="Permalink to this heading">¶</a></h2>
+<p>As you may have already realised, for complex interaction scenarios you will need a lot of rules. This could be a performance issue when you have a new input,
+despite of having a parallel analysis of the potential RegEx. In order to overcome that issue, the rule groups comes into play: they group rules in blocks,
+and that block is only applicable under some conditions (It could be a RegEx, or some values for some memory variables). In any case, the rules of the group
+are not evaluated (or disabled) until the group applicable.</p>
+<p>This measure can really help in the reduction of the number of RegEx evaluations, apart of providing a bit of order in the conversation rule file.
+Just for your information, groups are evaluated <strong>after</strong> the evaluation of the non-grouped <em>conversation rules</em>. Below you can find how you can implement
+that feature in the conversation rule file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Conversation Rules</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">conversation</span><span class="p">:</span>
+
+    <span class="n">greetings</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">default</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">empty</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">timeout</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">ending</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+    <span class="n">custom_rules</span><span class="p">:</span> <span class="c1"># Set of custom rules</span>
+
+
+        <span class="c1"># GROUPED RULES</span>
+        <span class="c1"># ------------</span>
+        <span class="n">groups</span><span class="p">:</span>
+        <span class="c1"># list of groups</span>
+
+          <span class="c1"># One group that is enabled using regex</span>
+        <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="n">group_A</span>
+          <span class="c1"># The regex that makes this group applicable</span>
+          <span class="n">regex</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">regex</span><span class="p">]</span>
+
+          <span class="c1"># list of custom rules</span>
+          <span class="n">rules</span><span class="p">:</span> <span class="o">...</span>
+
+
+          <span class="c1"># Another group is enabled using memory variables</span>
+        <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="n">group_B</span>
+
+          <span class="c1"># List of memory conditions that make the group applicable</span>
+          <span class="n">memory_conditions</span><span class="p">:</span>
+              <span class="c1"># var1 == fixed_value?</span>
+            <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+              <span class="n">value</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">fixed_value</span><span class="p">]</span>
+
+              <span class="c1"># var2 == var3?</span>
+            <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var2</span>
+              <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var3</span>
+
+          <span class="c1"># list of custom rules</span>
+          <span class="n">rules</span><span class="p">:</span> <span class="o">...</span>
+
+
+        <span class="c1"># NON-GROUPED RULES</span>
+        <span class="c1"># -----------------</span>
+        <span class="n">rules</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># list of custom rules that do not</span>
+                   <span class="c1"># belong to any group</span>
+</pre></div>
+</div>
 </section>
 <section id="multiple-conversation-rules-files">
 <span id="index-6"></span><h2><span class="section-number">13.6. </span>Multiple Conversation Rules Files<a class="headerlink" href="#multiple-conversation-rules-files" title="Permalink to this heading">¶</a></h2>
+<p>We have seen that there are plenty of possibilities about what you can do with the rules and the memory variables. However, having everything in one file
+could be a madness to work with that. The proposed solution is to split the conversation rules file into a primary one, and a set of auxiliary ones that will be imported
+at the time of loading the primary conversation rules file.</p>
+<p>This also allows that you can have some things defined in specific files and imported into several different conversation rules files. The things that you can put in this
+secondary kind of files are custom conversation rules, and memory variables declaration. The auxiliary files can import other auxiliary files as well, providing more flexibility
+at the time of creating smaller piece of conversarion rules in different files.</p>
+<p>In order to this, you have to do the following in the primary conversation rule file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ====================================================</span>
+<span class="c1"># EXAMPLE PROTOCOL</span>
+<span class="c1"># Author: Alberto Dominguez</span>
+<span class="c1"># ====================================================</span>
+<span class="c1"># this is just a field just for &#39;operators&#39;, it is not relevant for operation</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">example</span>
+
+<span class="c1"># Which external connector group is assigned for this rules.</span>
+<span class="c1">#  If empty, or &#39;default&#39; ==&gt; no group (only one file valid without group)</span>
+<span class="n">ext_conn_group</span><span class="p">:</span> <span class="n">B</span>
+
+<span class="c1"># This enables the use of this conversation rules.</span>
+<span class="c1"># This means that you can have some conversation rules files</span>
+<span class="c1"># that are in the folder, but they are deactivated and then,</span>
+<span class="c1"># they will no be sent to any external connector.</span>
+<span class="n">enable_use</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default).</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># to be explained later</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Execution memory</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">memory_variables</span><span class="p">:</span>
+
+  <span class="c1"># some memory variables defined (if any)</span>
+  <span class="c1"># ...</span>
+  <span class="n">multi_extconn_level</span><span class="p">:</span><span class="o">...</span>
+
+  <span class="n">global_level</span><span class="p">:</span><span class="o">...</span>
+
+  <span class="n">connection_level</span><span class="p">:</span><span class="o">...</span>
+
+  <span class="c1"># list of files to import</span>
+  <span class="n">import</span><span class="p">:</span>
+
+    <span class="c1"># ALWAYS IMPORT .YML FILES!</span>
+  <span class="o">-</span> <span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="k">for</span><span class="o">/</span><span class="n">more</span><span class="o">/</span><span class="n">memory</span><span class="o">/</span><span class="n">variables</span><span class="o">.</span><span class="n">yml</span>
+    <span class="n">is_relative</span><span class="p">:</span> <span class="n">yes</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Conversation Rules</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">conversation</span><span class="p">:</span>
+
+  <span class="n">greetings</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+  <span class="n">default</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+  <span class="n">empty</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+  <span class="n">timeout</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+  <span class="n">ending</span><span class="p">:</span><span class="o">...</span> <span class="c1"># Basic Rule</span>
+
+  <span class="n">custom_rules</span><span class="p">:</span>
+
+    <span class="n">rules</span><span class="p">:</span><span class="o">...</span>
+
+    <span class="n">groups</span><span class="p">:</span><span class="o">...</span>
+
+    <span class="c1"># list of files to import</span>
+    <span class="n">import</span><span class="p">:</span>
+
+        <span class="c1"># ALWAYS IMPORT .YML FILES!</span>
+      <span class="o">-</span> <span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">auxiliary</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="k">for</span><span class="o">/</span><span class="n">more</span><span class="o">/</span><span class="n">custom</span><span class="o">/</span><span class="n">rules</span><span class="o">.</span><span class="n">yml</span>
+        <span class="n">is_relative</span><span class="p">:</span> <span class="n">yes</span>
+</pre></div>
+</div>
+<p>And, in any auxiliary conversation rule file, you can add the following information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ====================================================</span>
+<span class="c1"># AUXILIARY CONVERSATION RULE FILE</span>
+<span class="c1"># Author: Alberto Dominguez</span>
+<span class="c1"># ====================================================</span>
+<span class="c1"># this is just a field just for &#39;operators&#39;,</span>
+<span class="c1"># it is not relevant for operation</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">additional</span> <span class="n">file</span> <span class="n">x32</span>
+
+<span class="c1"># Fields used at the time of importing memory variables</span>
+<span class="c1"># -----------------------------------------------------</span>
+<span class="n">multi_extconn_level</span><span class="p">:</span><span class="o">...</span>
+
+<span class="n">global_level</span><span class="p">:</span><span class="o">...</span>
+
+<span class="n">connection_level</span><span class="p">:</span><span class="o">...</span>
+
+
+<span class="c1"># Fields used at the time of importing conversation rules</span>
+<span class="c1"># -------------------------------------------------------</span>
+<span class="n">rules</span><span class="p">:</span><span class="o">...</span>
+
+<span class="n">groups</span><span class="p">:</span><span class="o">...</span>
+
+
+<span class="c1"># Fields used to import additional auxiliary files</span>
+<span class="c1"># ------------------------------------------------</span>
+<span class="c1"># list of files to import</span>
+<span class="n">import</span><span class="p">:</span>
+
+    <span class="c1"># ALWAYS IMPORT .YML FILES!</span>
+  <span class="o">-</span> <span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">another</span><span class="o">/</span><span class="n">auxilary</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">yml</span>
+    <span class="n">is_relative</span><span class="p">:</span> <span class="n">yes</span>
+</pre></div>
+</div>
+<p>The auxiliary files can have any of those fields, bnut they are not mandatory. It could happen that one file has one
+one field of them, or you have rules and memory variables in the same file, but this file should be used in the memory
+and in the rules sections to really import the whole content.</p>
+<p>The following image expand the previous used image of how
+the <strong>external connectors</strong> are linked with the <em>conversation rules</em>, adding some different imported files to the existing
+example.</p>
+<a class="reference internal image-reference" href="../_images/multiple_conv_rules_files.png"><img alt="../_images/multiple_conv_rules_files.png" class="align-center" src="../_images/multiple_conv_rules_files.png" style="width: 600px;" /></a>
 </section>
 </section>
 

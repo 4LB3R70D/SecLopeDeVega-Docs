@@ -161,10 +161,14 @@ different values they may have. This is done similarly than the update process o
 This means that the custom rule is only executed if the memory conditions are satisfied, after being considered
 as applicable. Therefore, in this case, there are two steps of allowing the execution of the rule:
   
-* Being applicable synchronous or asynchronously
+* Being applicable synchronous or asynchronously. 
 
 * Having the memory conditions satisfied
 
+In the syncrhonous case, the memory conditions are checked at the time the RegEx is evaluated. 
+In the asyncrhonous case, the conditions are checked just before the rule execution. 
+This means the conditions are not checked at the time to trigger the rule, you trigger it but later on, 
+the memory conditions are reviewed. 
 
 .. code-block:: 
 

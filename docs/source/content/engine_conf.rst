@@ -83,6 +83,12 @@ Therefore, you can assign different *conversation rules* to different **external
       path: "/conv_rules"
       is_relative_path: yes
 
+    # reload the conversation files every time a new external connector
+    # connect with the engine, instead of using the ones loaded
+    # at the start of the engine (cache copy). This allows to modify
+    # the configuration files at engine runtime.
+    reload_conv_rules_in_new_contact: yes # yes/no(default)
+
     # configuration about the number of external connectors 
     # and external conenctor workers (threads)
     max_number_of_workers: 200 # pool size

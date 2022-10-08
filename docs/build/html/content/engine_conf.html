@@ -99,6 +99,12 @@ In the picture below you can find a grahical description of this idea.</p>
     <span class="n">path</span><span class="p">:</span> <span class="s2">&quot;/conv_rules&quot;</span>
     <span class="n">is_relative_path</span><span class="p">:</span> <span class="n">yes</span>
 
+  <span class="c1"># reload the conversation files every time a new external connector</span>
+  <span class="c1"># connect with the engine, instead of using the ones loaded</span>
+  <span class="c1"># at the start of the engine (cache copy). This allows to modify</span>
+  <span class="c1"># the configuration files at engine runtime.</span>
+  <span class="n">reload_conv_rules_in_new_contact</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
   <span class="c1"># configuration about the number of external connectors</span>
   <span class="c1"># and external conenctor workers (threads)</span>
   <span class="n">max_number_of_workers</span><span class="p">:</span> <span class="mi">200</span> <span class="c1"># pool size</span>

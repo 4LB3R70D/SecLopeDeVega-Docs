@@ -283,9 +283,13 @@ They can be grouped and this is explained in :ref:`advance_conversation_rules`, 
 
         custom_rules: # Set of custom rules
 
+            # GROUPED RULES
+            # ------------
             groups: ... # To be explained in the 
                         # 'Advance Conversation Rules' Section
 
+            # NON-GROUPED RULES
+            # -----------------
             rules: ... # list of custom rules that do not
                        # belong to any group
 
