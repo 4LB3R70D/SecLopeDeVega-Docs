@@ -12,6 +12,9 @@ when you are using encryption between **external connectors** and the **engine**
 This algorithm is considered an `authenticated encryption <https://en.wikipedia.org/wiki/Authenticated_encryption>`_ which simultaneously provides the confidentiality and authenticity of 
 data in motion. The combination of both assure that any generated activity is genuine, and the integrity is preserved from its creation to the reporting.
 
+The activity signature is done using `Elliptic Curve Digital Signature Algorithm (ECDSA) <https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm>`_, especially the 
+curve which implements NIST P-256 (FIPS 186-3, section D.2.3).
+
 .. index:: Activities Reporting
 
 Activities Reporting
