@@ -43,6 +43,8 @@ the interaction life cycle of the interactions. These activities are created in 
 when you are using encryption between <strong>external connectors</strong> and the <strong>engine</strong>, because the encryption mechanism is <a class="reference external" href="https://en.wikipedia.org/wiki/ChaCha20-Poly1305">ChaCha20-Poly1305</a>.
 This algorithm is considered an <a class="reference external" href="https://en.wikipedia.org/wiki/Authenticated_encryption">authenticated encryption</a> which simultaneously provides the confidentiality and authenticity of
 data in motion. The combination of both assure that any generated activity is genuine, and the integrity is preserved from its creation to the reporting.</p>
+<p>The activity signature is done using <a class="reference external" href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">Elliptic Curve Digital Signature Algorithm (ECDSA)</a>, especially the
+curve which implements NIST P-256 (FIPS 186-3, section D.2.3).</p>
 <section id="activities-reporting">
 <span id="index-1"></span><h2><span class="section-number">14.1. </span>Activities Reporting<a class="headerlink" href="#activities-reporting" title="Permalink to this heading">¶</a></h2>
 <p>There are plenty of options in the reporting aspect of the activities. in <a class="reference internal" href="architecture.html#architecture"><span class="std std-ref">Architecture</span></a> you can see the different reporting channels available to send alerts, and below in this section
