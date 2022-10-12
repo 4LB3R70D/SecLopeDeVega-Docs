@@ -463,6 +463,6 @@ the **external connectors** are linked with the *conversation rules*, adding som
 example.
 
 .. image:: ../_static/multiple_conv_rules_files.png
-   :width: 600
+   :width: 800
    :align: center
 
