@@ -37,28 +37,560 @@
             
   <section id="activity-alerting-storage">
 <span id="activities"></span><span id="index-0"></span><h1><span class="section-number">14. </span>Activity Alerting &amp; Storage<a class="headerlink" href="#activity-alerting-storage" title="Permalink to this heading">¶</a></h1>
-<p>In this chapter we are going to talk about the result of the interactions: activities. These activities</p>
-<section id="index-1">
-<span id="id1"></span><h2><span class="section-number">14.1. </span>Activities<a class="headerlink" href="#index-1" title="Permalink to this heading">¶</a></h2>
+<p>In this chapter we are going to talk about the result of the interactions: activities (a.k.a. external activities). They are the result of the rules execution, or any relevant event of
+the interaction life cycle of the interactions. These activities are created in the <strong>external connector</strong> and sent to the <strong>engine</strong> for being saved, or being sent as alerts to other systems.</p>
+<p>The integrity of the activities has been considered in the design of <em>Lope</em>, since the <strong>engine</strong> also signs them cryptographically to ensure their integrity. This makes especially sense
+when you are using encryption between <strong>external connectors</strong> and the <strong>engine</strong>, because the encryption mechanism is <a class="reference external" href="https://en.wikipedia.org/wiki/ChaCha20-Poly1305">ChaCha20-Poly1305</a>.
+This algorithm is considered an <a class="reference external" href="https://en.wikipedia.org/wiki/Authenticated_encryption">authenticated encryption</a> which simultaneously provides the confidentiality and authenticity of
+data in motion. The combination of both assure that any generated activity is genuine, and the integrity is preserved from its creation to the reporting.</p>
+<section id="activities-reporting">
+<span id="index-1"></span><h2><span class="section-number">14.1. </span>Activities Reporting<a class="headerlink" href="#activities-reporting" title="Permalink to this heading">¶</a></h2>
+<p>There are plenty of options in the reporting aspect of the activities. in <a class="reference internal" href="architecture.html#architecture"><span class="std std-ref">Architecture</span></a> you can see the different reporting channels available to send alerts, and below in this section
+of the documentation you will find how to configure that integration. You can customize even how the reporting is done, in general you just tell report all activites for all enabled options
+doing this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+   <span class="c1"># GENERAL ASPECTS</span>
+   <span class="c1"># ===============</span>
+   <span class="o">...</span>
+
+
+   <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+   <span class="c1"># ======================</span>
+   <span class="o">...</span>
+
+
+   <span class="c1"># SOCKET CONNECTION CLOSE</span>
+   <span class="c1"># =======================</span>
+   <span class="o">...</span>
+
+   <span class="c1"># ACTIVITY REPORTING</span>
+   <span class="c1"># ==================</span>
+
+   <span class="c1"># Report the acitivities for all reporting channels enabled</span>
+   <span class="n">alert_all_flag</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+   <span class="c1"># OTHER TOPICS</span>
+   <span class="c1"># ============</span>
+   <span class="c1"># Additional aspects should be defined here, but</span>
+   <span class="c1"># they will be described in the respective sections</span>
+   <span class="c1"># of this documentation, for the sake of clarity</span>
+   <span class="o">...</span>
+</pre></div>
+</div>
+<p>Or you can decide for which activity what reporting mechanism you want to use. You can do this by adding the <code class="docutils literal notranslate"><span class="pre">alert</span></code> field in the corresponding rule. If you enable the case
+for using all available channels (globally in the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section, or in each rule), this disable the selection of specific reporting channels.</p>
+<p class="rubric" id="index-2">Basic Rules Reporting</p>
+<p>For any basic rule you can do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_basic_rule</span><span class="p">:</span>
+   <span class="c1"># What to send to the third parties</span>
+   <span class="c1"># when the rule is executed</span>
+   <span class="c1"># If empty or not present,</span>
+   <span class="c1"># the rule is considered</span>
+   <span class="c1"># &#39;executed&#39; without sending</span>
+   <span class="c1"># anything to the third party</span>
+   <span class="n">value</span><span class="p">:</span> <span class="p">[</span><span class="n">message</span> <span class="n">to</span> <span class="n">be</span> <span class="n">sent</span><span class="p">]</span>
+
+   <span class="c1"># If the content of the field &#39;value&#39;</span>
+   <span class="c1"># is encoded in base64</span>
+   <span class="n">b64_flag</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+   <span class="c1"># If the rule is enabled and</span>
+   <span class="c1"># can be used for the interaction</span>
+   <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+   <span class="c1"># Alerting fields</span>
+   <span class="n">alert</span><span class="p">:</span>
+      <span class="c1"># all channels, default option</span>
+      <span class="nb">all</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">email</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">http</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">kafka</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">syslog</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">timeout</span></code> and <code class="docutils literal notranslate"><span class="pre">ending</span></code> the basic rules, <em>Lope</em> will report their corresponding events, not the rule execution.</p>
+<p class="rubric" id="index-3">Custom Rules Reporting</p>
+<p>For custom rules, the configuration is the same:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+   <span class="c1"># GENERAL FIELDS</span>
+   <span class="c1"># ==============</span>
+   <span class="o">...</span>
+
+   <span class="c1"># SOCKET CLOSE SCENARIOS</span>
+   <span class="c1"># ======================</span>
+   <span class="o">...</span>
+
+   <span class="c1"># ALERTING FIELDS</span>
+   <span class="c1"># ===============</span>
+   <span class="n">alert</span><span class="p">:</span>
+      <span class="c1"># all channels, default option</span>
+      <span class="nb">all</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">email</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">http</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">kafka</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">syslog</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+
+   <span class="c1"># OTHER FIELDS</span>
+   <span class="c1"># ============</span>
+   <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="memory-reporting">
-<span id="index-2"></span><h2><span class="section-number">14.2. </span>Memory Reporting<a class="headerlink" href="#memory-reporting" title="Permalink to this heading">¶</a></h2>
+<span id="index-4"></span><h2><span class="section-number">14.2. </span>Memory Reporting<a class="headerlink" href="#memory-reporting" title="Permalink to this heading">¶</a></h2>
+<p>You can report snapshots of the memory variables in every activity as well. This will produce a large amount of data, so please take that in mind.
+This feature could be relevant for debugging purposes, but it is not recommended for real operation scenarios. To enable this, you can do it using
+the following fields in the engine configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+   <span class="c1"># GENERAL ASPECTS</span>
+   <span class="c1"># ===============</span>
+   <span class="o">...</span>
+
+
+   <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+   <span class="c1"># ======================</span>
+   <span class="o">...</span>
+
+
+   <span class="c1"># SOCKET CONNECTION CLOSE</span>
+   <span class="c1"># =======================</span>
+   <span class="o">...</span>
+
+   <span class="c1"># ACTIVITY REPORTING</span>
+   <span class="c1"># ==================</span>
+
+   <span class="c1"># Report the acitivities for all reporting channels enabled</span>
+   <span class="n">alert_all_flag</span><span class="p">:</span> <span class="n">yes</span>
+
+   <span class="c1"># Report the status of the memory for each external activity generated</span>
+   <span class="c1"># (This adds many entries in the database)</span>
+   <span class="n">report_memory</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default).</span>
+
+   <span class="c1"># Encode b64 the memroy variables content at the time of reporting memory</span>
+   <span class="n">encode_b64_memory_reported</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default).</span>
+
+
+   <span class="c1"># OTHER TOPICS</span>
+   <span class="c1"># ============</span>
+   <span class="c1"># Additional aspects should be defined here, but</span>
+   <span class="c1"># they will be described in the respective sections</span>
+   <span class="c1"># of this documentation, for the sake of clarity</span>
+   <span class="o">...</span>
+</pre></div>
+</div>
 </section>
-<section id="storage">
-<span id="index-3"></span><h2><span class="section-number">14.3. </span>Storage<a class="headerlink" href="#storage" title="Permalink to this heading">¶</a></h2>
+<section id="activities-storage">
+<span id="index-5"></span><h2><span class="section-number">14.3. </span>Activities Storage<a class="headerlink" href="#activities-storage" title="Permalink to this heading">¶</a></h2>
+<p><em>Lope</em> comes with a database schema ready to be imported into <a class="reference external" href="https://mariadb.org/">MariaDB</a> or <a class="reference external" href="https://www.mysql.com/">MySQL</a>, ready to save any activity or any captured data for any interaction.
+Below you can find the <a class="reference external" href="https://www.visual-paradigm.com/guide/data-modeling/what-is-entity-relationship-diagram/">Entity Relationship (ER) Diagram</a> that allow to save all the data.
+In this diagram, an <code class="docutils literal notranslate"><span class="pre">external_connector_session</span></code> is any session that the <strong>external connector</strong> establishes with the <strong>engine</strong>. The <code class="docutils literal notranslate"><span class="pre">external_connection</span></code> is any session (or interaction) that the
+<strong>external connector</strong> establishes with a third party. As you will see, in any activity you can save the status of the memory variables in use as we have already explained.</p>
 <a class="reference internal image-reference" href="../_images/slv_engine_db.png"><img alt="../_images/slv_engine_db.png" class="align-center" src="../_images/slv_engine_db.png" style="width: 800px;" /></a>
+<p>Additionally, <em>Lope</em> provides simple file storage capabilities to create a file where all activities will be saved during the execution. The use of the database or the file case are independent,
+in the sense of using one does not affect the another. In order to configure the different persistence capabilities, you have to add the following in the engine configuration file (explained previously
+in <a class="reference internal" href="engine_conf.html#engine-configuration"><span class="std std-ref">Engine Configuration</span></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_service</span><span class="p">:</span>
+
+    <span class="c1"># Max number of data workers for the data service</span>
+    <span class="c1"># to save information in parallel.</span>
+    <span class="c1"># If &#39;0&#39; or negative values, then the default</span>
+    <span class="c1"># value is used (&#39;200&#39;)</span>
+    <span class="n">max_number_data_workers</span><span class="p">:</span> <span class="mi">200</span>
+
+
+    <span class="c1"># To just save the information in a simple file</span>
+    <span class="n">simple_file_storage</span><span class="p">:</span>
+
+       <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+       <span class="c1"># not include the final &#39;/&#39;, do not use &#39;.&#39;.</span>
+       <span class="c1"># For using the current folder, use only this &quot;&quot;</span>
+       <span class="n">folder_path</span><span class="p">:</span> <span class="s2">&quot;/raw_data&quot;</span>
+       <span class="n">is_relative_path</span><span class="p">:</span> <span class="n">yes</span>
+
+       <span class="c1"># To encode in b64 the activities to be saved</span>
+       <span class="n">encode_b64</span><span class="p">:</span> <span class="n">no</span> <span class="c1">#yes/no(default).</span>
+
+    <span class="c1"># Database use</span>
+    <span class="n">database</span><span class="p">:</span>
+       <span class="c1"># mariadb / mysql: https://github.com/go-sql-driver/mysql</span>
+       <span class="c1"># is the database enable for this execution?</span>
+       <span class="n">enable_sql_db</span><span class="p">:</span> <span class="n">yes</span>
+
+       <span class="c1"># Database credentials</span>
+       <span class="n">user</span><span class="p">:</span> <span class="n">root</span>
+       <span class="n">password</span><span class="p">:</span> <span class="n">toor</span>
+
+       <span class="c1"># Database data</span>
+       <span class="n">ip</span><span class="p">:</span> <span class="s2">&quot;127.0.0.1&quot;</span> <span class="c1"># or url</span>
+       <span class="n">port</span><span class="p">:</span> <span class="mi">3306</span>
+       <span class="n">schema</span><span class="p">:</span> <span class="s2">&quot;slv_engine&quot;</span>
+
+       <span class="c1"># --------------</span>
+       <span class="c1"># TLS</span>
+       <span class="c1"># --------------</span>
+       <span class="c1"># in case the connection with the database is encrypted using TLS</span>
+       <span class="n">tls_config</span><span class="p">:</span>
+          <span class="c1"># is the connection with the database encrypted?</span>
+          <span class="n">enable</span><span class="p">:</span> <span class="n">no</span>
+
+          <span class="n">ca_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+          <span class="c1"># If a CA o custom CA is in use,</span>
+          <span class="c1"># they are not self-signed certs (InsecureSkipVerify option)</span>
+          <span class="n">skip_certificate_verification</span><span class="p">:</span> <span class="n">no</span>
+          <span class="n">relative_path_for_certificates</span><span class="p">:</span> <span class="n">yes</span>
+
+          <span class="c1"># For client TLS authentication (Lope =&gt; MariaDB/MySQL)</span>
+          <span class="n">engine_client_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+          <span class="n">engine_client_key</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+          <span class="c1"># in case the private key of the certificate is protected</span>
+          <span class="c1"># using a password</span>
+          <span class="n">engine_client_key_protected</span><span class="p">:</span> <span class="n">yes</span>
+          <span class="n">engine_client_key_protected_password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
 </section>
-<section id="syslog-alerting">
-<span id="index-4"></span><h2><span class="section-number">14.4. </span>Syslog Alerting<a class="headerlink" href="#syslog-alerting" title="Permalink to this heading">¶</a></h2>
-</section>
-<section id="kafka-alerting">
-<span id="index-5"></span><h2><span class="section-number">14.5. </span>Kafka Alerting<a class="headerlink" href="#kafka-alerting" title="Permalink to this heading">¶</a></h2>
-</section>
-<section id="email-alerting">
-<span id="index-6"></span><h2><span class="section-number">14.6. </span>Email Alerting<a class="headerlink" href="#email-alerting" title="Permalink to this heading">¶</a></h2>
-</section>
-<section id="http-alerting">
-<span id="index-7"></span><h2><span class="section-number">14.7. </span>HTTP Alerting<a class="headerlink" href="#http-alerting" title="Permalink to this heading">¶</a></h2>
+<section id="activities-alerting">
+<h2><span class="section-number">14.4. </span>Activities Alerting<a class="headerlink" href="#activities-alerting" title="Permalink to this heading">¶</a></h2>
+<p>To configure the integration with the respective alerting channels, you have to configure the <code class="docutils literal notranslate"><span class="pre">alerting</span></code> section of the engine configuration file,
+and the number of workers to parallelize the delivery of alerts. Then, you have to add the configuration channels you want to use.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alert_service</span><span class="p">:</span>
+
+ <span class="c1"># Max number of data workers for the data service</span>
+ <span class="c1"># to save information in parallel.</span>
+ <span class="c1"># If &#39;0&#39; or negative values, then the default</span>
+ <span class="c1"># value is used (&#39;200&#39;)</span>
+ <span class="n">max_number_alert_workers</span><span class="p">:</span> <span class="mi">200</span>
+
+ <span class="c1"># Alerting channel configuration</span>
+ <span class="c1"># (for those in use)</span>
+ <span class="n">syslog</span><span class="p">:</span> <span class="o">...</span>
+
+ <span class="n">kafka</span><span class="p">:</span> <span class="o">...</span>
+
+ <span class="n">email</span><span class="p">:</span> <span class="o">...</span>
+
+ <span class="n">http</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-6">Syslog Alerting</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alert_service</span><span class="p">:</span>
+
+ <span class="c1"># Max number of data workers for the data service</span>
+ <span class="c1"># to save information in parallel.</span>
+ <span class="c1"># If &#39;0&#39; or negative values, then the default</span>
+ <span class="c1"># value is used (&#39;200&#39;)</span>
+ <span class="n">max_number_alert_workers</span><span class="p">:</span> <span class="mi">200</span>
+
+ <span class="c1"># Alerting channel configuration</span>
+ <span class="c1"># (for those in use)</span>
+ <span class="n">syslog</span><span class="p">:</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
+
+    <span class="n">remote_flag</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
+
+    <span class="c1"># One of the following: tcp/udp(default)</span>
+    <span class="n">remote_syslog_protocol</span><span class="p">:</span> <span class="s2">&quot;tcp&quot;</span>
+
+    <span class="n">remote_syslog_server_ip</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span> <span class="c1"># or domains</span>
+
+    <span class="n">remote_syslog_server_port</span><span class="p">:</span> <span class="mi">515</span>
+
+    <span class="n">tag</span><span class="p">:</span> <span class="s2">&quot;lope&quot;</span>
+
+    <span class="c1"># send the activities encoded base64?</span>
+    <span class="n">encode_activity_base64</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># --------------</span>
+    <span class="c1"># TLS</span>
+    <span class="c1"># --------------</span>
+    <span class="c1"># in case the connection with the database is encrypted using TLS</span>
+    <span class="n">tls_config</span><span class="p">:</span>
+       <span class="c1"># is the connection with the database encrypted?</span>
+       <span class="n">enable</span><span class="p">:</span> <span class="n">no</span>
+
+       <span class="n">ca_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="c1"># If a CA o custom CA is in use,</span>
+       <span class="c1"># they are not self-signed certs (InsecureSkipVerify option)</span>
+       <span class="n">skip_certificate_verification</span><span class="p">:</span> <span class="n">no</span>
+       <span class="n">relative_path_for_certificates</span><span class="p">:</span> <span class="n">yes</span>
+
+       <span class="c1"># For client TLS authentication (Lope =&gt; Syslog)</span>
+       <span class="n">engine_client_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="n">engine_client_key</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+       <span class="c1"># in case the private key of the certificate is protected</span>
+       <span class="c1"># using a password</span>
+       <span class="n">engine_client_key_protected</span><span class="p">:</span> <span class="n">yes</span>
+       <span class="n">engine_client_key_protected_password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+ <span class="c1"># Other alerting channels</span>
+ <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-7">Kafka Alerting</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alert_service</span><span class="p">:</span>
+
+ <span class="c1"># Max number of data workers for the data service</span>
+ <span class="c1"># to save information in parallel.</span>
+ <span class="c1"># If &#39;0&#39; or negative values, then the default</span>
+ <span class="c1"># value is used (&#39;200&#39;)</span>
+ <span class="n">max_number_alert_workers</span><span class="p">:</span> <span class="mi">200</span>
+
+ <span class="c1"># Alerting channel configuration</span>
+ <span class="c1"># (for those in use)</span>
+ <span class="n">syslog</span><span class="p">:</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
+
+    <span class="n">server_ip</span><span class="p">:</span> <span class="mf">127.0.0.1</span> <span class="c1"># Or domain</span>
+
+    <span class="n">server_port</span><span class="p">:</span> <span class="mi">8888</span>
+
+    <span class="n">topic</span><span class="p">:</span> <span class="s2">&quot;lope&quot;</span>
+
+    <span class="n">create_topic_if_not_exist</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># Distribution or balancer, it must be one of the following:</span>
+    <span class="c1"># &#39;LEAST_BYTES&#39;(default),&#39;CRC32BALANCER&#39;,&#39;MURMUR2BALANCER&#39;, &#39;HASH&#39;</span>
+    <span class="n">distribution</span><span class="p">:</span> <span class="s2">&quot;LEAST_BYTES&quot;</span>
+
+    <span class="c1"># One of the following: &#39;PLAIN&#39;,&#39;SCRAM&#39; or &#39;NONE&#39;(default)</span>
+    <span class="n">authentication_mechanism</span><span class="p">:</span> <span class="s2">&quot;NONE&quot;</span>
+
+    <span class="c1"># Only in use for scam authentication, one of the following: &#39;SHA256&#39; or &#39;SHA512&#39;(default)</span>
+    <span class="n">auth_scram_hash</span><span class="p">:</span> <span class="s2">&quot;SHA512&quot;</span>
+
+    <span class="c1"># topic partition</span>
+    <span class="n">event_key</span><span class="p">:</span> <span class="s2">&quot;lope&quot;</span>
+
+    <span class="n">timeout</span><span class="p">:</span> <span class="mi">10</span> <span class="c1"># seconds</span>
+
+    <span class="n">user</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1"># send the activities encoded base64?</span>
+    <span class="n">encode_activity_base64</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># --------------</span>
+    <span class="c1"># TLS</span>
+    <span class="c1"># --------------</span>
+    <span class="c1"># in case the connection with the database is encrypted using TLS</span>
+    <span class="n">tls_config</span><span class="p">:</span>
+       <span class="c1"># is the connection with the database encrypted?</span>
+       <span class="n">enable</span><span class="p">:</span> <span class="n">no</span>
+
+       <span class="n">ca_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="c1"># If a CA o custom CA is in use,</span>
+       <span class="c1"># they are not self-signed certs (InsecureSkipVerify option)</span>
+       <span class="n">skip_certificate_verification</span><span class="p">:</span> <span class="n">no</span>
+       <span class="n">relative_path_for_certificates</span><span class="p">:</span> <span class="n">yes</span>
+
+       <span class="c1"># For client TLS authentication (Lope =&gt; Kafka)</span>
+       <span class="n">engine_client_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="n">engine_client_key</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+       <span class="c1"># in case the private key of the certificate is protected</span>
+       <span class="c1"># using a password</span>
+       <span class="n">engine_client_key_protected</span><span class="p">:</span> <span class="n">yes</span>
+       <span class="n">engine_client_key_protected_password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+ <span class="c1"># Other alerting channels</span>
+ <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-8">Email Alerting</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alert_service</span><span class="p">:</span>
+
+ <span class="c1"># Max number of data workers for the data service</span>
+ <span class="c1"># to save information in parallel.</span>
+ <span class="c1"># If &#39;0&#39; or negative values, then the default</span>
+ <span class="c1"># value is used (&#39;200&#39;)</span>
+ <span class="n">max_number_alert_workers</span><span class="p">:</span> <span class="mi">200</span>
+
+ <span class="c1"># Alerting channel configuration</span>
+ <span class="c1"># (for those in use)</span>
+ <span class="n">syslog</span><span class="p">:</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
+
+    <span class="n">smtp_ip</span><span class="p">:</span> <span class="s2">&quot;smtp.gmail.com&quot;</span> <span class="c1"># or domains</span>
+
+    <span class="n">smtp_port</span><span class="p">:</span> <span class="mi">587</span>
+
+    <span class="c1"># One of the following: &#39;PLAIN&#39;(default),&#39;CRAMMD5&#39;</span>
+    <span class="n">authentication_mechanism</span><span class="p">:</span> <span class="n">PLAIN</span>
+
+    <span class="c1"># SMTP</span>
+    <span class="c1"># https://pkg.go.dev/net/smtp</span>
+    <span class="n">smtp_plain_auth_identity</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">smtp_auth_user</span><span class="p">:</span> <span class="s2">&quot;seclopedevega@gmail.com&quot;</span>
+
+    <span class="n">smtp_auth_password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">smtp_plain_auth_host</span><span class="p">:</span> <span class="s2">&quot;smtp.gmail.com&quot;</span>
+
+    <span class="c1"># email fields</span>
+    <span class="n">from</span><span class="p">:</span> <span class="s2">&quot;seclopedevega@gmail.com&quot;</span>
+
+    <span class="c1"># lists of email addresses for different fields</span>
+    <span class="n">reply_to</span><span class="p">:</span>
+       <span class="o">-</span> <span class="s2">&quot;seclopedevega@gmail.com&quot;</span>
+
+    <span class="n">to</span><span class="p">:</span>
+       <span class="o">-</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">cc</span><span class="p">:</span>
+       <span class="o">-</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">bcc</span><span class="p">:</span>
+       <span class="o">-</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">subject</span><span class="p">:</span> <span class="s2">&quot;[SecLopeDeVega][Activity Report]&quot;</span>
+
+    <span class="c1"># The activity is added after the body intro and before the body end</span>
+    <span class="n">body_intro</span><span class="p">:</span>
+       <span class="s2">&quot;</span>
+       <span class="o">&lt;</span><span class="n">h2</span><span class="o">&gt;</span> <span class="n">Hello</span> <span class="n">there</span><span class="p">,</span> <span class="n">it</span><span class="s1">&#39;s Lope&lt;/h2&gt;</span><span class="se">\n</span>
+       <span class="o">---------------------------------</span>\<span class="n">n</span>
+       <span class="n">ACTIVITY</span> <span class="o">=</span> <span class="s2">&quot;</span>
+
+    <span class="n">body_end</span><span class="p">:</span>
+       <span class="s2">&quot;</span>
+       \<span class="n">n</span>\<span class="n">n</span><span class="o">---------------------------------</span>\<span class="n">n</span>
+       <span class="s2">&quot;</span>
+
+    <span class="c1"># send the activities encoded base64?</span>
+    <span class="n">encode_activity_base64</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># --------------</span>
+    <span class="c1"># TLS</span>
+    <span class="c1"># --------------</span>
+    <span class="c1"># in case the connection with the database is encrypted using TLS</span>
+    <span class="n">tls_config</span><span class="p">:</span>
+       <span class="c1"># is the connection with the database encrypted?</span>
+       <span class="n">enable</span><span class="p">:</span> <span class="n">no</span>
+
+       <span class="n">ca_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="c1"># If a CA o custom CA is in use,</span>
+       <span class="c1"># they are not self-signed certs (InsecureSkipVerify option)</span>
+       <span class="n">skip_certificate_verification</span><span class="p">:</span> <span class="n">no</span>
+       <span class="n">relative_path_for_certificates</span><span class="p">:</span> <span class="n">yes</span>
+
+       <span class="c1"># For client TLS authentication (Lope =&gt; SMTP)</span>
+       <span class="n">engine_client_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="n">engine_client_key</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+       <span class="c1"># in case the private key of the certificate is protected</span>
+       <span class="c1"># using a password</span>
+       <span class="n">engine_client_key_protected</span><span class="p">:</span> <span class="n">yes</span>
+       <span class="n">engine_client_key_protected_password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+ <span class="c1"># Other alerting channels</span>
+ <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-9">HTTP Alerting or Webhook</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alert_service</span><span class="p">:</span>
+
+ <span class="c1"># Max number of data workers for the data service</span>
+ <span class="c1"># to save information in parallel.</span>
+ <span class="c1"># If &#39;0&#39; or negative values, then the default</span>
+ <span class="c1"># value is used (&#39;200&#39;)</span>
+ <span class="n">max_number_alert_workers</span><span class="p">:</span> <span class="mi">200</span>
+
+ <span class="c1"># Alerting channel configuration</span>
+ <span class="c1"># (for those in use)</span>
+ <span class="n">syslog</span><span class="p">:</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
+
+    <span class="n">url</span><span class="p">:</span> <span class="s2">&quot;http://127.0.0.1&quot;</span>
+
+    <span class="c1"># One of the following: &#39;POST&#39;(default),&#39;PUT&#39; or &#39;GET&#39;</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">GET</span>
+
+    <span class="n">timeout</span><span class="p">:</span> <span class="mi">10</span> <span class="c1"># seconds</span>
+
+    <span class="c1"># HTTP Headers</span>
+    <span class="n">headers</span><span class="p">:</span>
+       <span class="c1"># header_key: header_value</span>
+       <span class="n">aaa</span><span class="p">:</span> <span class="s2">&quot;aaaa&quot;</span>
+       <span class="n">bbb</span><span class="p">:</span> <span class="s2">&quot;bbb&quot;</span>
+
+    <span class="c1"># Query string parameters. If the activity must be sent via parameters,</span>
+    <span class="c1"># use &#39;{{ACTIVITY}}&#39; in the parameter value</span>
+    <span class="n">url_parameters</span><span class="p">:</span>
+       <span class="c1"># parameter_key: parameter_value</span>
+       <span class="n">aaa</span><span class="p">:</span> <span class="s2">&quot;aaaa&quot;</span>
+       <span class="n">bbb</span><span class="p">:</span> <span class="s2">&quot;bbb&quot;</span>
+
+    <span class="c1"># This parameter allows to send the activity in the HTTP body,</span>
+    <span class="c1"># it is recommended to disable it for HTTP GET method</span>
+    <span class="n">use_body_flag</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default).</span>
+
+    <span class="c1"># The activity is added after the body intro and before the body end</span>
+    <span class="n">body_intro</span><span class="p">:</span>
+       <span class="s2">&quot;</span>
+       <span class="n">Hello</span> <span class="n">there</span><span class="p">,</span> <span class="n">it</span><span class="s1">&#39;s Lope&lt;/h2&gt;</span><span class="se">\n</span>
+       <span class="o">---------------------------------</span>\<span class="n">n</span>
+       <span class="n">ACTIVITY</span> <span class="o">=</span> <span class="s2">&quot;</span>
+
+    <span class="n">body_end</span><span class="p">:</span>
+       <span class="s2">&quot;</span>
+       \<span class="n">n</span>\<span class="n">n</span><span class="o">---------------------------------</span>\<span class="n">n</span>
+       <span class="s2">&quot;</span>
+
+    <span class="c1"># send the activities encoded base64?</span>
+    <span class="n">encode_activity_base64</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># --------------</span>
+    <span class="c1"># TLS</span>
+    <span class="c1"># --------------</span>
+    <span class="c1"># in case the connection with the database is encrypted using TLS</span>
+    <span class="n">tls_config</span><span class="p">:</span>
+       <span class="c1"># is the connection with the database encrypted?</span>
+       <span class="n">enable</span><span class="p">:</span> <span class="n">no</span>
+
+       <span class="n">ca_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="c1"># If a CA o custom CA is in use,</span>
+       <span class="c1"># they are not self-signed certs (InsecureSkipVerify option)</span>
+       <span class="n">skip_certificate_verification</span><span class="p">:</span> <span class="n">no</span>
+       <span class="n">relative_path_for_certificates</span><span class="p">:</span> <span class="n">yes</span>
+
+       <span class="c1"># For client TLS authentication (Lope =&gt; HTTP Server/Service)</span>
+       <span class="n">engine_client_cert</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+       <span class="n">engine_client_key</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+       <span class="c1"># in case the private key of the certificate is protected</span>
+       <span class="c1"># using a password</span>
+       <span class="n">engine_client_key_protected</span><span class="p">:</span> <span class="n">yes</span>
+       <span class="n">engine_client_key_protected_password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+ <span class="c1"># Other alerting channels</span>
+ <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -101,13 +633,10 @@
 <li class="toctree-l1"><a class="reference internal" href="custom_functions.html">12. Custom Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">13. Advance Conversation Rules</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">14. Activity Alerting &amp; Storage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#index-1">14.1. Activities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activities-reporting">14.1. Activities Reporting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#memory-reporting">14.2. Memory Reporting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#storage">14.3. Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#syslog-alerting">14.4. Syslog Alerting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#kafka-alerting">14.5. Kafka Alerting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#email-alerting">14.6. Email Alerting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#http-alerting">14.7. HTTP Alerting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activities-storage">14.3. Activities Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activities-alerting">14.4. Activities Alerting</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example_protocol.html">15. Example Protocol</a></li>
