@@ -328,7 +328,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
       # --------------
       # TLS
       # --------------
-      # in case the connection with the database is encrypted using TLS
+      # in case the connection with the Syslog is encrypted using TLS
       tls_config:
          # is the connection with the database encrypted?
          enable: no
@@ -402,7 +402,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
       # --------------
       # TLS
       # --------------
-      # in case the connection with the database is encrypted using TLS
+      # in case the connection with the Kafka is encrypted using TLS
       tls_config:
          # is the connection with the database encrypted?
          enable: no
@@ -496,7 +496,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
       # --------------
       # TLS
       # --------------
-      # in case the connection with the database is encrypted using TLS
+      # in case the connection with the SMTP is encrypted using TLS
       tls_config:
          # is the connection with the database encrypted?
          enable: no
@@ -580,7 +580,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
       # --------------
       # TLS
       # --------------
-      # in case the connection with the database is encrypted using TLS
+      # in case the connection with the HTTP Server/Service is encrypted using TLS
       tls_config:
          # is the connection with the database encrypted?
          enable: no

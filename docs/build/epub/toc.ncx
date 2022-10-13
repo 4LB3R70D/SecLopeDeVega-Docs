@@ -1,0 +1,410 @@
+<?xml version="1.0"?>
+<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+  <head>
+    <meta name="dtb:uid" content="unknown"/>
+    <meta name="dtb:depth" content="2"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Sec Lope De Vega Project</text>
+  </docTitle>
+  <navMap>    
+    <navPoint id="navPoint1" playOrder="1">
+      <navLabel>
+        <text>‘Sec Lope De Vega’ Project</text>
+      </navLabel>
+      <content src="index.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint2" playOrder="2">
+      <navLabel>
+        <text>Intro</text>
+      </navLabel>
+      <content src="content/intro.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint3" playOrder="3">
+      <navLabel>
+        <text>Architecture</text>
+      </navLabel>
+      <content src="content/architecture.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint4" playOrder="4">
+      <navLabel>
+        <text>Engine Software Description</text>
+      </navLabel>
+      <content src="content/engine_desc.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint5" playOrder="5">
+      <navLabel>
+        <text>Engine Configuration</text>
+      </navLabel>
+      <content src="content/engine_conf.xhtml" />  
+      <navPoint id="navPoint6" playOrder="5">
+        <navLabel>
+          <text>Engine Configuration</text>
+        </navLabel>
+        <content src="content/engine_conf.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint7" playOrder="6">
+        <navLabel>
+          <text>External Connectors Connection</text>
+        </navLabel>
+        <content src="content/engine_conf.xhtml#external-connectors-connection" />  
+      </navPoint>
+      <navPoint id="navPoint8" playOrder="7">
+        <navLabel>
+          <text>Engine Logging</text>
+        </navLabel>
+        <content src="content/engine_conf.xhtml#engine-logging" />  
+      </navPoint>
+      <navPoint id="navPoint9" playOrder="8">
+        <navLabel>
+          <text>Other Engine Configuration Options</text>
+        </navLabel>
+        <content src="content/engine_conf.xhtml#other-engine-configuration-options" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint10" playOrder="9">
+      <navLabel>
+        <text>Engine Installation &amp; Execution</text>
+      </navLabel>
+      <content src="content/engine_install.xhtml" />  
+      <navPoint id="navPoint11" playOrder="9">
+        <navLabel>
+          <text>Engine Installation &amp; Execution</text>
+        </navLabel>
+        <content src="content/engine_install.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint12" playOrder="10">
+        <navLabel>
+          <text>Compiling the Project</text>
+        </navLabel>
+        <content src="content/engine_install.xhtml#compiling-the-project" />  
+      </navPoint>
+      <navPoint id="navPoint13" playOrder="11">
+        <navLabel>
+          <text>Location of Configuration Files</text>
+        </navLabel>
+        <content src="content/engine_install.xhtml#location-of-configuration-files" />  
+      </navPoint>
+      <navPoint id="navPoint14" playOrder="12">
+        <navLabel>
+          <text>Launch Engine and Command Line Options</text>
+        </navLabel>
+        <content src="content/engine_install.xhtml#launch-engine-and-command-line-options" />  
+      </navPoint>
+      <navPoint id="navPoint15" playOrder="13">
+        <navLabel>
+          <text>Database Setup</text>
+        </navLabel>
+        <content src="content/engine_install.xhtml#database-setup" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint16" playOrder="14">
+      <navLabel>
+        <text>External Connector Software Description</text>
+      </navLabel>
+      <content src="content/ext-conn_desc.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint17" playOrder="15">
+      <navLabel>
+        <text>External Connector Configuration</text>
+      </navLabel>
+      <content src="content/ext-conn_conf.xhtml" />  
+      <navPoint id="navPoint18" playOrder="15">
+        <navLabel>
+          <text>External Connector Configuration</text>
+        </navLabel>
+        <content src="content/ext-conn_conf.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint19" playOrder="16">
+        <navLabel>
+          <text>Engine Connection</text>
+        </navLabel>
+        <content src="content/ext-conn_conf.xhtml#engine-connection" />  
+      </navPoint>
+      <navPoint id="navPoint20" playOrder="17">
+        <navLabel>
+          <text>External Connector Logging</text>
+        </navLabel>
+        <content src="content/ext-conn_conf.xhtml#external-connector-logging" />  
+      </navPoint>
+      <navPoint id="navPoint21" playOrder="18">
+        <navLabel>
+          <text>External Connector Timing</text>
+        </navLabel>
+        <content src="content/ext-conn_conf.xhtml#external-connector-timing" />  
+      </navPoint>
+      <navPoint id="navPoint22" playOrder="19">
+        <navLabel>
+          <text>External Connector Operation</text>
+        </navLabel>
+        <content src="content/ext-conn_conf.xhtml#external-connector-operation" />  
+      </navPoint>
+      <navPoint id="navPoint23" playOrder="20">
+        <navLabel>
+          <text>TLS/DTLS Support</text>
+        </navLabel>
+        <content src="content/ext-conn_conf.xhtml#tls-dtls-support" />  
+      </navPoint>
+      <navPoint id="navPoint24" playOrder="21">
+        <navLabel>
+          <text>Redis Integration</text>
+        </navLabel>
+        <content src="content/ext-conn_conf.xhtml#redis-integration" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint25" playOrder="22">
+      <navLabel>
+        <text>External Connector Installation &amp; Execution</text>
+      </navLabel>
+      <content src="content/ext-conn_install.xhtml" />  
+      <navPoint id="navPoint26" playOrder="22">
+        <navLabel>
+          <text>External Connector Installation &amp; Execution</text>
+        </navLabel>
+        <content src="content/ext-conn_install.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint27" playOrder="23">
+        <navLabel>
+          <text>Location of Configuration Files</text>
+        </navLabel>
+        <content src="content/ext-conn_install.xhtml#location-of-configuration-files" />  
+      </navPoint>
+      <navPoint id="navPoint28" playOrder="24">
+        <navLabel>
+          <text>Launch External Connector and Command Line Options</text>
+        </navLabel>
+        <content src="content/ext-conn_install.xhtml#launch-external-connector-and-command-line-options" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint29" playOrder="25">
+      <navLabel>
+        <text>Conversation Rules</text>
+      </navLabel>
+      <content src="content/conversation_rules.xhtml" />  
+      <navPoint id="navPoint30" playOrder="25">
+        <navLabel>
+          <text>Conversation Rules</text>
+        </navLabel>
+        <content src="content/conversation_rules.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint31" playOrder="26">
+        <navLabel>
+          <text>Conversation Rules File</text>
+        </navLabel>
+        <content src="content/conversation_rules.xhtml#conversation-rules-file" />  
+      </navPoint>
+      <navPoint id="navPoint32" playOrder="27">
+        <navLabel>
+          <text>Basic Rules</text>
+        </navLabel>
+        <content src="content/conversation_rules.xhtml#basic-rules" />  
+      </navPoint>
+      <navPoint id="navPoint33" playOrder="28">
+        <navLabel>
+          <text>Custom Rules</text>
+        </navLabel>
+        <content src="content/conversation_rules.xhtml#custom-rules" />  
+      </navPoint>
+      <navPoint id="navPoint34" playOrder="29">
+        <navLabel>
+          <text>Synchronous Rules</text>
+        </navLabel>
+        <content src="content/conversation_rules.xhtml#synchronous-rules" />  
+      </navPoint>
+      <navPoint id="navPoint35" playOrder="30">
+        <navLabel>
+          <text>Asynchronous and Hybrid Rules</text>
+        </navLabel>
+        <content src="content/conversation_rules.xhtml#asynchronous-and-hybrid-rules" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint36" playOrder="31">
+      <navLabel>
+        <text>Session Support &amp; Memory Variables</text>
+      </navLabel>
+      <content src="content/session_and_memory.xhtml" />  
+      <navPoint id="navPoint37" playOrder="31">
+        <navLabel>
+          <text>Session Support &amp; Memory Variables</text>
+        </navLabel>
+        <content src="content/session_and_memory.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint38" playOrder="32">
+        <navLabel>
+          <text>Session Support</text>
+        </navLabel>
+        <content src="content/session_and_memory.xhtml#session-support" />  
+      </navPoint>
+      <navPoint id="navPoint39" playOrder="33">
+        <navLabel>
+          <text>Memory Variables</text>
+        </navLabel>
+        <content src="content/session_and_memory.xhtml#memory-variables" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint40" playOrder="34">
+      <navLabel>
+        <text>Memory Operations</text>
+      </navLabel>
+      <content src="content/memory_ops.xhtml" />  
+      <navPoint id="navPoint41" playOrder="34">
+        <navLabel>
+          <text>Memory Operations</text>
+        </navLabel>
+        <content src="content/memory_ops.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint42" playOrder="35">
+        <navLabel>
+          <text>Memory Modifications Using Rules</text>
+        </navLabel>
+        <content src="content/memory_ops.xhtml#memory-modifications-using-rules" />  
+      </navPoint>
+      <navPoint id="navPoint43" playOrder="36">
+        <navLabel>
+          <text>Custom Rule Conditional Execution</text>
+        </navLabel>
+        <content src="content/memory_ops.xhtml#custom-rule-conditional-execution" />  
+      </navPoint>
+      <navPoint id="navPoint44" playOrder="37">
+        <navLabel>
+          <text>Built-in Memory Operations</text>
+        </navLabel>
+        <content src="content/memory_ops.xhtml#built-in-memory-operations" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint45" playOrder="38">
+      <navLabel>
+        <text>Custom Functions</text>
+      </navLabel>
+      <content src="content/custom_functions.xhtml" />  
+      <navPoint id="navPoint46" playOrder="38">
+        <navLabel>
+          <text>Custom Functions</text>
+        </navLabel>
+        <content src="content/custom_functions.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint47" playOrder="39">
+        <navLabel>
+          <text>Custom Pre-processor Function</text>
+        </navLabel>
+        <content src="content/custom_functions.xhtml#custom-pre-processor-function" />  
+      </navPoint>
+      <navPoint id="navPoint48" playOrder="40">
+        <navLabel>
+          <text>Custom Post-processor Function</text>
+        </navLabel>
+        <content src="content/custom_functions.xhtml#custom-post-processor-function" />  
+      </navPoint>
+      <navPoint id="navPoint49" playOrder="41">
+        <navLabel>
+          <text>Custom Functions in Custom Rules</text>
+        </navLabel>
+        <content src="content/custom_functions.xhtml#custom-functions-in-custom-rules" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint50" playOrder="42">
+      <navLabel>
+        <text>Advance Conversation Rules</text>
+      </navLabel>
+      <content src="content/advance_conversation_rules.xhtml" />  
+      <navPoint id="navPoint51" playOrder="42">
+        <navLabel>
+          <text>Advance Conversation Rules</text>
+        </navLabel>
+        <content src="content/advance_conversation_rules.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint52" playOrder="43">
+        <navLabel>
+          <text>Conditional External Connector Execution</text>
+        </navLabel>
+        <content src="content/advance_conversation_rules.xhtml#conditional-external-connector-execution" />  
+      </navPoint>
+      <navPoint id="navPoint53" playOrder="44">
+        <navLabel>
+          <text>Async Switch</text>
+        </navLabel>
+        <content src="content/advance_conversation_rules.xhtml#async-switch" />  
+      </navPoint>
+      <navPoint id="navPoint54" playOrder="45">
+        <navLabel>
+          <text>Async Loop</text>
+        </navLabel>
+        <content src="content/advance_conversation_rules.xhtml#async-loop" />  
+      </navPoint>
+      <navPoint id="navPoint55" playOrder="46">
+        <navLabel>
+          <text>External Connector Fork</text>
+        </navLabel>
+        <content src="content/advance_conversation_rules.xhtml#external-connector-fork" />  
+      </navPoint>
+      <navPoint id="navPoint56" playOrder="47">
+        <navLabel>
+          <text>Conversation Rules Groups</text>
+        </navLabel>
+        <content src="content/advance_conversation_rules.xhtml#conversation-rules-groups" />  
+      </navPoint>
+      <navPoint id="navPoint57" playOrder="48">
+        <navLabel>
+          <text>Multiple Conversation Rules Files</text>
+        </navLabel>
+        <content src="content/advance_conversation_rules.xhtml#multiple-conversation-rules-files" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint58" playOrder="49">
+      <navLabel>
+        <text>Activity Alerting &amp; Storage</text>
+      </navLabel>
+      <content src="content/activities.xhtml" />  
+      <navPoint id="navPoint59" playOrder="49">
+        <navLabel>
+          <text>Activity Alerting &amp; Storage</text>
+        </navLabel>
+        <content src="content/activities.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint60" playOrder="50">
+        <navLabel>
+          <text>Activities Reporting</text>
+        </navLabel>
+        <content src="content/activities.xhtml#activities-reporting" />  
+      </navPoint>
+      <navPoint id="navPoint61" playOrder="51">
+        <navLabel>
+          <text>Memory Reporting</text>
+        </navLabel>
+        <content src="content/activities.xhtml#memory-reporting" />  
+      </navPoint>
+      <navPoint id="navPoint62" playOrder="52">
+        <navLabel>
+          <text>Activities Storage</text>
+        </navLabel>
+        <content src="content/activities.xhtml#activities-storage" />  
+      </navPoint>
+      <navPoint id="navPoint63" playOrder="53">
+        <navLabel>
+          <text>Activities Alerting</text>
+        </navLabel>
+        <content src="content/activities.xhtml#activities-alerting" />  
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint64" playOrder="54">
+      <navLabel>
+        <text>Example Protocol</text>
+      </navLabel>
+      <content src="content/example_protocol.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint65" playOrder="55">
+      <navLabel>
+        <text>Quick Start</text>
+      </navLabel>
+      <content src="content/quickstart.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint66" playOrder="56">
+      <navLabel>
+        <text>Contact</text>
+      </navLabel>
+      <content src="content/contact.xhtml" />  
+    </navPoint>
+  </navMap>
+</ncx>

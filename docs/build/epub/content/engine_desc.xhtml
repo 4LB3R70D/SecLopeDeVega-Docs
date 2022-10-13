@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>3. Engine Software Description</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/epub.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="engine-software-description">
+<span id="engine-description"></span><span id="index-0"></span><h1><span class="section-number">3. </span>Engine Software Description</h1>
+<p>This component is the main orquestrator of <em>Lope</em>, we can say it is its heart. It controls all <strong>external connectors</strong> that are available in one <strong>engine</strong> execution.
+Since a picture is worth a thousand words, the best to describe how the <strong>engine</strong> works is an image (you might need to zoom in to see the details):</p>
+<img alt="../_images/slv-engine.png" class="align-center" src="../_images/slv-engine.png" style="width: 1000px;" />
+<p>As you can see, the <strong>engine</strong> is using different threads to leverage the power of parallel computing. The main threads are the following ones:</p>
+<ul class="simple">
+<li><p><strong>Main thread (a.k.a. engine cockpit service)</strong>: This is the thread that controls the overall execution of this software piece.
+It initializes the other relevant threads and the logical components, as well as starting the process for shutting down
+(via <a class="reference external" href="https://en.wikipedia.org/wiki/Signal_(IPC)#SIGINT">interrupt signal</a><span class="link-target"> [https://en.wikipedia.org/wiki/Signal_(IPC)#SIGINT]</span> or timeout).</p></li>
+<li><p><strong>External Connection Manager Service</strong>: This service is the one that oversees the interaction with <strong>external connectors</strong>, and listens the <a class="reference external" href="https://zeromq.org/">ZeroMQ</a><span class="link-target"> [https://zeromq.org/]</span> socket of the <strong>engine</strong>.</p></li>
+<li><p><strong>External Connection Workers</strong>: These threads are used to process the messages received from the <strong>external connectors</strong> to avoid blocking the <em>external connection manager service</em> for processing
+received messages and activities created by the <strong>external connectors</strong>. Every message received create a new <em>external connection worker</em>,
+except the <em>ping</em> message that is replied by the <em>external connection manager service</em> directly. Additionally, one worker is created at the time of stopping the execution,
+as can be seen in the previous image. It orchestrates how the <strong>external connectors</strong> stop and send the last information they have,
+avoiding losing information.</p></li>
+<li><p><strong>Alerting Service</strong>: This thread is the one that sends the activities created by <em>Lope</em> to the different systems available, and it manages the respective connection with them</p></li>
+<li><p><strong>Data Service</strong>: This thread is the main one to storage the activities created by <em>Lope</em> and save them in the database, a simple file, or both.</p></li>
+</ul>
+<p>Activities, or external activities, are described in detail in <a class="reference internal" href="activities.xhtml#activities"><span class="std std-ref">Activity Alerting &amp; Storage</span></a>, but here we can simply say that any action that the <em>Lope</em> does,
+any interaction with the target systems, is considered an activity. <strong>External connectors</strong> start and stop events are considered actions too,
+as well as the <strong>engine</strong> start and stop. Any activity is sent to the corresponding service to be stored or sent as an alert.</p>
+<p>A minor comment about the communcation between <strong>engine</strong> threads for those that might be interested, they are implemented using <a class="reference external" href="https://gobyexample.com/channels">go channels</a><span class="link-target"> [https://gobyexample.com/channels]</span>.</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        <a href="../_sources/content/engine_desc.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>

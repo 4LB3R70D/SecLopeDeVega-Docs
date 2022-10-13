@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>6. External Connector Software Description</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/epub.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="external-connector-software-description">
+<span id="external-connector-description"></span><span id="index-0"></span><h1><span class="section-number">6. </span>External Connector Software Description</h1>
+<p>This component is the element of <em>Lope</em> that connects with the third parties. As mention in the <a class="reference internal" href="intro.xhtml#intro"><span class="std std-ref">Intro</span></a>, every external connector works targeting a single port,
+mode (client or server) and protocol (<strong>tcp</strong> or <strong>udp</strong>); using an specific set of rules for the interaction. Since <em>Lope</em> is designed to be able to work with several <strong>external connectors</strong>
+at the same time, you can run different ones under the control of the same <strong>engine</strong> (as described in the <a class="reference internal" href="architecture.xhtml#architecture"><span class="std std-ref">Architecture</span></a>). The idea is that each <strong>external connector</strong> has <em>one job</em> in the
+interaction scenario, and there can be several of them working together.
+In the following image you can finde how the <strong>external connector</strong> internally works (you might need to zoom in to see the details):</p>
+<img alt="../_images/slv-ext_conn.png" class="align-center" src="../_images/slv-ext_conn.png" style="width: 1000px;" />
+<p>As you can see, there are different threads working at the same time:</p>
+<ul class="simple">
+<li><p><strong>Main Thread</strong>: this thread is the one that starts, initializes and stops the execution. It executes the <em>oversee loop</em> where the connection with the <strong>engine</strong> takes place.
+It also executes any order provided by the <strong>engine</strong>, like the <em>‘end’</em> order to stop the execution.</p></li>
+<li><p><strong>Interaction Worker</strong>: this thread is the one that listens the open sockets of the <strong>external connector</strong>. If something is recevied, it creates an <em>operation worker</em> for managing it.</p></li>
+<li><p><strong>Operation Worker</strong>: this kind of threads are created every time something is received from the third parties to execute the corresponding <em>conversation rules</em>.
+It executes the <em>Operation loop</em>, but not all steps are always executed. Depending on the context and the configuration, some of them are skipped.</p></li>
+<li><p><strong>Async Worker</strong>: this thread is the one that controls the timeouts of the <strong>external connection</strong> and its connections, as well as the <em>async taks (conversation rules)</em> to exectue.
+It operates the <em>backgroud loop</em> that allows to do those activities.</p></li>
+</ul>
+<p>In the previous image, there are two registers mentioned in the leyend. They are internal registers that are used to control the <strong>external connector</strong> execution:</p>
+<ul class="simple">
+<li><p><em>Connection Register</em>: This allows to control the status of each connection established with third parties (active or not, the <em>memory variables</em>, etc.).</p></li>
+<li><p><em>Activity Register</em>: This collects any event or <em>conversation rule</em> executed for every connection, saving it as an <em>activity</em>. The <em>main thread</em> checks if there are activities periodically,
+to send them to the <strong>engine</strong>. These activities, or external activities, are described in detail in <a class="reference internal" href="activities.xhtml#activities"><span class="std std-ref">Activity Alerting &amp; Storage</span></a>.</p></li>
+</ul>
+<p>Other relevant information about the <strong>external connector</strong> is that it will try 3 times to send a message to the <strong>engine</strong>. In case it does not reply, in any message to send to the <strong>engine</strong>.
+Additionally, the <strong>external connector</strong> will try to initialize the execution 3 times as well, in case it is not able to do it. This can result that there are 9 attempts to contact the <strong>engine</strong>,
+if the initialization cannot happen if the engine is not responding.</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        <a href="../_sources/content/ext-conn_desc.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>

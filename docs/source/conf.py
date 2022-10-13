@@ -10,6 +10,7 @@ project = 'Sec Lope De Vega Project'
 copyright = '2022, Sec Lope De Vega Project'
 author = 'Alberto Dominguez'
 release = '0.5'
+version = '0.5'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -26,7 +27,7 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
+html_title = 'Sec Lope De Vega'
 html_theme = 'alabaster'
 html_theme_options = {
     'logo': 'slv_logo.png',

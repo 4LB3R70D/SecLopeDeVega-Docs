@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>11. Memory Operations</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/epub.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="memory-operations">
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">11. </span>Memory Operations</h1>
+<p>Having memory variables is great, but using them is even better. In this section of the documentation we are going
+to see how you can work with them.</p>
+<section id="memory-modifications-using-rules">
+<span id="index-1"></span><h2><span class="section-number">11.1. </span>Memory Modifications Using Rules</h2>
+<p>The first use of the memory variables is that any custom rule can change the value of those variables. This can be done
+via directly changing the value, or by using the information received from the third party systems.</p>
+<p class="rubric">Direct Memory Variable Update</p>
+<p>The direct change of the memory variables needs first to decide ‘when’ this is going to happen, either in the ‘rule detection’ step
+(when the rule is considered as applicable to be executed), or in the ‘rule execution’ step (when the rule is executed and the response
+is sent, if there is any).  This is configured in in the <code class="docutils literal notranslate"><span class="pre">operation</span></code> section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Operational parameters of the interation</span>
+<span class="c1"># and connection with third parties</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="n">operation</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL ASPECTS</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># TO ENABLE TLS/DTLS USE</span>
+  <span class="c1"># ======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SOCKET CONNECTION CLOSE</span>
+  <span class="c1"># =======================</span>
+  <span class="o">...</span>
+
+  <span class="c1"># SESSION SUPPORT</span>
+  <span class="c1"># ===============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># MEMORY UPDATE &amp; CONDITIONS</span>
+  <span class="c1"># ==========================</span>
+  <span class="c1"># # One of the following: &quot;rule_detected&quot;, &quot;rule_executed&quot;(default).</span>
+  <span class="c1"># (Before session update and custom functions)</span>
+  <span class="n">memory_update_when</span><span class="p">:</span> <span class="n">rule_executed</span>
+
+  <span class="c1"># To enable the use of Redis server to share memory</span>
+  <span class="c1"># variables between external connectors</span>
+  <span class="n">memory_variables_multi_ext_connector_enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+  <span class="c1"># To overwrite exisisting memory variables in Redis</span>
+  <span class="c1"># during the initialization phase</span>
+  <span class="n">multi_ext_connector_memory_overwrite_during_init</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+  <span class="c1"># OTHER TOPICS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Additional aspects should be defined here, but</span>
+  <span class="c1"># they will be described in the respective sections</span>
+  <span class="c1"># of this documentation, for the sake of clarity</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>And the memory variable update should be defined under the <code class="docutils literal notranslate"><span class="pre">memory</span></code> field, and <code class="docutils literal notranslate"><span class="pre">update</span></code> subfield of the custom rule.
+Several memory variables can be updated at onces since you define a list of them to be updated.
+The updating process can use a fixed (hardcoded) value, or another memory variable. In this second case,
+the content of the reference memory variable is copied into the memory variable to update. In case both options are present
+(fixed value and reference memory variable), the fixed value case is omitted.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># MEMORY UPDATE &amp; CONDITIONS</span>
+  <span class="c1"># ==========================</span>
+  <span class="n">memory</span><span class="p">:</span>
+      <span class="c1"># new values for some memory variables.</span>
+      <span class="c1"># In case or a reference variable is present then</span>
+      <span class="c1"># the updating process uses the value of the</span>
+      <span class="c1"># reference memory variable, the value is omitted</span>
+      <span class="n">updates</span><span class="p">:</span>
+        <span class="c1"># One memory variable is updated</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var2</span>
+          <span class="n">value</span><span class="p">:</span> <span class="n">test2</span>
+
+        <span class="c1"># Another memory variable is updated</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+          <span class="n">value</span><span class="p">:</span> <span class="mi">2</span> <span class="c1"># This value is not used!</span>
+          <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span> <span class="c1"># This is used to update</span>
+                                   <span class="c1"># the memory variable</span>
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-2">Memory Modifications Using Captured Data</p>
+<p>The memory variables can be updated via capturing specific information from the messages
+that are received from the third parties. This allows to save specific set of information
+in a memory variable. This only can be done in the sync or hybrid custom conversation rules,
+and it uses RegEx as well:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># CAPTURING INFORMATION</span>
+  <span class="c1"># =====================</span>
+  <span class="n">capturing_data</span><span class="p">:</span>
+        <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+        <span class="c1"># list of different information to capture</span>
+        <span class="n">captures</span><span class="p">:</span>
+
+            <span class="c1"># RegEx to capture the information</span>
+          <span class="o">-</span> <span class="n">regex</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">regex</span><span class="p">]</span>
+            <span class="c1"># Memory variable to save the captured information</span>
+            <span class="n">mem_var_name</span><span class="p">:</span> <span class="n">var1</span>
+            <span class="c1"># Is the regex in base64 format?</span>
+            <span class="n">regex_b64</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
+
+            <span class="c1"># RegEx to capture the information</span>
+          <span class="o">-</span> <span class="n">regex</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">regex</span><span class="p">]</span>
+            <span class="c1"># Memory variable to save the captured information</span>
+            <span class="n">mem_var_name</span><span class="p">:</span> <span class="n">var2</span>
+            <span class="c1"># Is the regex in base64 format?</span>
+            <span class="n">regex_b64</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
+
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>You can use memory variables of different scopes for doing the update. For instance, you can update a
+connection level memory variable using a global level memory variable. In case the reference memory variable
+is in ‘collision’ with others that have the same name, the one with the more limited scope will be used
+(in the same way that we have seen about how to add a memory variable in a response).</p>
+</section>
+<section id="custom-rule-conditional-execution">
+<span id="index-3"></span><h2><span class="section-number">11.2. </span>Custom Rule Conditional Execution</h2>
+<p>One of the potential uses of the memory variables is to modify the behavior of the execution, according to
+different values they may have. This is done similarly than the update process of memory variables.
+This means that the custom rule is only executed if the memory conditions are satisfied, after being considered
+as applicable. Therefore, in this case, there are two steps of allowing the execution of the rule:</p>
+<ul class="simple">
+<li><p>Being applicable synchronous or asynchronously.</p></li>
+<li><p>Having the memory conditions satisfied</p></li>
+</ul>
+<p>In the syncrhonous case, the memory conditions are checked at the time the RegEx is evaluated.
+In the asyncrhonous case, the conditions are checked just before the rule execution.
+This means the conditions are not checked at the time to trigger the rule, you trigger it but later on,
+the memory conditions are reviewed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># MEMORY UPDATE &amp; CONDITIONS</span>
+  <span class="c1"># ==========================</span>
+  <span class="n">memory</span><span class="p">:</span>
+      <span class="c1"># conditions to satisfy for executing the rule.</span>
+      <span class="c1"># In case or a reference variable is present,</span>
+      <span class="c1"># then the comparison is if the value of the memory variable</span>
+      <span class="c1">#  is the same of the reference memory variable.</span>
+      <span class="c1"># In case the &#39;value&#39; field and the &#39;reference_variable&#39; are present,</span>
+      <span class="c1"># only the &#39;reference_variable&#39; field</span>
+      <span class="c1"># is used</span>
+      <span class="n">conditions</span><span class="p">:</span>
+        <span class="c1"># var2 == &#39;test&#39;?</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var2</span>
+          <span class="n">value</span><span class="p">:</span> <span class="n">test2</span>
+
+        <span class="c1"># var1 == var2?</span>
+        <span class="o">-</span> <span class="n">var_name</span><span class="p">:</span> <span class="n">var1</span>
+          <span class="n">value</span><span class="p">:</span> <span class="mi">2</span> <span class="c1"># This value is not used!</span>
+          <span class="n">reference_variable</span><span class="p">:</span> <span class="n">var2</span> <span class="c1"># This is used for comparison</span>
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>You can add as many conditions as you wish, all of them will be evaluated to allow the rule execution.
+Similarly to the update process, you can compare memory variables of different scopes. For instance,
+you can compare a connection level memory variable using a multi external connector level memory variable.
+In case of the reference memory variable is in ‘collision’ with others that have the same name, the one with
+the more limited scope will be used (in the same way that we have seen about how to add a memory variable in
+a response).</p>
+</section>
+<section id="built-in-memory-operations">
+<span id="index-4"></span><h2><span class="section-number">11.3. </span>Built-in Memory Operations</h2>
+<p>You can do some operations using the memory variables to allow you to control more how the interaction takes place.
+Every custom rule can call a built-in memory operation, where you define what are the input values to use and what
+memory variables will save the output.</p>
+<p>The reserved word <code class="docutils literal notranslate"><span class="pre">EXT_IN</span></code> allow you to use the external input (message received from the third party) as input of
+the operation. You can use memory variables and fixed values as inputs as well. For the output, you need to specify what
+memory variables will save the results of the operations (if they are not provided, the results are lost). Please, be also
+aware that the order of the list of inputs or outputs is important for the correct use of the operation, as well as the
+data ‘type’ (int, float, bool…) of the result should be the same with the one declared in the section ‘memory_variables’.</p>
+<p>In case you need to do more than one of memory operations, we recommend using a set of async rules as a set of steps,
+where each of them is calling a memory operation. The reason to enforce one memory operation per conversation rule is
+for the sake of performance: Using async rules that are called in a sequential order, avoid blocking the interaction with
+one rule.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">any_custom_rule</span><span class="p">:</span>
+
+  <span class="c1"># GENERAL FIELDS</span>
+  <span class="c1"># ==============</span>
+  <span class="o">...</span>
+
+  <span class="c1"># BUILT-IN MEMORY OPERATIONS</span>
+  <span class="c1"># ==========================</span>
+  <span class="n">builtin_memory_operation</span><span class="p">:</span>
+
+    <span class="c1"># built-in memory operation enable for this rule?</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># Operation to execute</span>
+    <span class="n">operation</span><span class="p">:</span> <span class="n">STR_CONCAT</span>
+
+    <span class="c1"># List of inputs</span>
+    <span class="c1"># EXT_IN = &#39;EXTERNAL INPUT&#39;</span>
+    <span class="nb">input</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">EXT_IN</span>
+      <span class="o">-</span> <span class="n">var1</span>
+      <span class="o">-</span> <span class="mi">3</span>
+
+    <span class="c1"># List of memory variables</span>
+    <span class="c1"># to save the results</span>
+    <span class="n">output</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">var3</span>
+      <span class="o">-</span> <span class="n">var4</span>
+
+  <span class="c1"># OTHER FIELDS</span>
+  <span class="c1"># ============</span>
+  <span class="c1"># Other fields expalined in this documentation</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>There are other reserved words that you can use as input for the memory operations:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">IP</span></code>: the ip of the connection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PORT</span></code>: the port of the connection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SESSION_KEY</span></code>: the session key of the connection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SESSION_VALUE</span></code>: the session value of the connection</p></li>
+</ul>
+<p class="rubric">String Operations</p>
+<p>The list of the string memory operations available, indicating the expected input and type before the arrow, and the output after the arrow.
+In case of several inputs/outputs are expected, they are grouped inside a parenthesis.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_CONCAT</span></code> = String concatenation, merge several strings into one:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span><span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_REPLACE</span></code> = String replace, replace a string or regex by the value provided:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">original_string</span><span class="p">,</span> <span class="n">string_regex_to_replace</span><span class="p">,</span> <span class="n">string_to_add</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">modified_string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_SUBTRACT</span></code> = String substract, remove a string within another:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">original_string</span><span class="p">,</span> <span class="n">string_to_replace</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">modified_string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_UPPER</span></code> = String upper, put in uppercase the content of a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_LOWER</span></code> = String lower, put in lowercase the content of a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_SPLIT</span></code> = String split, it separte a string in several pieces. If there are more pieces that elements in the output field, they will be lost.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string_to_split</span><span class="p">,</span> <span class="n">string_separator</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_TRIM</span></code> = String trim, it trims a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_MATCH</span></code> = String match, it checks if a regular expresion is present in a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string_regex</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_CAPTURE</span></code> = String capture, it captures a string using a reguex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">original_string</span><span class="p">,</span> <span class="n">string_regex</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">captured_string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_COUNT</span></code> = String count, it counts the number of characters in a string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_MODE</span></code> = String mode, it calculates the mode (central tendency) of the given nominal data set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_ENCODE_B64</span></code> = String encode base 64, it encodes any string into base64:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_DECODE_B64</span></code> = String decode base 64, it decodes any string already encoded in base64:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_ENCODE_HEX</span></code> = String encode hexadecimal, it encodes any string into hexadecimal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STR_DECODE_HEX</span></code> = String decode hexadecimal, it decodes any string already encoded in hexadecimal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p class="rubric">Number Operations</p>
+<p>The list of the number memory operations available, indicating the expected input and type before the arrow, and the output after the arrow.
+In case of several inputs/outputs are expected, they are grouped inside a parenthesis.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_SUM</span></code> = Number sum, it sums a set of values added in the input field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_SUBTRACT</span></code> = Number substract, it substracts to the first element of the input field, the rest of values added there:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_to_substract</span><span class="p">,</span> <span class="n">number_to_substract</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MULTIPLY</span></code> = Number multipy, it multiplies a set of values added in the input field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_DIVIDE</span></code> = Number divide, it divides the first element by the rest of elements in the input field in a sequential approach:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_to_divide</span><span class="p">,</span> <span class="n">number_to_divide</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_FLOOR</span></code> = Number divide, it does a floor division of the first element by the rest of elements in the input field in a sequential approach:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_to_floor_divide</span><span class="p">,</span> <span class="n">number_to_floor_divide</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MODULO</span></code> = Number modulo, it gets the reminder of a set of modulo operator calls. For more information, please check <a class="reference external" href="https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved">Python Modulo Operator</a><span class="link-target"> [https://www.freecodecamp.org/news/the-python-modulo-operator-what-does-the-symbol-mean-in-python-solved]</span>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number_for_modulo_operator</span><span class="p">,</span> <span class="n">number_for_modulo_operator</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POWER</span></code> = Number power, it applies a set of sequential power operations to the first element in the list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">power_number</span><span class="p">,</span> <span class="n">power_number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_INVERSE_SIGN</span></code> = Number inverse sing, change the sign of the number</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATER</span></code> = Number greater than, compare tu numbers (a&gt;b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWER</span></code> = Number lower than, compare tu numbers (a&lt;b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GREATEREQ</span></code> = Number greater than or equal, compare tu numbers (a&gt;=b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_LOWEREQ</span></code> = Number lower than or equal, compare tu numbers (a&lt;=b):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEAN</span></code> = Number mean, Arithmetic mean value (average) of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_GEOMETRIC_MEAN</span></code> = Number geometric mean, geometric mean value  of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_HARMONIC_MEAN</span></code> = Number harmonic mean, harmonic mean value of data :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN</span></code> = Number median, median value (middle value) of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_LOW</span></code> = Number median low, low median value of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_HIGH</span></code> = Number median high, high median value of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MEDIAN_GROUPED</span></code> = Number median grouped, it calculates the median of grouped continuous data, calculated as the 50th percentile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_MODE</span></code> = Number mode, it calculates the mode (central tendency) of the given numeric or nominal data set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POP_STD_DEV</span></code> = Number standard deviation, it calculates the standard deviation from an entire population:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_STD_DEV</span></code> = Number standard deviation, it calculates the standard deviation from a sample data set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_POP_VAR</span></code> = Number standard deviation, it calculatesthe variance of an entire population:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NBR_VAR</span></code> = Number standard deviation, it calculates the variance from a sample of data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">number</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p class="rubric">Boolean Operations</p>
+<p>The list of the boolean memory operations available, indicating the expected input and type before the arrow, and the output after the arrow.
+In case of several inputs/outputs are expected, they are grouped inside a parenthesis.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NOT</span></code> = Logical ‘NOT’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_AND</span></code> = Logical ‘AND’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_OR</span></code> = Logical ‘OR’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_XOR</span></code> = Logical ‘XOR’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NAND</span></code> = Logical ‘NAND’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LGC_NOR</span></code> = Logical ‘NOR’ operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        <a href="../_sources/content/memory_ops.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>

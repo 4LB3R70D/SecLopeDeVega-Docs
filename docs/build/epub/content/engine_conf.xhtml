@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>4. Engine Configuration</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/epub.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="engine-configuration">
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">4. </span>Engine Configuration</h1>
+<p>The main configuration file of the <strong>engine</strong> is the <em>engine_config.yml</em> file, but the name can be changed if the configuration file is passed
+as command line option (As explained in <a class="reference internal" href="engine_install.xhtml#engine-installation"><span class="std std-ref">Engine Installation &amp; Execution</span></a>). However, the file should be always a <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">yml</a><span class="link-target"> [https://en.wikipedia.org/wiki/YAML]</span> file.
+In this file, you configure everything related the <strong>engine</strong> execution, but nothing about the <strong>external connectors</strong> neither <em>conversation rules</em>
+(except in which  folder they are located).</p>
+<section id="external-connectors-connection">
+<h2><span class="section-number">4.1. </span>External Connectors Connection</h2>
+<p class="rubric" id="index-1">ZeroMQ &amp; Encryption</p>
+<p>Starting from the basics, the first thing you need to configure is the ZeroMQ communication for the <strong>external connectors</strong>.
+You should tell if you wish to encrypt the connection with the already encryption functionality. Depending on what you do, there are two results:</p>
+<ul class="simple">
+<li><p>If you enable it, the connection between the <strong>engine</strong> and the <strong>external connectors</strong> will encrypted using <a class="reference external" href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA</a><span class="link-target"> [https://en.wikipedia.org/wiki/RSA_(cryptosystem)]</span>
+as asymmetric algorithm to exchange the session key, and the symmetric algorithm will be <a class="reference external" href="https://en.wikipedia.org/wiki/ChaCha20-Poly1305">ChaCha20-Poly1305</a><span class="link-target"> [https://en.wikipedia.org/wiki/ChaCha20-Poly1305]</span>.
+<em>Lope</em> has mutual authentication for every exchange of messages, the <strong>engine</strong> authenticates to the <strong>external connectors</strong> in this context via a cryptographic signature using
+<a class="reference external" href="https://en.wikipedia.org/wiki/Probabilistic_signature_scheme">RSA-PSS</a><span class="link-target"> [https://en.wikipedia.org/wiki/Probabilistic_signature_scheme]</span> and <a class="reference external" href="https://es.wikipedia.org/wiki/SHA-2">SHA-512</a><span class="link-target"> [https://es.wikipedia.org/wiki/SHA-2]</span>. So, the <code class="docutils literal notranslate"><span class="pre">engine_auth_code</span></code> is
+transformed first into a SHA 512 digest, and then, signed using RSA-PSS. This is sent to the external conenctors every time to prove they are talking with the
+expected engine (and they know this because this <code class="docutils literal notranslate"><span class="pre">engine_auth_code</span></code> is in their configuration file as well). The <strong>external connectors</strong> authenticate against the angine
+by providing their passwords as hashes using <a class="reference external" href="https://en.wikipedia.org/wiki/BLAKE_(hash_function)">BLAKE2b</a><span class="link-target"> [https://en.wikipedia.org/wiki/BLAKE_(hash_function)]</span>. Since the messages are encrypted, the hash is always shared encrypted.</p></li>
+<li><p>If you do not enable it, then the communication is not encrypted but still there is a mutual authentication in place for the <strong>external connectors</strong> and the <strong>engine</strong>.
+The <code class="docutils literal notranslate"><span class="pre">engine_auth_code</span></code> then is transformed using <a class="reference external" href="https://en.wikipedia.org/wiki/BLAKE_(hash_function)">BLAKE2b</a><span class="link-target"> [https://en.wikipedia.org/wiki/BLAKE_(hash_function)]</span> and this is sent to the <strong>external connectors</strong>.
+In this scenario, they authenticate using BLAKE2b.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Keep in mind that in the second scneario (not enable the <code class="docutils literal notranslate"><span class="pre">engine_auth_code</span></code> field), the content of the messages are visible by third parties, including the authentication hashes.</p>
+</div>
+<p>Below, you can find the part of the configuration file for the networking part:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">networking</span><span class="p">:</span>
+   <span class="c1"># 0MQ Server</span>
+   <span class="n">mq</span><span class="p">:</span>
+      <span class="n">port</span><span class="p">:</span> <span class="mi">5555</span>
+      <span class="n">ipv6</span> <span class="p">:</span> <span class="n">no</span> <span class="c1"># use ipv6? yes/no (default)</span>
+
+      <span class="c1"># For the connections between external connectors</span>
+      <span class="c1"># and the engine</span>
+      <span class="n">engine_auth_code</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="c1"># Minimum possible value is 2048</span>
+      <span class="n">rsa_key_lengt</span><span class="p">:</span> <span class="mi">4096</span> <span class="c1"># default value</span>
+
+      <span class="c1"># for the hash code sent to external connectors</span>
+      <span class="c1"># to ensure they are talking with right engine</span>
+      <span class="n">engine_auth_code</span><span class="p">:</span> <span class="s2">&quot;Y0_s0y_0zym4nd14s_r3y_d3_r3y3s!&quot;</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-2">External Connectors Groups &amp; Conversation Rules</p>
+<p>One the ZeroMQ connection is configured, then the next step is to configure the <strong>external connectors</strong> groups and what <em>conversation rules</em> to use. In order to deliver <em>conversation rules</em>
+to the <strong>external connectors</strong>, we need to introduce the concept of groups. All <strong>external connectors</strong> belong to one group. If it is not explicitly defined, then the default group is used.
+In the picture below you can find a grahical description of this idea.</p>
+<img alt="../_images/slv_ext_conn_group_concept.png" class="align-center" src="../_images/slv_ext_conn_group_concept.png" style="width: 600px;" />
+<p>Therefore, you can assign different <em>conversation rules</em> to different <strong>external connectors</strong>, according to the groups they belong. This is configured in the configuration file as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># configuration about the external connectors,</span>
+<span class="c1"># depending on the group they belong.</span>
+<span class="c1"># if they belong to some specific group,</span>
+<span class="c1"># the corresponding conversation rules are loaded</span>
+<span class="c1"># The group is described in the conversation rules file</span>
+<span class="n">external_connectors</span><span class="p">:</span>
+  <span class="c1"># not include the final &#39;/&#39;, do not use &#39;.&#39;.</span>
+  <span class="c1"># For using the current folder, use only this &quot;&quot;</span>
+  <span class="n">conv_rules_folder</span><span class="p">:</span>
+    <span class="n">path</span><span class="p">:</span> <span class="s2">&quot;/conv_rules&quot;</span>
+    <span class="n">is_relative_path</span><span class="p">:</span> <span class="n">yes</span>
+
+  <span class="c1"># reload the conversation files every time a new external connector</span>
+  <span class="c1"># connect with the engine, instead of using the ones loaded</span>
+  <span class="c1"># at the start of the engine (cache copy). This allows to modify</span>
+  <span class="c1"># the configuration files at engine runtime.</span>
+  <span class="n">reload_conv_rules_in_new_contact</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+  <span class="c1"># configuration about the number of external connectors</span>
+  <span class="c1"># and external conenctor workers (threads)</span>
+  <span class="n">max_number_of_workers</span><span class="p">:</span> <span class="mi">200</span> <span class="c1"># pool size</span>
+  <span class="n">max_number_of_external_connectors_connected</span><span class="p">:</span> <span class="mi">15</span>
+
+  <span class="c1"># This is the password for those external connectors that</span>
+  <span class="c1"># do not belong to any group, they will use the</span>
+  <span class="c1"># &#39;default conversation rules&#39;</span>
+  <span class="n">default_secret</span><span class="p">:</span> <span class="s2">&quot;3sT0_3S_s3Cr3t0!&quot;</span>
+
+  <span class="n">groups</span><span class="p">:</span>
+    <span class="c1"># one example group</span>
+    <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;test_client&quot;</span>
+      <span class="nb">list</span><span class="p">:</span>
+        <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;ExtConTest_Client&quot;</span>
+          <span class="n">secret</span><span class="p">:</span> <span class="s2">&quot;3sT0_3S_s3Cr3t01!&quot;</span>
+
+    <span class="c1"># other example group</span>
+    <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;test_server&quot;</span>
+      <span class="nb">list</span><span class="p">:</span>
+        <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;ExtConTest_Server&quot;</span>
+          <span class="n">secret</span><span class="p">:</span> <span class="s2">&quot;3sT0_3S_s3Cr3t02!&quot;</span>
+
+    <span class="c1"># other example group</span>
+    <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;test_neo2&quot;</span>
+      <span class="nb">list</span><span class="p">:</span>
+        <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;ExtConTest4&quot;</span>
+          <span class="n">secret</span><span class="p">:</span> <span class="s2">&quot;3sT0_3S_s3Cr3t03!&quot;</span>
+
+    <span class="c1"># other example group</span>
+    <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;B&quot;</span>
+      <span class="nb">list</span><span class="p">:</span>
+        <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;ExtConX&quot;</span>
+          <span class="n">secret</span><span class="p">:</span> <span class="s2">&quot;3sT0_3S_s3Cr3t04!&quot;</span>
+
+        <span class="o">-</span> <span class="nb">id</span><span class="p">:</span> <span class="s2">&quot;ExtConY&quot;</span>
+          <span class="n">secret</span><span class="p">:</span> <span class="s2">&quot;3sT0_3S_s3Cr3t05!&quot;</span>
+</pre></div>
+</div>
+<p>As you can see, you configure the list of groups, with their respective <strong>external connectors</strong> members with their passwords.
+You also configure the default password for those external connectors that do not belong to any group and they can autogenerated IDs.
+Additionally, you can configure where are the <em>conversation rules</em> files, the max number of <strong>external connectors</strong> connected at the same time,
+as well as the max number of external connector worker threads to use.</p>
+</section>
+<section id="engine-logging">
+<span id="index-3"></span><h2><span class="section-number">4.2. </span>Engine Logging</h2>
+<p>Other important part to configure is the logging of the <strong>engine</strong>. It leverage the capabilities of <a class="reference external" href="https://github.com/rs/zerolog">zerolog library</a><span class="link-target"> [https://github.com/rs/zerolog]</span>, and there are different possibilities for logging:</p>
+<ul class="simple">
+<li><p><strong>Console logging:</strong> The logs are only showed via the terminal, and they can be <em>human friendly</em> if the <code class="docutils literal notranslate"><span class="pre">console_human_friendly</span></code> is enabled (this is applicable in any option that use the console).</p></li>
+<li><p><strong>File logging:</strong> The logs are saved in <a class="reference external" href="https://es.wikipedia.org/wiki/JSON">JSON</a><span class="link-target"> [https://es.wikipedia.org/wiki/JSON]</span> format</p></li>
+<li><p><strong>Console &amp; file logging:</strong> Logs are saved in a file, as well as shown via console.</p></li>
+<li><p><strong>File logging with log rotation:</strong> In this case, the logs are <a class="reference external" href="https://en.wikipedia.org/wiki/Log_rotation">rotated</a><span class="link-target"> [https://en.wikipedia.org/wiki/Log_rotation]</span> in several files depending on the configuration parameters.</p></li>
+<li><p><strong>Console &amp; file with log rotation:</strong> Logs are saved in several files as described in the previous point, as well as shown via console.</p></li>
+</ul>
+<p>The created log files have the following name structure: <code class="docutils literal notranslate"><span class="pre">slv_engine_%Y-%m-%d-%H:%M:%S.log</span></code> (example: <code class="docutils literal notranslate"><span class="pre">2022-August-25_7:3:39.log</span></code>). But the prefix and file extension can be changed
+in the configuration file. If the specified log folder does not exist, it will be created.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logging</span><span class="p">:</span>
+  <span class="c1"># log level, one of the following: TRACE, DEBUG, INFO (default),</span>
+  <span class="c1"># WARN, ERROR</span>
+  <span class="n">level</span><span class="p">:</span> <span class="s2">&quot;DEBUG&quot;</span>
+
+  <span class="c1"># log mode: CONSOLE (default), FILE, BOTH, FILE_ROTATING or</span>
+  <span class="c1"># BOTH_ROTATING</span>
+  <span class="n">mode</span><span class="p">:</span> <span class="s2">&quot;BOTH_ROTATING&quot;</span>
+
+  <span class="c1"># https://github.com/rs/zerolog#add-file-and-line-number-to-log</span>
+  <span class="n">show_logger_caller</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no (default)</span>
+
+  <span class="c1"># https://github.com/rs/zerolog#pretty-logging (yes/no)</span>
+  <span class="n">console_human_friendly</span><span class="p">:</span> <span class="n">yes</span>
+
+  <span class="c1"># to create a different thread for adding information in</span>
+  <span class="c1"># the logs at the time of logging,</span>
+  <span class="n">async_logs</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># (yes/no)</span>
+
+  <span class="c1"># not include the final &#39;/&#39;, do not use &#39;.&#39;</span>
+  <span class="c1"># For using the current folder, use only this &quot;&quot;</span>
+  <span class="n">log_folder</span><span class="p">:</span>
+    <span class="n">path</span><span class="p">:</span> <span class="s2">&quot;/logs&quot;</span>
+    <span class="n">is_relative_path</span><span class="p">:</span> <span class="n">yes</span>
+
+  <span class="c1"># Log file name utils</span>
+  <span class="n">log_prefix</span><span class="p">:</span> <span class="s2">&quot;&quot;</span> <span class="c1"># if not used, it will be &#39;slv_engine&#39;</span>
+  <span class="n">log_extension</span><span class="p">:</span> <span class="s2">&quot;&quot;</span> <span class="c1"># if not used, it will be &#39;.log&#39;</span>
+
+  <span class="c1"># log rotation</span>
+  <span class="n">log_rotation_max_size</span><span class="p">:</span> <span class="mi">20</span> <span class="c1"># MB</span>
+  <span class="n">log_rotation_number_files</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="n">log_rotation_max_number_days</span><span class="p">:</span> <span class="mi">180</span> <span class="c1"># days</span>
+  <span class="n">log_rotation_compress</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(dafult)</span>
+</pre></div>
+</div>
+</section>
+<section id="other-engine-configuration-options">
+<span id="index-4"></span><h2><span class="section-number">4.3. </span>Other Engine Configuration Options</h2>
+<p>You can configure the size of the go channels used to send message among engine threads, as well as some timing for the general time out of the <strong>engine</strong>,
+or the time to wait before stopping the execution to give some time to get the last information of the <strong>external connectors</strong> and process it.
+Here you can find how to configure those aspects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># configuration about the Go channels</span>
+<span class="n">go_channels</span><span class="p">:</span>
+  <span class="c1"># size of the buffer of the GO communication channels</span>
+  <span class="n">engine_cockpit_buffer</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="n">ext_conn_manager_buffer</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="n">ext_conn_manager_worker_channel_buffer</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="n">data_service_buffer</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="n">alerting_service_buffer</span><span class="p">:</span> <span class="mi">30</span>
+
+<span class="c1"># configuration about times</span>
+<span class="n">timing</span><span class="p">:</span>
+  <span class="c1"># seconds (86400s = 24h), &#39;0&#39; means no timeout</span>
+  <span class="n">engine_timeout</span><span class="p">:</span> <span class="mi">0</span> <span class="c1"># seconds (86400s = 24h), &#39;0&#39; means no timeout</span>
+
+  <span class="c1"># Time to wait until all ending activities are done before</span>
+  <span class="c1"># doing the shutdown</span>
+  <span class="n">engine_ending_waiting_time</span><span class="p">:</span> <span class="mi">15</span> <span class="c1"># seconds.</span>
+</pre></div>
+</div>
+<p>In this file, the persistance capabilities of <em>Lope</em>, and the integration with different alerting systems is also configured.
+However, this is explained in <a class="reference internal" href="activities.xhtml#activities"><span class="std std-ref">Activity Alerting &amp; Storage</span></a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        <a href="../_sources/content/engine_conf.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>

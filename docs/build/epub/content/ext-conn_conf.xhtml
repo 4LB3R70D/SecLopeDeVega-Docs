@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>7. External Connector Configuration</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/epub.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css-style.css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="external-connector-configuration">
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">7. </span>External Connector Configuration</h1>
+<p>The main configuration file of the <strong>external connector</strong> is the <em>ext_conn_config.ini</em> file, but the name can be changed if the configuration file is passed
+as command line option (as explained in <a class="reference internal" href="ext-conn_install.xhtml#ext-conn-installation"><span class="std std-ref">External Connector Installation &amp; Execution</span></a>). Just keep in mind that the file should be always a <a class="reference external" href="https://en.wikipedia.org/wiki/INI_file">ini</a><span class="link-target"> [https://en.wikipedia.org/wiki/INI_file]</span> file.
+In this file you can configure those aspects that are relevant for only the <strong>external connector</strong> such as how to connect with the <strong>engine</strong>, the use of certificates for TLS support,
+the logs, different times, the connection with the Redis server (its role is explained in <a class="reference internal" href="architecture.xhtml#architecture"><span class="std std-ref">Architecture</span></a>), and other operation configuration.</p>
+<section id="engine-connection">
+<h2><span class="section-number">7.1. </span>Engine Connection</h2>
+<p>The first thing you have to configure is where to find the engine:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================================================</span>
+<span class="p">[</span><span class="n">NETWORKING</span><span class="p">]</span>
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># ZEROMQ</span>
+<span class="c1"># IP or domain</span>
+<span class="n">ENGINE_IP</span> <span class="o">=</span> <span class="mf">127.0.0.1</span>
+<span class="n">ENGINE_PORT</span> <span class="o">=</span> <span class="mi">5555</span>
+</pre></div>
+</div>
+</section>
+<section id="external-connector-logging">
+<span id="index-1"></span><h2><span class="section-number">7.2. </span>External Connector Logging</h2>
+<p>The next interesting section to configure is the logs of the <strong>external connector</strong>. In the same way that the <strong>engine</strong> can generate logs, there are several possibilities:</p>
+<ul class="simple">
+<li><p><strong>Console logging:</strong> The logs are only showed via the terminal.</p></li>
+<li><p><strong>File logging:</strong> The logs are saved in a single file.</p></li>
+<li><p><strong>Console &amp; file logging:</strong> Logs are saved in a file, as well as shown via console.</p></li>
+<li><p><strong>File logging with log rotation:</strong> In this case, the logs are <a class="reference external" href="https://en.wikipedia.org/wiki/Log_rotation">rotated</a><span class="link-target"> [https://en.wikipedia.org/wiki/Log_rotation]</span> in several files depending on the configuration parameters.</p></li>
+<li><p><strong>Console &amp; file with log rotation:</strong> Logs are saved in several files as described in the previous point, as well as shown via console.</p></li>
+</ul>
+<p>The created log files have the following name structure: <code class="docutils literal notranslate"><span class="pre">slv_ext_conn_%Y_%m_%d-%H_%M_%S.log</span></code> (example: <code class="docutils literal notranslate"><span class="pre">slv_ext_conn_2022_09_21-08_29_11.log</span></code>). But the prefix and file extension can be
+changed in the configuration file. If the specified log folder does not exist, it will be created.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================================================</span>
+<span class="p">[</span><span class="n">LOGGING</span><span class="p">]</span>
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># LEVEL: one of the following: DEBUG, INFO (default), WARNING, ERROR, CRITICAL</span>
+<span class="n">LEVEL</span> <span class="o">=</span> <span class="n">DEBUG</span>
+<span class="c1"># LOG_Folder: not include the final &#39;/&#39;, for local folder use &#39;.&#39;</span>
+<span class="c1"># It creates the the folder if it does not exist</span>
+<span class="n">LOG_FOLDER</span> <span class="o">=</span> <span class="o">./</span><span class="n">logs</span>
+<span class="c1"># LOG_MODE: CONSOLE (default), FILE, FILE_ROTATION, BOTH, BOTH_ROTATION</span>
+<span class="n">LOG_MODE</span> <span class="o">=</span>  <span class="n">CONSOLE</span>
+<span class="c1"># Log rotation parameters, by default the max size is 20 MB and 5 files</span>
+<span class="n">LOG_ROTATION_MAX_SIZE</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">LOG_ROTATION_FILE_NUMBERS</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1"># Log file name utils. if not used, LOG_PREFIX = &quot;slv_ext_conn_&quot; and LOG_EXTENSION = &quot;.log&quot;</span>
+<span class="n">LOG_PREFIX</span> <span class="o">=</span>
+<span class="n">LOG_EXTENSION</span> <span class="o">=</span>
+</pre></div>
+</div>
+</section>
+<section id="external-connector-timing">
+<span id="index-2"></span><h2><span class="section-number">7.3. </span>External Connector Timing</h2>
+<p>For the <strong>external connector</strong>, timing is an important aspect. Depending on the context, the different values should be adapted.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================================================</span>
+<span class="p">[</span><span class="n">TIMES</span><span class="p">]</span>
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># Timeout for the connection with the engine</span>
+<span class="c1"># 5s by default</span>
+<span class="n">ENGINE_TIME_OUT</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Timeout (seconds) for the external connector (lifespan),</span>
+<span class="c1"># &#39;NONE&#39; for not using a timeout</span>
+<span class="c1"># by default = 1 hour = 3600 seconds</span>
+<span class="n">EXT_CONNECTOR_TIME_OUT</span> <span class="o">=</span> <span class="n">NONE</span>
+
+<span class="c1"># Time (seconds) for main thread operation loop without contacting</span>
+<span class="c1"># the engine in case if there is not</span>
+<span class="c1"># information to send to the engine. By default = 5 seconds.</span>
+<span class="c1"># If this value is less than the</span>
+<span class="c1"># ENGINE_TIME_OUT, then this last value is used</span>
+<span class="c1"># for the loop waiting time</span>
+<span class="n">MAIN_THREAD_CHECKING_TIME</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Time (float-seconds) between loops when the external connector</span>
+<span class="c1"># wait for interaction The default value is 0.5 seconds</span>
+<span class="n">TIME_BETWEEN_INTERACTION_LOOPS</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="c1"># Time (float seconds) between loops for the async thread.</span>
+<span class="c1"># The default value us 0.1 seconds</span>
+<span class="n">TIME_BETWEEN_ASYNC_LOOPS</span> <span class="o">=</span> <span class="mf">0.10</span>
+
+<span class="c1"># Number of async loops to clean the connection register.</span>
+<span class="c1"># It results in a time value depending on</span>
+<span class="c1"># the time between async loops</span>
+<span class="n">NUMBER_ASYNC_LOOPS_TO_CLEAN_CONN_REGISTER</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="c1"># Waiting time (int-seconds) before restarting</span>
+<span class="c1"># the external connector according to &#39;restart&#39; order</span>
+<span class="n">RESTARTING_WAITING_TIME</span> <span class="o">=</span> <span class="mi">60</span>
+
+<span class="c1"># Time (float-seconds) between connections of</span>
+<span class="c1"># client sockets during starting-up (by deafult = 0.5s)</span>
+<span class="n">TIME_BETWEEN_CLIENT_SOCKET_CONNECTIONS</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="c1"># Time (float-seconds) between closing a tcp connection</span>
+<span class="c1"># and connecting again for tcp client mode (by deafult = 0.5s)</span>
+<span class="c1"># Or initial delay for having enough time to do the</span>
+<span class="c1"># TLS handhsake in the reconnection</span>
+<span class="n">TIME_BETWEEN_CLIENT_SOCKET_CLOSE_CONNECT</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Time (float-seconds) before allowing the async tasks in</span>
+<span class="c1"># client mode checks if no active connections are alive (by deafult = 3s)</span>
+<span class="c1"># Recommended: 5s or more for several TLS or DTLS connections.</span>
+<span class="n">TIME_INITIAL_DELAY_ASYNC_THREAD</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</section>
+<section id="external-connector-operation">
+<span id="index-3"></span><h2><span class="section-number">7.4. </span>External Connector Operation</h2>
+<p>The following parameters cover other operational aspects of the <strong>external connector</strong>. The first two are the credentials to authenticate the
+<strong>external connector</strong> against the <strong>engine</strong>, but if other values will replace them if they are provided via command line options, as described
+in <a class="reference internal" href="ext-conn_install.xhtml#ext-conn-installation"><span class="std std-ref">External Connector Installation &amp; Execution</span></a>. The third one is for being used to authenticate the <strong>engine</strong> against the <strong>external connector</strong>, as mentioned
+in <a class="reference internal" href="engine_install.xhtml#engine-installation"><span class="std std-ref">Engine Installation &amp; Execution</span></a>.</p>
+<p>The last two parameters allow to find the custom code that you can add to customize even further the interaction. This is described in detail in
+<a class="reference internal" href="custom_functions.xhtml#custom-functions"><span class="std std-ref">Custom Functions</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================================================</span>
+<span class="p">[</span><span class="n">OPERATION</span><span class="p">]</span>
+<span class="c1"># ==========================================================================</span>
+
+<span class="c1"># external connector ID, by default is autogenerated (AUTO, or empty)</span>
+<span class="n">EXTERNAL_CONNECTOR_ID</span> <span class="o">=</span> <span class="n">ExtConTest</span>
+
+<span class="c1"># API key for connecting with the engine</span>
+<span class="n">EXTERNAL_CONNECTOR_SECRET</span> <span class="o">=</span> <span class="mi">3</span><span class="n">sT0_3S_s3Cr3t0</span>
+
+<span class="c1"># For the hash code sent to external connectors from</span>
+<span class="c1"># the engine as authentication proof</span>
+<span class="n">ENGINE_AUTH_CODE</span> <span class="o">=</span> <span class="n">Y0_s0y_0zym4nd14s_r3y_d3_r3y3s</span>
+
+<span class="c1"># Custom functions directory. The software is going to</span>
+<span class="c1"># look for a python module called with the given name</span>
+<span class="c1"># (&#39;slv_custom_functions[.py]&#39; in this case). If it is not found,</span>
+<span class="c1"># no custom functions will be executed. Please do not</span>
+<span class="c1"># add the extension .py in the name</span>
+<span class="n">CUSTOM_FUNCTIONS_DIRECTORY</span> <span class="o">=</span> <span class="o">../</span><span class="n">custom_functions</span><span class="o">/</span>
+<span class="n">CUSTOM_FUNCTIONS_MODULE_NAME</span> <span class="o">=</span> <span class="n">slv_custom_functions</span>
+
+<span class="c1"># Number of subworkers to divide the task of checking all the regex of custom</span>
+<span class="c1"># rules for one input. This only is used when the external connector does not</span>
+<span class="c1"># work in &#39;only first hit&#39; scenario</span>
+<span class="n">NUMBER_RULE_CHECKER_SUBWORKERS</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</section>
+<section id="tls-dtls-support">
+<span id="index-4"></span><h2><span class="section-number">7.5. </span>TLS/DTLS Support</h2>
+<p>In case the <strong>external connector</strong> needs to use TLS for <strong>tcp</strong>, or DTLS for <strong>udp</strong>, this will be the place
+for configuring it. The support of TLS includes the client authentication, as well as the case the private key is encrypted;
+but always using material created as <a class="reference external" href="https://www.openssl.org/">OpenSSL</a><span class="link-target"> [https://www.openssl.org/]</span> does.</p>
+<p>It is important to mention that for the DTLS case and if the private key is protected, a temporary file will created with the
+unencrypted key for the exection and deleted once the execution ends.</p>
+<p>The following links can help you to configure the TLS or DTLS correctly for the <strong>external connector</strong>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/ssl.html">TLS support in Python offical documentation</a><span class="link-target"> [https://docs.python.org/3/library/ssl.html]</span>.</p></li>
+<li><p><a class="reference external" href="https://jamielinux.com/docs/openssl-certificate-authority/create-the-root-pair.html">OpenSSL tutorial from Jamie Nguyen</a><span class="link-target"> [https://jamielinux.com/docs/openssl-certificate-authority/create-the-root-pair.html]</span>.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/ssl.html#certificate-chains">Certificate chains in Python offical documentation</a><span class="link-target"> [https://docs.python.org/3/library/ssl.html#certificate-chains]</span>.</p></li>
+<li><p><a class="reference external" href="https://ensiwiki.ensimag.fr/images/b/b3/Cheat.pdf">OpenSSL cheat sheet from Cédric Lauradoux</a><span class="link-target"> [https://ensiwiki.ensimag.fr/images/b/b3/Cheat.pdf]</span>.</p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/52855924/problems-using-paho-mqtt-client-with-python-3-7">Problems using TLS in Python (ssl.SSLCertVerificationError)</a><span class="link-target"> [https://stackoverflow.com/questions/52855924/problems-using-paho-mqtt-client-with-python-3-7]</span>.</p></li>
+<li><p><a class="reference external" href="https://two-oes.medium.com/working-with-openssl-and-dns-alternative-names-367f06a23841">Working with OpenSSL and DNS alternative names</a><span class="link-target"> [https://two-oes.medium.com/working-with-openssl-and-dns-alternative-names-367f06a23841]</span>.</p></li>
+<li><p><a class="reference external" href="https://help.hcltechsw.com/domino/11.0.0/conf_keyusageextensionsandextendedkeyusage_r.html">Key usage extensions and extended key usage</a><span class="link-target"> [https://help.hcltechsw.com/domino/11.0.0/conf_keyusageextensionsandextendedkeyusage_r.html]</span>.</p></li>
+<li><p><a class="reference external" href="https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8">How to create an HTTPS certificate for localhost domains</a><span class="link-target"> [https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8]</span>.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================================================</span>
+<span class="p">[</span><span class="n">D</span><span class="o">/</span><span class="n">TLS</span><span class="p">]</span>
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># https://docs.python.org/3/library/ssl.html#module-ssl</span>
+
+<span class="c1"># Custom CA:</span>
+<span class="c1"># - in server mode, it is the CA for validating client certificates</span>
+<span class="c1"># - in client mode, it is the CA for validating the server certificate if default</span>
+<span class="c1">#   settings are not used</span>
+<span class="n">CLIENT_CABUNDLE_PEM</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span><span class="o">.</span><span class="n">pem</span>
+
+<span class="c1"># Is the key of the certificate to use protected with a password? YES (default) / NO</span>
+<span class="n">KEY_PROTECTED</span> <span class="o">=</span> <span class="n">YES</span>
+
+<span class="c1"># ---------------------</span>
+<span class="c1"># TLS SERVER MODE</span>
+<span class="c1"># ---------------------</span>
+<span class="c1"># https://docs.python.org/3/library/ssl.html#server-side-operation</span>
+<span class="n">SERVER_CERTCHAIN_PEM</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">intermediate</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">-</span><span class="n">chain_server</span><span class="o">.</span><span class="n">crt</span><span class="o">.</span><span class="n">pem</span>
+<span class="n">SERVER_PRIV_KEY_PEM</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">intermediate</span><span class="o">/</span><span class="n">private</span><span class="o">/</span><span class="n">seclopedevega_server</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">pem</span>
+<span class="n">SERVER_KEY_PASSWORD</span> <span class="o">=</span> <span class="n">lope</span>
+
+<span class="c1"># ---------------------</span>
+<span class="c1"># TLS CLIENT MODE</span>
+<span class="c1"># ---------------------</span>
+<span class="c1"># https://docs.python.org/3/library/ssl.html#client-side-operation</span>
+<span class="c1"># Use Machine CAs: YES (default) / NO</span>
+<span class="n">CLIENT_DEFAULT_SETTINGS</span> <span class="o">=</span> <span class="n">NO</span>
+<span class="c1"># Validate Server certificate: YES (default) / NO</span>
+<span class="n">CLIENT_VALIDATE_SERVER_CERTIFICATE</span> <span class="o">=</span> <span class="n">YES</span>
+<span class="n">CLIENT_CERTCHAIN_PEM</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">intermediate</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">-</span><span class="n">chain_client</span><span class="o">.</span><span class="n">crt</span><span class="o">.</span><span class="n">pem</span>
+<span class="n">CLIENT_PRIV_KEY_PEM</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">intermediate</span><span class="o">/</span><span class="n">private</span><span class="o">/</span><span class="n">seclopedevega_client</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">pem</span>
+<span class="n">CLIENT_KEY_PASSWORD</span> <span class="o">=</span> <span class="n">lope</span>
+
+<span class="c1"># ---------------------</span>
+<span class="c1"># DTLS MODE</span>
+<span class="c1"># ---------------------</span>
+<span class="c1">#https://github.com/mcfreis/pydtls</span>
+<span class="c1"># One of the following: &quot;DTLS&quot; or &quot;DTLSv1.2&quot; (default)</span>
+<span class="n">DTLS_VERSION</span> <span class="o">=</span> <span class="n">DTLSv1</span><span class="mf">.2</span>
+</pre></div>
+</div>
+</section>
+<section id="redis-integration">
+<span id="index-5"></span><h2><span class="section-number">7.6. </span>Redis Integration</h2>
+<p>As described in <a class="reference internal" href="architecture.xhtml#architecture"><span class="std std-ref">Architecture</span></a>, the <a class="reference external" href="https://redis.io/">Redis</a><span class="link-target"> [https://redis.io/]</span> server is an important element for allowing to share information among different <strong>external connectors</strong>,
+using memory variables. These variables are explained in detail in <a class="reference internal" href="session_and_memory.xhtml#session-support-and-memory-variables"><span class="std std-ref">Session Support &amp; Memory Variables</span></a>, here we only address what is the configuration
+capabilities to use Redis.</p>
+<p>he following links can help you to install and use Redis, as well as understaning the integration between the external connector and Redis:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://realpython.com/python-redis/">How to Use Redis With Python</a><span class="link-target"> [https://realpython.com/python-redis/]</span>.</p></li>
+<li><p><a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-20-04">How To Install and Secure Redis on Ubuntu 20.04</a><span class="link-target"> [https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-20-04]</span>.</p></li>
+<li><p><a class="reference external" href="https://redis.io/topics/encryption">Redis TLS support</a><span class="link-target"> [https://redis.io/topics/encryption]</span>.</p></li>
+<li><p><a class="reference external" href="https://redis-py.readthedocs.io/en/stable/examples/ssl_connection_examples.html?highlight=ssl">Redis-py TLS Connection Examples</a><span class="link-target"> [https://redis-py.readthedocs.io/en/stable/examples/ssl_connection_examples.html?highlight=ssl]</span>.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================================================</span>
+<span class="p">[</span><span class="n">REDIS</span><span class="p">]</span> <span class="c1"># Multi external connector memory</span>
+<span class="c1"># ==========================================================================</span>
+<span class="c1"># IP or domain</span>
+<span class="n">REDIS_IP</span> <span class="o">=</span> <span class="mf">127.0.0.1</span>
+
+<span class="n">REDIS_PORT</span> <span class="o">=</span> <span class="mi">6379</span>
+
+<span class="n">REDIS_PASSWORD</span> <span class="o">=</span> <span class="mi">3</span><span class="n">st33s3lB4uLD3L4sV4r14Bl3sC0mP4Rt1D4s</span>
+
+<span class="n">REDIS_TLS</span> <span class="o">=</span> <span class="n">NO</span>
+
+<span class="c1"># use certificate for authenticate against the redis server?</span>
+<span class="n">REDIS_USE_CLIENT_CERTIFICATE</span> <span class="o">=</span> <span class="n">YES</span>
+<span class="n">REDIS_CLIENT_CERTIFICATE</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">intermediate</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">-</span><span class="n">chain_client</span><span class="o">.</span><span class="n">crt</span><span class="o">.</span><span class="n">pem</span>
+
+<span class="c1"># Private Key fields for the certificate</span>
+<span class="n">REDIS_PRIV_KEY_CLIENT_PROTECTED</span> <span class="o">=</span> <span class="n">YES</span>
+<span class="n">REDIS_PRIV_KEY_PASSWORD</span> <span class="o">=</span>  <span class="n">lope</span>
+<span class="n">REDIS_PRIV_KEY_CLIENT</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">intermediate</span><span class="o">/</span><span class="n">private</span><span class="o">/</span><span class="n">seclopedevega_client</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">pem</span>
+
+<span class="c1"># Machine CAs in linux: /etc/ssl/certs/ca-certificates.crt</span>
+<span class="n">REDIS_CA_CERT</span> <span class="o">=</span> <span class="o">../</span><span class="n">tls</span><span class="o">/</span><span class="n">ca</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span><span class="o">.</span><span class="n">pem</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy;2022, Sec Lope De Vega Project.
+        
+        |
+        <a href="../_sources/content/ext-conn_conf.rst.txt"
+            rel="nofollow">Page source</a>
+    </div>
+  </body>
+</html>
