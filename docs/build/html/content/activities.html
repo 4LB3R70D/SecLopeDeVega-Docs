@@ -117,6 +117,8 @@ for using all available channels (globally in the <code class="docutils literal 
       <span class="n">kafka</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
 
       <span class="n">syslog</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">slack</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
 </pre></div>
 </div>
 <p>For <code class="docutils literal notranslate"><span class="pre">timeout</span></code> and <code class="docutils literal notranslate"><span class="pre">ending</span></code> the basic rules, <em>Lope</em> will report their corresponding events, not the rule execution.</p>
@@ -145,6 +147,8 @@ for using all available channels (globally in the <code class="docutils literal 
       <span class="n">kafka</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
 
       <span class="n">syslog</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
+
+      <span class="n">slack</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
 
 
    <span class="c1"># OTHER FIELDS</span>
@@ -294,6 +298,8 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
  <span class="n">email</span><span class="p">:</span> <span class="o">...</span>
 
  <span class="n">http</span><span class="p">:</span> <span class="o">...</span>
+
+ <span class="n">slack</span><span class="p">:</span> <span class="o">...</span>
 </pre></div>
 </div>
 <p class="rubric" id="index-6">Syslog Alerting</p>
@@ -362,7 +368,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
 
  <span class="c1"># Alerting channel configuration</span>
  <span class="c1"># (for those in use)</span>
- <span class="n">syslog</span><span class="p">:</span>
+ <span class="n">kafka</span><span class="p">:</span>
     <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
 
     <span class="n">server_ip</span><span class="p">:</span> <span class="mf">127.0.0.1</span> <span class="c1"># Or domain</span>
@@ -433,7 +439,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
 
  <span class="c1"># Alerting channel configuration</span>
  <span class="c1"># (for those in use)</span>
- <span class="n">syslog</span><span class="p">:</span>
+ <span class="n">email</span><span class="p">:</span>
     <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
 
     <span class="n">smtp_ip</span><span class="p">:</span> <span class="s2">&quot;smtp.gmail.com&quot;</span> <span class="c1"># or domains</span>
@@ -524,7 +530,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
 
  <span class="c1"># Alerting channel configuration</span>
  <span class="c1"># (for those in use)</span>
- <span class="n">syslog</span><span class="p">:</span>
+ <span class="n">http</span><span class="p">:</span>
     <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
 
     <span class="n">url</span><span class="p">:</span> <span class="s2">&quot;http://127.0.0.1&quot;</span>
@@ -588,6 +594,59 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
        <span class="c1"># using a password</span>
        <span class="n">engine_client_key_protected</span><span class="p">:</span> <span class="n">yes</span>
        <span class="n">engine_client_key_protected_password</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+
+ <span class="c1"># Other alerting channels</span>
+ <span class="o">...</span>
+</pre></div>
+</div>
+<p class="rubric" id="index-10">Slack Alerting</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alert_service</span><span class="p">:</span>
+
+ <span class="c1"># Max number of data workers for the data service</span>
+ <span class="c1"># to save information in parallel.</span>
+ <span class="c1"># If &#39;0&#39; or negative values, then the default</span>
+ <span class="c1"># value is used (&#39;200&#39;)</span>
+ <span class="n">max_number_alert_workers</span><span class="p">:</span> <span class="mi">200</span>
+
+ <span class="c1"># Alerting channel configuration</span>
+ <span class="c1"># (for those in use)</span>
+ <span class="n">slack</span><span class="p">:</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(dafult)</span>
+
+    <span class="c1"># Slacks tokens</span>
+    <span class="n">oauth_token</span><span class="p">:</span> <span class="p">[</span><span class="n">slack</span> <span class="n">OAuth</span> <span class="n">token</span><span class="p">]</span>
+    <span class="n">app_level_token</span> <span class="p">:</span> <span class="p">[</span><span class="n">slack</span> <span class="n">app</span> <span class="n">level</span> <span class="n">token</span><span class="p">]</span>
+
+    <span class="c1"># Slack URL or IP</span>
+    <span class="n">Url</span><span class="p">:</span>
+
+    <span class="c1"># Slack Channel to use</span>
+    <span class="n">channel_id</span><span class="p">:</span> <span class="p">[</span><span class="n">the</span> <span class="nb">id</span> <span class="n">of</span> <span class="n">your</span> <span class="n">channel</span><span class="p">]</span>
+
+    <span class="c1"># Debug the connection flag</span>
+    <span class="n">debug_flag</span><span class="p">:</span> <span class="n">no</span> <span class="c1"># yes/no(default)</span>
+
+    <span class="c1"># Pretext to use in the Slack messages.</span>
+    <span class="c1"># If not present, or empty, it will not be used</span>
+    <span class="n">pretext</span><span class="p">:</span> <span class="p">[</span><span class="nb">any</span> <span class="n">pretext</span><span class="p">]</span>
+
+    <span class="c1"># The color to use for your messages:</span>
+    <span class="n">text_color</span><span class="p">:</span> <span class="p">[</span><span class="nb">hex</span> <span class="n">color</span><span class="p">]</span>
+
+    <span class="c1"># The activity is added after the body intro and before the body end</span>
+    <span class="n">body_intro</span><span class="p">:</span>
+       <span class="s2">&quot;</span>
+       <span class="n">Hello</span> <span class="n">there</span><span class="p">,</span> <span class="n">it</span><span class="s1">&#39;s Lope&lt;/h2&gt;</span><span class="se">\n</span>
+       <span class="o">---------------------------------</span>\<span class="n">n</span>
+       <span class="n">ACTIVITY</span> <span class="o">=</span> <span class="s2">&quot;</span>
+
+    <span class="n">body_end</span><span class="p">:</span>
+       <span class="s2">&quot;</span>
+       \<span class="n">n</span>\<span class="n">n</span><span class="o">---------------------------------</span>\<span class="n">n</span>
+       <span class="s2">&quot;</span>
+
+    <span class="c1"># send the activities encoded base64?</span>
+    <span class="n">encode_activity_base64</span><span class="p">:</span> <span class="n">yes</span> <span class="c1"># yes/no(default)</span>
 
  <span class="c1"># Other alerting channels</span>
  <span class="o">...</span>

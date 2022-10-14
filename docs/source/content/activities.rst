@@ -98,6 +98,8 @@ For any basic rule you can do the following:
 
          syslog: yes # yes/no(default)
 
+         slack: yes # yes/no(default)
+
 For ``timeout`` and ``ending`` the basic rules, *Lope* will report their corresponding events, not the rule execution.
 
 
@@ -131,6 +133,8 @@ For custom rules, the configuration is the same:
          kafka: no # yes/no(default)
 
          syslog: yes # yes/no(default)
+
+         slack: yes # yes/no(default)
 
 
       # OTHER FIELDS
@@ -293,6 +297,8 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
 
    http: ...
 
+   slack: ...
+
 .. index:: Syslog Alerting
 .. rubric:: Syslog Alerting
 
@@ -366,7 +372,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
 
    # Alerting channel configuration 
    # (for those in use)
-   syslog: 
+   kafka: 
       enable: no # yes/no(dafult)
 
       server_ip: 127.0.0.1 # Or domain
@@ -440,7 +446,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
 
    # Alerting channel configuration 
    # (for those in use)
-   syslog: 
+   email: 
       enable: no # yes/no(dafult)
 
       smtp_ip: "smtp.gmail.com" # or domains
@@ -535,7 +541,7 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
 
    # Alerting channel configuration 
    # (for those in use)
-   syslog: 
+   http: 
       enable: no # yes/no(dafult)
 
       url: "http://127.0.0.1"
@@ -599,6 +605,62 @@ and the number of workers to parallelize the delivery of alerts. Then, you have 
          # using a password
          engine_client_key_protected: yes
          engine_client_key_protected_password: ""
+
+   # Other alerting channels
+   ...
+
+.. index:: Slack Alerting
+.. rubric:: Slack Alerting
+
+.. code-block:: 
+
+  alert_service:
+
+   # Max number of data workers for the data service
+   # to save information in parallel. 
+   # If '0' or negative values, then the default 
+   # value is used ('200')
+   max_number_alert_workers: 200 
+
+   # Alerting channel configuration 
+   # (for those in use)
+   slack: 
+      enable: no # yes/no(dafult)
+
+      # Slacks tokens
+      oauth_token: [slack OAuth token]
+      app_level_token : [slack app level token]
+
+      # Slack URL or IP
+      Url: 
+
+      # Slack Channel to use
+      channel_id: [the id of your channel]
+
+      # Debug the connection flag 
+      debug_flag: no # yes/no(default)
+
+      # Pretext to use in the Slack messages. 
+      # If not present, or empty, it will not be used
+      pretext: [any pretext]
+
+      # The color to use for your messages:
+      text_color: [hex color]
+      
+      # The activity is added after the body intro and before the body end
+      body_intro: 
+         "
+         Hello there, it's Lope</h2>\n
+         ---------------------------------\n
+         ACTIVITY = "
+
+      body_end: 
+         "
+         \n\n---------------------------------\n
+         "
+
+      # send the activities encoded base64?
+      encode_activity_base64: yes # yes/no(default)
 
    # Other alerting channels
    ...

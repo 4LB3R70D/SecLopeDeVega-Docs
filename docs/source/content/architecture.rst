@@ -30,6 +30,8 @@ and only needed for specific use cases. These components are not provided by thi
 
 * **HTTP server/service:** This element is needed if you wish to send alerts to a web server or service using HTTP calls.
 
+* **Slack:** If you wish to send alerts to slack, you should have prepared everything in `Slack <https://slack.com>`_ in advance.  
+
 In the following image, you can find a graphical representation of the potential architecture: 
 
 .. image:: ../_static/slv-architecture.png
