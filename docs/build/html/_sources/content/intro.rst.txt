@@ -70,6 +70,11 @@ As far as the architecture is respective, this software is made up of two compon
 
 .. note::
 
+  This project is the result of the work done in the spare time of the contributors, and the software is **PROVIDED AS IS**, in the complete meaning of those words. There is no official support offered by this project, 
+  and proposed changes or bugs might or might not be done. It depends on the willingness of the contributors to use their free time on this project, at their own speed (if they want to do that). 
+
+.. warning::
+
    Please, consider this project as **somewhere in between an alpha and beta version** since some capabilities (mainly the integration with other systems for sending alerts, support of TLS, and ipv6 support) 
    have not been fully tested and may not work.
 

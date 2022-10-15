@@ -28,7 +28,6 @@ Contents
    content/advance_conversation_rules
    content/activities
    content/quickstart
-   content/potential_use_cases
    content/contact
 
 Index and Search

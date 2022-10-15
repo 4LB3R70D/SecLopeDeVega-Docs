@@ -5,11 +5,6 @@
 
 'Sec Lope De Vega' Project
 ==========================
-
-.. warning::
-   This documentation is under construction, so some sections may be empty or incomplete!
-
-
 .. _contents:
 
 Contents
