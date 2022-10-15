@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>16. Quick Start &#8212; Sec Lope De Vega</title>
+    <title>15. Quick Start &#8212; Sec Lope De Vega</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css-style.css" />
@@ -17,8 +17,8 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="17. Contact" href="contact.html" />
-    <link rel="prev" title="15. Example Protocol" href="example_protocol.html" />
+    <link rel="next" title="16. Contact" href="contact.html" />
+    <link rel="prev" title="14. Activity Alerting &amp; Storage" href="activities.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -36,7 +36,23 @@
           <div class="body" role="main">
             
   <section id="quick-start">
-<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">16. </span>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">¶</a></h1>
+<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">15. </span>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">¶</a></h1>
+<p><em>Lope</em> comes with example interaction ready to show the capabilities it provides. In order to ‘play’ with <em>Lope</em>, first you have to decide if you want to compile the <strong>engine</strong>,
+or just using the compiled version for linux x64. In any case, take a look at the instructions described in <a class="reference internal" href="engine_install.html#engine-installation"><span class="std std-ref">Engine Installation &amp; Execution</span></a>. For the <strong>external connector</strong>,
+yo need to install Python 3, as the corresponding libraries as explained in <a class="reference internal" href="ext-conn_install.html#ext-conn-installation"><span class="std std-ref">External Connector Installation &amp; Execution</span></a>.</p>
+<p><em>Lope</em> is configured to run this example interaction by default, working as a server in the port 8888. The interaction that will execute is the one described in the <code class="docutils literal notranslate"><span class="pre">cr_test_neo-yml</span></code>.
+The version 2 is almost the same, it only use different concersation rules files, instead of using only one file. The approach is a kind of self-guided tutorial where you can just add
+simple inputs (e.g. <code class="docutils literal notranslate"><span class="pre">x1x</span></code>, <code class="docutils literal notranslate"><span class="pre">x2x</span></code>, <code class="docutils literal notranslate"><span class="pre">y1y</span></code>, <code class="docutils literal notranslate"><span class="pre">n1n</span></code>, etc.) to see what happens. To do that, you have first to prepare the environment and, once everything is ready, then you have to start the <strong>engine</strong> first.
+Take a look at the logs to see if you have the following message:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Engine</span> <span class="pre">up</span> <span class="pre">and</span> <span class="pre">running,</span> <span class="pre">ready</span> <span class="pre">to</span> <span class="pre">receive</span> <span class="pre">messages</span> <span class="pre">of</span> <span class="pre">external</span> <span class="pre">connectors!</span></code></p>
+<p>This means the <strong>engine</strong> has started correctly. Then, you have to start the <strong>external connector</strong> and review the logs. If everything is ok, then you should see something like this:</p>
+<p><code class="docutils literal notranslate"><span class="pre">[InteractionWrkr][22-10-15][09:57:34][INFO]:</span> <span class="pre">Listening</span> <span class="pre">the</span> <span class="pre">socket</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">port:</span> <span class="pre">8888</span></code></p>
+<p>Then, you can interact with <em>Lope</em>, our recommendation is using <a class="reference external" href="https://nmap.org/ncat/">ncat</a> and do the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">ncat</span> <span class="pre">127.0.0.1</span> <span class="pre">8888</span></code> (provided <em>Lope</em> is running in your local machine).</p>
+<p>Just navigate in the <em>conversation rules</em> file and check the options you have and then, add the right input to see the effects. Additionally, you have other two example interactions the test client and the server.
+You can start an <strong>external connector</strong> as client (providing the id: <code class="docutils literal notranslate"><span class="pre">ExtConTest_Client</span></code> ) and another as server (providing the id: <code class="docutils literal notranslate"><span class="pre">ExtConTest_Server</span></code>), and then, the client <strong>external connector</strong> will interact
+with the server one. For this test, you will need to have the Redis server in place, and we recommend to use <a class="reference external" href="https://www.wireshark.org/">wireshark</a> to see what is happening in the interaction (port 8080). In any test,
+please review the configuration files to check if everything is correct anyway.</p>
 </section>
 
 
@@ -78,17 +94,16 @@
 <li class="toctree-l1"><a class="reference internal" href="custom_functions.html">12. Custom Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advance_conversation_rules.html">13. Advance Conversation Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activities.html">14. Activity Alerting &amp; Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example_protocol.html">15. Example Protocol</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">16. Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">17. Contact</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">15. Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">16. Contact</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="example_protocol.html" title="previous chapter"><span class="section-number">15. </span>Example Protocol</a></li>
-      <li>Next: <a href="contact.html" title="next chapter"><span class="section-number">17. </span>Contact</a></li>
+      <li>Previous: <a href="activities.html" title="previous chapter"><span class="section-number">14. </span>Activity Alerting &amp; Storage</a></li>
+      <li>Next: <a href="contact.html" title="next chapter"><span class="section-number">16. </span>Contact</a></li>
   </ul></li>
 </ul>
 </div>
