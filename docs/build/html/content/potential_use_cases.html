@@ -36,26 +36,50 @@
           <div class="body" role="main">
             
   <section id="potential-use-cases">
-<span id="index-0"></span><span id="id1"></span><h1><span class="section-number">16. </span>Potential Use Cases<a class="headerlink" href="#potential-use-cases" title="Permalink to this heading">¶</a></h1>
-<p>In this section, we provide some ideas about in what use cases <em>Lope</em> might help you.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This section is still under construction</p>
-</div>
+<h1><span class="section-number">16. </span>Potential Use Cases<a class="headerlink" href="#potential-use-cases" title="Permalink to this heading">¶</a></h1>
+<p>In this section, we provide some ideas about in what use cases we think <em>Lope</em> might help you. Please, be aware the success of
+implementing those potential use cases</p>
 <section id="server-mode">
-<span id="index-1"></span><h2><span class="section-number">16.1. </span>Server Mode<a class="headerlink" href="#server-mode" title="Permalink to this heading">¶</a></h2>
-<p class="rubric">Simple Honeypot</p>
-<p class="rubric">Complex Honeypot Scenario</p>
-<p class="rubric">Perform Security Tests in a Client by Sending Tests from the Server Side</p>
+<span id="index-0"></span><h2><span class="section-number">16.1. </span>Server Mode<a class="headerlink" href="#server-mode" title="Permalink to this heading">¶</a></h2>
+<p>In this mode, <em>Lope</em> is waiting for third party connections to start interacting. The main use here is about being a honeypot,
+or a set of them by providing a more realistic experience. Since this software may emulate real scenarios, this could be used
+as a fake training IT environment for some cases. Since all the generated activities are signed, you can prove that the things
+happened in the interaction, have indeed happened. The following list is some use cases that we have identified that could be relevant:</p>
+<ul class="simple">
+<li><p><strong>Simple Honeypot</strong>: Just create an interaction to be executed by an <strong>external connector</strong>, and wait to get the activities about what happens.</p></li>
+<li><p><strong>Complex Honeypot Scenario</strong>: Create a set of <strong>external connectors</strong> working together, where what happens none of them is affecting
+how others react. You can start new ones dynamically by using your own code, or using the <em>fork</em> functionality.</p></li>
+<li><p><strong>Perform Security Tests in a Client by Sending Tests from the Server Side</strong>: Sometimes, perform security test in client software is hard
+because it is not easy to send back some things to test the software (e.g.: input validation). <em>Lope</em> can help you in this by pretending to
+be the corresponding server and send something to validate the client software.</p></li>
+<li><p><strong>‘Training Arena’</strong>: As mentioned, since <em>Lope</em> may behave as a real system (or set of them), provided that you have worked the right interactions,
+you might create an environment for ‘training’, and even to evaluate the performance more officially (activities are signed, do you remember?)</p></li>
+</ul>
 </section>
 <section id="client-mode">
-<span id="index-2"></span><h2><span class="section-number">16.2. </span>Client Mode<a class="headerlink" href="#client-mode" title="Permalink to this heading">¶</a></h2>
-<p class="rubric">Testing Navigation in Web Applications</p>
-<p class="rubric">Testing API Contracts</p>
-<p class="rubric">Perform Security Tests in Open Ports</p>
-<p class="rubric">Perform Load and Stress Testing</p>
-<p class="rubric">Perform Denial of Service Testing</p>
-<p class="rubric">Assist Other Security Tools To Authenticate Agianst a Target</p>
+<span id="index-1"></span><h2><span class="section-number">16.2. </span>Client Mode<a class="headerlink" href="#client-mode" title="Permalink to this heading">¶</a></h2>
+<p>This mode is more about checking if a running server software is working as expected, in the sense of security or quality. This can perform different tests
+in different application protocols by having the right <em>conversation rules</em> for doing so. As you know, the activities results are tamper-proof, so you can
+attest how a server software status is (in terms of security, quality, or what ever.).</p>
+<ul class="simple">
+<li><p><strong>Navigation in Web Applications</strong>: You can navigate in web applications to test how the software is working, and even to perform web-scrapping in the target
+websites with the right interactions. You can emulate user interactions at some extent, that allows you to test navigation and performance.</p></li>
+<li><p><strong>Testing APIs</strong>: Similarly to the previous point, you can also work with APIs and verify their behavior. This cal help you to verify API contracts, and perform
+some dynamic testing to ensure the API is working as it should be.</p></li>
+<li><p><strong>Perform Security Tests</strong>: If you can test any exposed software in terms of quality, you can do it in terms of security (provided that you have the right
+<em>conversation files</em>). Since you can create new <strong>external connectors</strong> during the test dynamically, you can get information from other place and go on with the interaction
+(for instance, being able to pass single sign-on). TLS authentication is also supported, so you might test systems that require it as well. In case of application protocols
+where there are not other security tools able to work with that, this tool might help you to do security test because it tries to be as agnostic as possible from the application
+protocols, but limited to TCP or UDP.</p></li>
+<li><p><strong>Perform Load and Stress Testing</strong>: Considering that one <strong>external connector</strong> can perform several connections against a target (M), and you can have several external connectors
+working in parallel (N); this means you can have M x N connections against a target performing interactions (that can be simple, or can be complex emulating real expected interaction).
+This can help you in checking if the software is able to support, and to what extent, the high load situations.</p></li>
+<li><p><strong>Perform Denial of Service Testing</strong>: In the same way of thinking with the previous point, you can directly try to test if the software can support some denial of service attacks.
+Not only some that are based on brute force, even other that are more ‘intelligent’ or based on interactions (IDoS?).</p></li>
+<li><p><strong>Assist Other Testing Tools</strong>: Since you can add your code to this tool, this allows you to mix <em>Lope</em> capabilities with other tools. <em>Lope</em> can work as a kind of orchestrator and
+perform some tests, while other tools perform others. Each tool will generate their corresponding results independently, but <em>Lope</em> can get help in organizing a unified testing experience.
+A simple example could be that you need to pass a single sign-one, and provide the session cookie to another security tool to access the system.</p></li>
+</ul>
 </section>
 </section>
 
