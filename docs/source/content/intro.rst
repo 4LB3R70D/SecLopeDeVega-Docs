@@ -2,7 +2,13 @@
 
 Intro
 -----
-This is the repository of the documentation of the project. The following information is an intro about the project:
+
+.. warning::
+
+  Please, consider this project as **somewhere in between an alpha and beta version** since some capabilities have not been fully tested (mainly the integration with other systems for sending alerts, 
+  as well as the support of TLS). In terms of technology maturity, this one is about between TRL-3 and TRL-4 according to the `technology readiness level <https://en.wikipedia.org/wiki/Technology_readiness_level>`_ 
+  because more testing is needed to verify the fit for purpose.
+
 
 **Sec Lope de Vega** or just **Lope**, is an open source project licensed under the `Mozilla Public License v2 <https://www.mozilla.org/en-US/MPL/2.0/FAQ/>`_ . 
 The origin of this was to be as a learning playground for Python, Golang, ZeroMQ and some crypto capabilities. 
@@ -73,10 +79,7 @@ As far as the architecture is respective, this software is made up of two compon
   This project is the result of the work done in the spare time of the contributors, and the software is **PROVIDED AS IS**, in the complete meaning of those words. There is no official support offered by this project, 
   and proposed changes or bugs might or might not be done. It depends on the willingness of the contributors to use their free time on this project, at their own speed (if they want to do that). 
 
-.. warning::
 
-   Please, consider this project as **somewhere in between an alpha and beta version** since some capabilities (mainly the integration with other systems for sending alerts, support of TLS, and ipv6 support) 
-   have not been fully tested and may not work.
 
    
 
